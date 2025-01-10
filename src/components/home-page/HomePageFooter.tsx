@@ -60,7 +60,7 @@ const HomePageFooter = () => {
                                         href="https://www.linkedin.com/in/bohdan-bilovodskyi-0437241b7/"
                                         target="_blank">
                                         (Hi!👋 Feel free to connect with me on
-                                        LinkedIn if you'd like to chat).{" "}
+                                        LinkedIn if you&apos;d like to chat).{" "}
                                     </a>
                                     I have two passions: trading and coding. At
                                     one point, I decided to combine them, which

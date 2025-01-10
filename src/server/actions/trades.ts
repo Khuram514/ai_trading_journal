@@ -30,12 +30,11 @@ export async function getAllTradeRecords(): Promise<Trades[]> {
     const data = await db.query.TradeTable.findMany({
         where: eq(TradeTable.userId, userId),
     });
-    const processedData = data.map(
-        ({ userId: _userId, ...tradeWithoutUserId }) => ({
-            ...tradeWithoutUserId,
-            notes: tradeWithoutUserId.notes ?? undefined,
-        })
-    );
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const processedData = data.map(({ userId, ...tradeWithoutUserId }) => ({
+        ...tradeWithoutUserId,
+        notes: tradeWithoutUserId.notes ?? undefined,
+    }));
 
     return [...processedData].reverse();
 }
