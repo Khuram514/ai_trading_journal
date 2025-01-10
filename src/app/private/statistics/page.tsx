@@ -39,9 +39,9 @@ export default function Page() {
     const tradesToSort = filteredTrades || trades || [];
     const startValueToUse = localCapital ?? start;
 
-    let tradingData = getDataForSummaryChartGridPageOne(tradesToSort);
+    const tradingData = getDataForSummaryChartGridPageOne(tradesToSort);
 
-    let otherData = getOtherDataForGridPageOne(tradesToSort);
+    const otherData = getOtherDataForGridPageOne(tradesToSort);
 
     useEffect(() => {
         async function fetchData() {

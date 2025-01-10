@@ -1,10 +1,6 @@
 import Image from "next/image";
 
 import { SignUpButton } from "@clerk/nextjs";
-
-import { FaLinkedin } from "react-icons/fa";
-import { FaGithub } from "react-icons/fa";
-import { IoPerson } from "react-icons/io5";
 import { CustomButton } from "../CustomButton";
 
 const HomePageFooter = () => {
@@ -68,9 +64,10 @@ const HomePageFooter = () => {
                                     </a>
                                     I have two passions: trading and coding. At
                                     one point, I decided to combine them, which
-                                    led to the creation of this project. I’m
-                                    thrilled that this journal has earned the
-                                    approval of thousands of traders worldwide.
+                                    led to the creation of this project.
+                                    I&apos;m thrilled that this journal has
+                                    earned the approval of thousands of traders
+                                    worldwide.
                                 </p>
                             </div>
                             <div className="col-span-2 md:col-span-1 row-span-1">
@@ -90,11 +87,11 @@ const HomePageFooter = () => {
                                     What assets are supported?
                                 </h1>
                                 <p className="text-[.7rem] md:text-[.9rem] text-zinc-300">
-                                    You can add any assets you trade—it's fully
-                                    customizable. Whether it's indexes, stocks,
-                                    options, futures, crypto, or forex, you have
-                                    the flexibility to tailor the app to your
-                                    trading needs.
+                                    You can add any assets you trade—it&apos;s
+                                    fully customizable. Whether it&apos;s
+                                    indexes, stocks, options, futures, crypto,
+                                    or forex, you have the flexibility to tailor
+                                    the app to your trading needs.
                                 </p>
                             </div>
                         </div>

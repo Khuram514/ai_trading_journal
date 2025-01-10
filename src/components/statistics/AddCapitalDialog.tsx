@@ -30,7 +30,6 @@ export default function AddCapitalDialog() {
 
     const {
         register,
-        control,
         handleSubmit,
         formState: { errors },
     } = useForm<z.infer<typeof addCapitalFormSchema>>({

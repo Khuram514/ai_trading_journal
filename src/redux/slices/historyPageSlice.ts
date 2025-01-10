@@ -20,7 +20,6 @@ const historyPageSlice = createSlice({
         setFilteredTrades: (state, action) => {
             state.filteredTrades = action.payload;
         },
-        addRecordToFilteredTrades: (state, action) => {},
         setSortBy: (state, action) => {
             state.sortBy = action.payload;
         },

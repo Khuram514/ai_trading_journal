@@ -83,7 +83,7 @@ export default function YearView() {
                             style={{
                                 gridTemplateColumns: "repeat(7, 1fr)",
                             }}>
-                            {month.map((week, weekIndex) =>
+                            {month.map((week) =>
                                 week.map((day, dayIndex) => {
                                     const isToday =
                                         day &&

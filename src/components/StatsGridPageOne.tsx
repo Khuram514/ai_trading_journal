@@ -136,7 +136,7 @@ export function StatsGridPageOne({
                 </div>
                 <div className="col-span-1 row-span-1 bg-white rounded-lg border border-gray-200 flex flex-col items-center justify-start shadow-md">
                     <div className="font-semibold border-[0.5px] border-gray-200 w-full p-2">
-                        <p>Succesful "Buy" positions / All "Buy" positions:</p>
+                        <p>Succesful Buy positions / All Buy positions:</p>
                     </div>
                     <Gauge
                         value={otherData.chartTwo.succesfullBuyPositions ?? 0}
@@ -162,9 +162,7 @@ export function StatsGridPageOne({
 
                 <div className="col-span-1 row-span-1 bg-white rounded-lg border border-gray-200 flex flex-col items-center justify-start relative shadow-md">
                     <div className="font-semibold border-[0.5px] border-gray-200 w-full p-2">
-                        <p>
-                            Succesful "Sell" positions / All "Sell" positions:
-                        </p>
+                        <p>Succesful Sell positions / All Sell positions:</p>
                     </div>
                     <Gauge
                         value={

@@ -26,13 +26,13 @@ export default function PrivateLayout({ children }: { children: ReactNode }) {
             const response = await getAllTradeRecords();
             dispatch(setListOfTrades(response));
 
-            let monthViewTrades = getTradeSummary("day", response);
+            const monthViewTrades = getTradeSummary("day", response);
 
             dispatch(setInitialMonthViewSummary(monthViewTrades));
-            let yearViewTrades = getTradeSummary("month", response);
+            const yearViewTrades = getTradeSummary("month", response);
 
             dispatch(setInitialYearViewSummary(yearViewTrades));
-            let particularYearTrades = getTradeSummary("year", response);
+            const particularYearTrades = getTradeSummary("year", response);
             console.log("particular-year-view", particularYearTrades);
 
             dispatch(

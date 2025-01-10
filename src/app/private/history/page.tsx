@@ -6,7 +6,6 @@ import {
 } from "@/components/ui/hover-card";
 import {
     Table,
-    TableCaption,
     TableHeader,
     TableRow,
     TableHead,
@@ -56,7 +55,7 @@ export default function Page() {
         );
         setSortedTrades(result);
         setTotal(redusedTotal);
-    }, [sortBy, timeframe, trades, filteredTrades]);
+    }, [tradesToSort, sortBy, timeframe, trades, filteredTrades]);
 
     const handleDeleteTradeRecord = async (
         tradeId: string,

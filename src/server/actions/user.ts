@@ -28,6 +28,7 @@ export async function addCapitalOrUpdate(
                 .where(eq(UserTable.id, userId));
         }
     } catch (err) {
+        console.log(err);
         return { error: true };
     }
 }
@@ -48,6 +49,7 @@ export async function getCapital(): Promise<
 
         return data?.capital;
     } catch (err) {
+        console.log(err);
         return { error: true };
     }
 }
