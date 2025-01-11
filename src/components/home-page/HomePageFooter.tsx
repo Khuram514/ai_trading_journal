@@ -44,7 +44,7 @@ const HomePageFooter = () => {
                             deployed with AWS.
                         </p>
                     </div>
-                    <div className="md:w-1/2 md:flex-center flex-col gap-4 px-2">
+                    <div className="md:w-1/2 md:flex items-center justify-center flex-col gap-4 px-2">
                         <h1 className="text-[2rem] text-center">FAQ</h1>
                         <div className="grid grid-rows-3 md:grid-rows-2 grid-cols-2 gap-3">
                             <div className="col-span-2 row-span-1">
