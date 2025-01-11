@@ -80,6 +80,7 @@ const HomePageStart = () => {
                     width={400}
                     height={300}
                     alt="chart-with-details"
+                    className="w-full"
                 />
             </div>
         </>

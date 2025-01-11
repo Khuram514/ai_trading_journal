@@ -46,6 +46,7 @@ export default function HomePage() {
                 end: () => `+=${pinScroll}`,
                 pin: true,
                 scrub: true,
+                anticipatePin: 1,
             },
         });
 

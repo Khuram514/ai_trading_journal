@@ -16,30 +16,16 @@ const HomePageCalendar = () => {
                         Simple and intuitive way to collect and visualise your
                         trades.
                     </p>
-                    {/* <CustomButton isBlack text="Join for free" /> */}
                 </div>
                 <div className="rounded-lg max-md:hidden">
-                    {/* <Image
-                        src="/fake-calendar-2.jpeg"
+                    <Image
+                        src="/calendar.png"
                         alt="calendar"
-                        width={1000}
+                        width={1200}
                         height={900}
-                    /> */}
-                    <video
-                        src="/calendar-demo.mov"
-                        autoPlay
-                        loop
-                        muted
-                        style={{ width: "100%" }}
                     />
                 </div>
                 <div className="rounded-lg md:hidden">
-                    {/* <Image
-                        src="/iphone-mockup-mobile-view.png"
-                        alt="iphone-mockup"
-                        width={490}
-                        height={1000}
-                    /> */}
                     <Image
                         src="/calendar-mobile.png"
                         alt="iphone-mockup"
