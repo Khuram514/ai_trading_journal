@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🛠️ Tech Stack
 
-## Getting Started
+- **Next.js** for both the front end and back end (server actions)  
+- **TypeScript** for type safety  
+- **Redux Toolkit** for state management  
+- **Neon PostgreSQL** with **Drizzle** for the database and database management  
+- **MUI Charts** for charts and **Shadcn/Tailwind** for styling  
+- **Zod** and **React Hook Form** for form validation  
+- **Clerk** for authentication  
+- **GSAP** for animations  
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+# 🔥 Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Calendar
+An advanced calendar (inspired by Google Calendar) with month/year views. It includes the ability to open a modal by clicking on a specific day, as well as the ability to select a month in the year view.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+https://github.com/user-attachments/assets/409f9971-c9b4-419e-9f5a-e1ccd4c88354
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+## History
+A dedicated History page displaying a full list of trades. It features advanced filtering based on instrument, timeframe, and column.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+https://github.com/user-attachments/assets/dd9b49d3-8048-444a-918c-b5c4874caf99
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Statistics
+Thirteen charts that provide comprehensive statistics. Users can filter results based on the selected instrument.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+https://github.com/user-attachments/assets/8b8b333a-0bfc-432c-ad23-d74de50edba3
+
+
+# 📱 Landing Page & Mobile Version
+
+I'm very happy with the landing page design and its mobile version. Every part of the landing page is interactive, providing a richer user experience. At the same time, I'm using **Next.js** SSG to make the page performant and keep load times short.
+
+Please visit the website and try it out for yourself: [Visit](https://tradejournal.one).
+
+
+
+
+
+
+
+
