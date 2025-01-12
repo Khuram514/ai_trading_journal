@@ -112,7 +112,7 @@ export function getOtherDataForGridPageOne(trades: Trades[]) {
         trades.length > 0
             ? Math.floor(
                   calculateTotalTimeInPositionHours(trades, "buy") /
-                      allBuyPositions
+                      (allBuyPositions || 1)
               )
             : 0;
 
@@ -120,7 +120,7 @@ export function getOtherDataForGridPageOne(trades: Trades[]) {
         trades.length > 0
             ? Math.floor(
                   calculateTotalTimeInPositionHours(trades, "sell") /
-                      allSellPositions
+                      (allSellPositions || 1)
               )
             : 0;
 
@@ -129,32 +129,32 @@ export function getOtherDataForGridPageOne(trades: Trades[]) {
     return {
         chartOne: {
             succesfullPositions: Math.floor(
-                (succesfullPositions / allPositions) * 100
+                (succesfullPositions / (allPositions || 1)) * 100
             ),
             allPositions,
         },
         chartTwo: {
             succesfullBuyPositions: Math.floor(
-                (succesfullBuyPositions / allBuyPositions) * 100
+                (succesfullBuyPositions / (allBuyPositions || 1)) * 100
             ),
             allBuyPositions,
         },
         chartThree: {
             succesfullSellPositions: Math.floor(
-                (succesfullSellPositions / allSellPositions) * 100
+                (succesfullSellPositions / (allSellPositions || 1)) * 100
             ),
             allSellPositions,
         },
         chartFour: {
             allBuyPositions,
             averageBuyPositionsPerMonth: Math.floor(
-                allBuyPositions / totalMonthFromFirstTrade
+                allBuyPositions / (totalMonthFromFirstTrade || 1)
             ),
         },
         chartFive: {
             allSellPositions,
             averageSellPositionsPerMonth: Math.floor(
-                allSellPositions / totalMonthFromFirstTrade
+                allSellPositions / (totalMonthFromFirstTrade || 1)
             ),
         },
         chartSix: {
