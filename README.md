@@ -29,6 +29,18 @@ By accessing and using this software, you agree to use it solely for learning pu
 
 # 🔥 Features
 
+## TradeAI, Tokens and Archive pages [Update #2] 
+Let's face it – trading is all about making money, but emotions can seriously mess with how we see our own performance. That's why I've added the TradeAI feature! Just log your trades and let Claude's AI do the cold, rational analysis your emotional brain sometimes can't.
+This cool update brings three connected features:
+
+- AI reports powered by Claude that spot patterns and opportunities you might miss
+- A simple token system to manage AI usage (with easy Stripe payments when you need more)
+- An Archive section where you can save your AI reports, revisit them later, or even pick up conversations with the AI right where you left off
+
+
+https://github.com/user-attachments/assets/50ebd4b7-da6e-479b-b4ad-707c9fbf54b7
+
+
 ## Calendar
 The Calendar page is the heart of this website - it's where all the magic happens! Since my main goal is collecting your trading data to create those AI reports, I made this page super important. I kept it simple and easy to use, but still packed it with cool features like month/year views and your complete trading history. Adding new trades is a breeze - just click on any day to pop up the entry dialog, or quickly jump between months in the year view. No complicated stuff, just a straightforward way to log your trades!
 
@@ -44,7 +56,7 @@ https://github.com/user-attachments/assets/dd9b49d3-8048-444a-918c-b5c4874caf99
 
 
 ## Statistics
-Thirteen charts that provide comprehensive statistics. Users can filter results based on the selected instrument.
+The Stats page is your trading journey visualized! I built 10+ smart algorithms that transform your data into insightful charts. Same filtering options as the History page, so you can easily focus on specific instruments and discover what's actually working for you.
 
 
 https://github.com/user-attachments/assets/8b8b333a-0bfc-432c-ad23-d74de50edba3
@@ -53,6 +65,8 @@ https://github.com/user-attachments/assets/8b8b333a-0bfc-432c-ad23-d74de50edba3
 # 📱 Landing Page & Mobile Version
 
 I'm very happy with the landing page design and its mobile version. Every part of the landing page is interactive, providing a richer user experience. At the same time, I'm using **Next.js** SSG to make the page performant and keep load times short.
+
+### [Update #2]  I've completely refreshed the design, fixed all the glitchy stuff, and made the whole experience way better on phones. Also added a sweet new TradeAI section to the landing page for newbies, and beefed up the footer with more info (which helps with SEO too)
 
 Please visit the website and try it out for yourself: [Visit](https://tradejournal.one).
 
