@@ -70,7 +70,7 @@ export async function checkIfUserHasTokens(): Promise<
             where: eq(UserTable.id, userId),
         });
 
-        if (user == null) {
+        if (user == null || user.tokens === null) {
             return {
                 success: false,
                 message:

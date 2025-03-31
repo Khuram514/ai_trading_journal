@@ -37,9 +37,7 @@ export default async function Page() {
                     </div>
                 ) : (
                     <div className="p-2 flex items-center gap-2">
-                        <Coins className="text-[#da7756]" />
-                        {tokens.tokens}{" "}
-                        {getPlural(tokens.tokens ?? 0, "Token", "Tokens")}
+                        <Coins className="text-[#da7756]" />0 Tokens
                     </div>
                 )}
             </div>

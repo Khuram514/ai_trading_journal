@@ -1,40 +1,51 @@
 import { db } from "@/drizzle/db";
 import { UserTable } from "@/drizzle/schema";
 import Anthropic from "@anthropic-ai/sdk";
+import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 
 const anthropic = new Anthropic({ apiKey: process.env.CLAUDE_API_KEY });
 
 export async function POST(request: Request) {
     const data = await request.json();
+    const { userId } = await auth();
     const { trades } = data;
 
-    const tokens = await db.query.UserTable.findFirst({
-        columns: {
-            id: true,
-            tokens: true,
-        },
-    });
-
-    if (tokens?.tokens === 0) {
+    if (!userId) {
         return new Response(
             JSON.stringify({
-                error: "You don't have enough tokens for this operation.",
+                error: "Not authenticated",
             }),
             {
-                status: 500,
+                status: 401,
                 headers: { "Content-Type": "application/json" },
             }
         );
     }
 
-    if (tokens && tokens.tokens !== null && tokens.tokens !== undefined) {
-        const updatedTokens = tokens.tokens - 1;
+    const user = await db.query.UserTable.findFirst({
+        where: eq(UserTable.id, userId),
+    });
+
+    if (user?.tokens === 0) {
+        return new Response(
+            JSON.stringify({
+                error: "You don't have enough tokens for this operation.",
+            }),
+            {
+                status: 402,
+                headers: { "Content-Type": "application/json" },
+            }
+        );
+    }
+
+    if (user && user.tokens !== null && user.tokens !== undefined) {
+        const updatedTokens = user.tokens - 1;
 
         await db
             .update(UserTable)
             .set({ tokens: updatedTokens })
-            .where(eq(UserTable.id, tokens.id))
+            .where(eq(UserTable.id, user.id))
             .execute();
     }
 

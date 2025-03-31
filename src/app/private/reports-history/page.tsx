@@ -135,6 +135,8 @@ export default function Page() {
         }
     };
 
+    console.log(paginatedReports);
+
     return (
         <div
             className={`flex flex-col ${
@@ -247,6 +249,11 @@ export default function Page() {
                 ) : (
                     <div className="min-h-[400px] col-span-3 row-span-3 flex items-start justify-center">
                         <CustomLoading />
+                    </div>
+                )}
+                {paginatedReports?.length === 0 && (
+                    <div className="min-h-[400px] col-span-3 row-span-3 flex items-start justify-center">
+                        You don't have saved reports.
                     </div>
                 )}
             </div>
