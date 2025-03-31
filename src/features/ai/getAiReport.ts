@@ -156,9 +156,7 @@ export const getAIReport = (trades: Trades[]) => {
         }
 
         const onlyNegativeWorstTradesSummary = Object.fromEntries(
-            Object.entries(worstTradesSummary).filter(
-                ([instrument, total]) => total < 0
-            )
+            Object.entries(worstTradesSummary).filter(([_, total]) => total < 0)
         );
 
         return {
