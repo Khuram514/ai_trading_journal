@@ -253,7 +253,7 @@ export default function Page() {
                 )}
                 {paginatedReports?.length === 0 && (
                     <div className="min-h-[400px] col-span-3 row-span-3 flex items-start justify-center">
-                        You don't have saved reports.
+                        You don&apos;t have saved reports.
                     </div>
                 )}
             </div>
