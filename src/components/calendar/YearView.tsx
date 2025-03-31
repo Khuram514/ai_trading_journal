@@ -35,7 +35,7 @@ export default function YearView() {
                     <div
                         key={i}
                         onClick={() => handlePickMonth({ i })}
-                        className={`p-3 w-full cursor-pointer ${
+                        className={`p-3 w-full flex flex-col gap-2 cursor-pointer rounded-xl ${
                             isMonthSummaryAvailable
                                 ? currentMonthSum >= 0
                                     ? "bg-buyWithOpacity"
@@ -45,7 +45,7 @@ export default function YearView() {
                             isMonthSummaryAvailable ? "border border-white" : ""
                         }`}>
                         {isMonthSummaryAvailable ? (
-                            <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center justify-between mb-2 px-3">
                                 <div
                                     className={`flex items-center gap-2 ${
                                         currentMonthSum >= 0

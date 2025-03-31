@@ -66,8 +66,8 @@ export default function Filtering({
         );
     };
     return (
-        <div className="px-3 md:px-6 flex max-md:flex-col max-md:gap-3 items-center justify-between py-3 md:py-2 border-b border-zinc-200">
-            <div className="flex gap-2 md:w-1/2 flex-wrap">
+        <div className="px-3 md:px-6 flex max-md:flex-col max-md:gap-3 items-center justify-between py-3 md:py-2 border-b border-zinc-200 max-md:overflow-hidden">
+            <div className="flex gap-2 w-full md:w-1/2 md:flex-wrap overflow-auto p-1">
                 {removedItems.length > 0 && (
                     <Select
                         onValueChange={(value) =>
@@ -88,7 +88,7 @@ export default function Filtering({
                     </Select>
                 )}
                 {instrumentLabels.map((instrument) => (
-                    <CustomButton key={instrument} isBlack>
+                    <CustomButton key={instrument} isBlack={false}>
                         <div
                             onClick={() => removeInstrumentFromList(instrument)}
                             className="flex gap-1 items-center text-[.75rem]">
@@ -99,11 +99,11 @@ export default function Filtering({
                 ))}
             </div>
             {!isStatisticsPage && (
-                <div className="flex items-center max-md:justify-between max-md:w-full md:gap-4">
+                <div className="flex items-center max-md:justify-between max-md:w-full gap-4">
                     <Select
                         value={sortBy}
                         onValueChange={(value) => dispatch(setSortBy(value))}>
-                        <SelectTrigger className="w-[160px]">
+                        <SelectTrigger className="max-md:flex-1 md:w-[140px]">
                             <SelectValue placeholder="Sort by" />
                         </SelectTrigger>
                         <SelectContent>
@@ -129,7 +129,7 @@ export default function Filtering({
                         onValueChange={(value) =>
                             dispatch(setTimeframe(value))
                         }>
-                        <SelectTrigger className="w-[160px]">
+                        <SelectTrigger className="max-md:flex-1 md:w-[140px]">
                             <SelectValue placeholder="All history" />
                         </SelectTrigger>
                         <SelectContent>

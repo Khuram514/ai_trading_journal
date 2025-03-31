@@ -22,6 +22,55 @@
       "when": 1736054392120,
       "tag": "0002_round_black_crow",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1742249416031,
+      "tag": "0003_dizzy_hardball",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1742596190656,
+      "tag": "0004_curious_ghost_rider",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1742596219061,
+      "tag": "0005_salty_vengeance",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1742596982472,
+      "tag": "0006_luxuriant_jigsaw",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1742598943228,
+      "tag": "0007_nasty_doctor_octopus",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1742783177015,
+      "tag": "0008_parched_masque",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1743200612877,
+      "tag": "0009_fixed_big_bertha",
+      "breakpoints": true
     }
   ]
 }

@@ -95,7 +95,7 @@ export default function MonthView() {
                                         )}
                                     </div>
                                 </DialogTrigger>
-                                <DialogContent>
+                                <DialogContent className="max-md:h-full">
                                     <CustomDialogContent day={day} />
                                 </DialogContent>
                             </Dialog>

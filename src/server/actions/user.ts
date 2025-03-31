@@ -16,11 +16,13 @@ export async function addCapitalOrUpdate(
 
     try {
         const user = await db.query.UserTable.findFirst({
-            where: eq(TradeTable.id, userId),
+            where: eq(UserTable.id, userId),
         });
 
         if (user == null) {
-            await db.insert(UserTable).values({ capital, id: userId });
+            await db
+                .insert(UserTable)
+                .values({ capital, id: userId, tokens: 5 });
         } else {
             await db
                 .update(UserTable)
@@ -51,5 +53,89 @@ export async function getCapital(): Promise<
     } catch (err) {
         console.log(err);
         return { error: true };
+    }
+}
+
+export async function checkIfUserHasTokens(): Promise<
+    | { success: true; tokens: number | null }
+    | { success: false; message: string }
+> {
+    try {
+        const { userId } = await auth();
+        if (userId == null) {
+            return { success: false, message: "Not authenticated" };
+        }
+
+        const user = await db.query.UserTable.findFirst({
+            where: eq(UserTable.id, userId),
+        });
+
+        if (user == null) {
+            return {
+                success: false,
+                message:
+                    "To get free tokens, you must finish your profile, go to the statistics page, and add your starting capital.",
+            };
+        }
+
+        if (user.tokens === 0) {
+            return { success: true, tokens: null };
+        }
+
+        return { success: true, tokens: user.tokens };
+    } catch (err) {
+        console.error("Error checking tokens:", err);
+        return {
+            success: false,
+            message: "An unexpected error occurred. Please try again later.",
+        };
+    }
+}
+
+const PLAN_TOKEN_MAP = {
+    "5": 20,
+    "10": 60,
+} as const;
+
+export async function updateCredits({
+    plan,
+    userId,
+}: {
+    plan: string;
+    userId: string;
+}): Promise<
+    { success: true; message: string } | { success: false; message: string }
+> {
+    try {
+        const user = await db.query.UserTable.findFirst({
+            where: eq(UserTable.id, userId),
+        });
+
+        if (!user) {
+            return { success: false, message: "User not found!" };
+        }
+
+        const updateTokensValue =
+            PLAN_TOKEN_MAP[plan as keyof typeof PLAN_TOKEN_MAP];
+        if (updateTokensValue === undefined) {
+            return { success: false, message: "Invalid plan selected" };
+        }
+
+        await db
+            .update(UserTable)
+            .set({ tokens: Number(user.tokens) + updateTokensValue })
+            .where(eq(UserTable.id, userId));
+
+        return {
+            success: true,
+            message:
+                "Thank you for your purchase! Tokens will be deposited into your account shortly.",
+        };
+    } catch (error) {
+        console.error("Error checking tokens:", error);
+        return {
+            success: false,
+            message: "An unexpected error occurred. Please try again later.",
+        };
     }
 }

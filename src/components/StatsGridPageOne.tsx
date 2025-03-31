@@ -1,7 +1,7 @@
 import { BarChart, LineChart } from "@mui/x-charts";
 import { Gauge, gaugeClasses } from "@mui/x-charts/Gauge";
 import { ChartsXAxisProps } from "@mui/x-charts";
-import { createTheme, ThemeProvider } from "@mui/material";
+import { Box, createTheme, ThemeProvider, useMediaQuery } from "@mui/material";
 
 interface ExtendedChartsXAxisProps extends ChartsXAxisProps {
     categoryGapRatio?: number;
@@ -56,6 +56,7 @@ export function StatsGridPageOne({
     tradingData: { date: Date; capital: number }[];
     otherData: GetOtherDataForGridPageOneResult;
 }) {
+    const isMobile = useMediaQuery("(max-width:768px)");
     return (
         <ThemeProvider theme={theme}>
             <div className="grid grid-rows-10 md:grid-rows-4 grid-cols-1 md:grid-cols-4 gap-4 max-md:py-4 md:p-4 md:h-[80vh] bg-transparent rounded-xl w-full">
@@ -63,51 +64,73 @@ export function StatsGridPageOne({
                     <div className="font-semibold border-[0.5px] border-gray-200 w-full p-2">
                         <p>Summary:</p>
                     </div>
-
-                    <LineChart
-                        dataset={tradingData ?? []}
-                        xAxis={[
-                            {
-                                id: "Date",
-                                dataKey: "date",
-                                scaleType: "time",
-                                tickNumber: 6,
-                                valueFormatter: (date) =>
-                                    new Intl.DateTimeFormat("en-US", {
-                                        month: "short",
-                                        day: "numeric",
-                                    }).format(date),
-                            },
-                        ]}
-                        yAxis={[
-                            {
-                                colorMap: {
-                                    type: "piecewise",
-                                    thresholds: [0],
-                                    colors: ["var(--sell)", "var(--buy)"],
-                                },
-                            },
-                        ]}
-                        series={[
-                            {
-                                curve: "linear",
-                                id: "capital",
-                                dataKey: "capital",
-                                showMark: false,
-                                stack: "total",
-                                area: true,
-                                valueFormatter: (value) =>
-                                    `Capital: ${value} CAD`,
-                            },
-                        ]}
-                        margin={{ left: 65, top: 25, right: 30 }}
-                        grid={{ horizontal: true }}
+                    {/* Box to disable interactions with chart on mobile devices */}
+                    <Box
                         sx={{
-                            "& .MuiAreaElement-series-capital": {
-                                opacity: 0.3,
-                            },
-                        }}
-                    />
+                            width: "100%",
+                            height: 450,
+                            position: "relative",
+
+                            "&::after": isMobile
+                                ? {
+                                      content: '""',
+                                      position: "absolute",
+                                      top: 0,
+                                      left: 0,
+                                      right: 0,
+                                      bottom: 0,
+                                      zIndex: 10,
+                                      pointerEvents: "auto",
+                                      cursor: "default",
+                                  }
+                                : {},
+                        }}>
+                        <LineChart
+                            dataset={tradingData ?? []}
+                            xAxis={[
+                                {
+                                    id: "Date",
+                                    dataKey: "date",
+                                    scaleType: "time",
+                                    tickNumber: 6,
+                                    valueFormatter: (date) =>
+                                        new Intl.DateTimeFormat("en-US", {
+                                            month: "short",
+                                            day: "numeric",
+                                        }).format(date),
+                                },
+                            ]}
+                            yAxis={[
+                                {
+                                    colorMap: {
+                                        type: "piecewise",
+                                        thresholds: [0],
+                                        colors: ["var(--sell)", "var(--buy)"],
+                                    },
+                                },
+                            ]}
+                            series={[
+                                {
+                                    curve: "linear",
+                                    id: "capital",
+                                    dataKey: "capital",
+                                    showMark: false,
+                                    stack: "total",
+                                    area: true,
+                                    valueFormatter: (value) =>
+                                        `Capital: ${value} CAD`,
+                                },
+                            ]}
+                            margin={{ left: 65, top: 25, right: 30 }}
+                            grid={{ horizontal: true }}
+                            sx={{
+                                "& .MuiAreaElement-series-capital": {
+                                    opacity: 0.3,
+                                },
+                                width: "100px",
+                            }}
+                        />
+                    </Box>
                 </div>
                 <div className="col-span-1 row-span-1 bg-white rounded-lg border border-gray-200 shadow-md flex flex-col items-center justify-start ">
                     <div className="font-semibold border-[0.5px] border-gray-200 w-full p-2">
@@ -191,86 +214,171 @@ export function StatsGridPageOne({
                     <div className="font-semibold border-[0.5px] border-gray-200 w-full p-2">
                         <p>Succesfull positions All / Avg. per month::</p>
                     </div>
-                    <BarChart
-                        colors={["var(--customYellow), var(--sell)"]}
-                        xAxis={[
-                            {
-                                scaleType: "band",
-                                data: ["All", "Avg."],
-                                categoryGapRatio: 0.7,
-                            } as ExtendedChartsXAxisProps,
-                        ]}
-                        series={[
-                            {
-                                data: [
-                                    otherData.chartFour.allBuyPositions ?? 0,
-                                    otherData.chartFour
-                                        .averageBuyPositionsPerMonth ?? 0,
-                                ],
-                                color: "var(--buy)",
-                                valueFormatter: (value) => `${value} positions`,
-                            },
-                        ]}
-                        borderRadius={5}
-                        margin={{ top: 25, bottom: 25, left: 60, right: 40 }}
-                    />
+                    {/* Box to disable interactions with chart on mobile devices */}
+                    <Box
+                        sx={{
+                            width: "100%",
+                            height: 120,
+                            position: "relative",
+
+                            "&::after": isMobile
+                                ? {
+                                      content: '""',
+                                      position: "absolute",
+                                      top: 0,
+                                      left: 0,
+                                      right: 0,
+                                      bottom: 0,
+                                      zIndex: 10,
+                                      pointerEvents: "auto",
+                                      cursor: "default",
+                                  }
+                                : {},
+                        }}>
+                        <BarChart
+                            colors={["var(--customYellow), var(--sell)"]}
+                            xAxis={[
+                                {
+                                    scaleType: "band",
+                                    data: ["All", "Avg."],
+                                    categoryGapRatio: 0.7,
+                                } as ExtendedChartsXAxisProps,
+                            ]}
+                            series={[
+                                {
+                                    data: [
+                                        otherData.chartFour.allBuyPositions ??
+                                            0,
+                                        otherData.chartFour
+                                            .averageBuyPositionsPerMonth ?? 0,
+                                    ],
+                                    color: "var(--buy)",
+                                    valueFormatter: (value) =>
+                                        `${value} positions`,
+                                },
+                            ]}
+                            borderRadius={5}
+                            margin={{
+                                top: 25,
+                                bottom: 25,
+                                left: 60,
+                                right: 40,
+                            }}
+                        />
+                    </Box>
                 </div>
                 <div className="col-span-1 row-span-1 bg-white rounded-lg border border-gray-200 flex flex-col items-center justify-start shadow-md">
                     <div className="font-semibold border-[0.5px] border-gray-200 w-full p-2">
                         <p>Lost positions All / Avg. per month:</p>
                     </div>
-                    <BarChart
-                        colors={["var(--customYellow), var(--sell)"]}
-                        xAxis={[
-                            {
-                                scaleType: "band",
-                                data: ["All", "Avg."],
-                                categoryGapRatio: 0.7,
-                            } as ExtendedChartsXAxisProps,
-                        ]}
-                        series={[
-                            {
-                                data: [
-                                    otherData.chartFive.allSellPositions ?? 0,
-                                    otherData.chartFive
-                                        .averageSellPositionsPerMonth ?? 0,
-                                ],
-                                color: "var(--sell)",
-                                valueFormatter: (value) => `${value} positions`,
-                            },
-                        ]}
-                        borderRadius={5}
-                        margin={{ top: 25, bottom: 25, left: 60, right: 40 }}
-                    />
+                    {/* Box to disable interactions with chart on mobile devices */}
+                    <Box
+                        sx={{
+                            width: "100%",
+                            height: 120,
+                            position: "relative",
+
+                            "&::after": isMobile
+                                ? {
+                                      content: '""',
+                                      position: "absolute",
+                                      top: 0,
+                                      left: 0,
+                                      right: 0,
+                                      bottom: 0,
+                                      zIndex: 10,
+                                      pointerEvents: "auto",
+                                      cursor: "default",
+                                  }
+                                : {},
+                        }}>
+                        <BarChart
+                            colors={["var(--customYellow), var(--sell)"]}
+                            xAxis={[
+                                {
+                                    scaleType: "band",
+                                    data: ["All", "Avg."],
+                                    categoryGapRatio: 0.7,
+                                } as ExtendedChartsXAxisProps,
+                            ]}
+                            series={[
+                                {
+                                    data: [
+                                        otherData.chartFive.allSellPositions ??
+                                            0,
+                                        otherData.chartFive
+                                            .averageSellPositionsPerMonth ?? 0,
+                                    ],
+                                    color: "var(--sell)",
+                                    valueFormatter: (value) =>
+                                        `${value} positions`,
+                                },
+                            ]}
+                            borderRadius={5}
+                            margin={{
+                                top: 25,
+                                bottom: 25,
+                                left: 60,
+                                right: 40,
+                            }}
+                        />
+                    </Box>
                 </div>
                 <div className="col-span-1 row-span-1 bg-white rounded-lg border border-gray-200 flex flex-col items-center justify-start shadow-md">
                     <div className="font-semibold border-[0.5px] border-gray-200 w-full p-2">
                         <p>Avarege time in position:</p>
                     </div>
-                    <BarChart
-                        colors={["var(--customYellow), var(--sell)"]}
-                        xAxis={[
-                            {
-                                scaleType: "band",
-                                data: ["Buy", "Sell"],
-                                categoryGapRatio: 0.7,
-                            } as ExtendedChartsXAxisProps,
-                        ]}
-                        series={[
-                            {
-                                data: [
-                                    otherData.chartSix
-                                        .averageTimeInBuyPosition ?? 0,
-                                    otherData.chartSix
-                                        .averageTimeInSellPosition ?? 0,
-                                ],
-                                color: "var(--customBlue)",
-                                valueFormatter: (value) => `${value} hours`,
-                            },
-                        ]}
-                        borderRadius={5}
-                        margin={{ top: 25, bottom: 25, left: 60, right: 40 }}
-                    />
+                    {/* Box to disable interactions with chart on mobile devices */}
+                    <Box
+                        sx={{
+                            width: "100%",
+                            height: 120,
+                            position: "relative",
+
+                            "&::after": isMobile
+                                ? {
+                                      content: '""',
+                                      position: "absolute",
+                                      top: 0,
+                                      left: 0,
+                                      right: 0,
+                                      bottom: 0,
+                                      zIndex: 10,
+                                      pointerEvents: "auto",
+                                      cursor: "default",
+                                  }
+                                : {},
+                        }}>
+                        <BarChart
+                            colors={["var(--customYellow), var(--sell)"]}
+                            xAxis={[
+                                {
+                                    scaleType: "band",
+                                    data: ["Buy", "Sell"],
+                                    categoryGapRatio: 0.7,
+                                } as ExtendedChartsXAxisProps,
+                            ]}
+                            series={[
+                                {
+                                    data: [
+                                        otherData.chartSix
+                                            .averageTimeInBuyPosition ?? 0,
+                                        otherData.chartSix
+                                            .averageTimeInSellPosition ?? 0,
+                                    ],
+                                    color: "var(--customBlue)",
+                                    valueFormatter: (value) => `${value} hours`,
+                                },
+                            ]}
+                            borderRadius={5}
+                            margin={{
+                                top: 25,
+                                bottom: 25,
+                                left: 60,
+                                right: 40,
+                            }}
+                        />
+                    </Box>
                 </div>
                 <div className="col-span-1 row-span-1 bg-white rounded-lg border border-gray-200 flex flex-col items-center justify-start shadow-md">
                     <div className="font-semibold border-[0.5px] border-gray-200 w-full p-2">
@@ -278,29 +386,57 @@ export function StatsGridPageOne({
                             Max sequence of profitable/unprofitable transactions
                         </p>
                     </div>
-                    <BarChart
-                        colors={["var(--customYellow), var(--sell)"]}
-                        xAxis={[
-                            {
-                                scaleType: "band",
-                                data: ["Buy", "Sell"],
-                                categoryGapRatio: 0.7,
-                            } as ExtendedChartsXAxisProps,
-                        ]}
-                        series={[
-                            {
-                                data: [
-                                    otherData.chartSeven.sequenceProfitable ??
-                                        0,
-                                    otherData.chartSeven.sequenceLost ?? 0,
-                                ],
-                                color: "var(--customOrange)",
-                                valueFormatter: (value) => `${value} in a row`,
-                            },
-                        ]}
-                        borderRadius={5}
-                        margin={{ top: 25, bottom: 25, left: 60, right: 40 }}
-                    />
+                    {/* Box to disable interactions with chart on mobile devices */}
+                    <Box
+                        sx={{
+                            width: "100%",
+                            height: 120,
+                            position: "relative",
+
+                            "&::after": isMobile
+                                ? {
+                                      content: '""',
+                                      position: "absolute",
+                                      top: 0,
+                                      left: 0,
+                                      right: 0,
+                                      bottom: 0,
+                                      zIndex: 10,
+                                      pointerEvents: "auto",
+                                      cursor: "default",
+                                  }
+                                : {},
+                        }}>
+                        <BarChart
+                            colors={["var(--customYellow), var(--sell)"]}
+                            xAxis={[
+                                {
+                                    scaleType: "band",
+                                    data: ["Buy", "Sell"],
+                                    categoryGapRatio: 0.7,
+                                } as ExtendedChartsXAxisProps,
+                            ]}
+                            series={[
+                                {
+                                    data: [
+                                        otherData.chartSeven
+                                            .sequenceProfitable ?? 0,
+                                        otherData.chartSeven.sequenceLost ?? 0,
+                                    ],
+                                    color: "var(--customOrange)",
+                                    valueFormatter: (value) =>
+                                        `${value} in a row`,
+                                },
+                            ]}
+                            borderRadius={5}
+                            margin={{
+                                top: 25,
+                                bottom: 25,
+                                left: 60,
+                                right: 40,
+                            }}
+                        />
+                    </Box>
                 </div>
             </div>
         </ThemeProvider>

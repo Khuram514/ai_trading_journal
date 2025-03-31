@@ -20,7 +20,6 @@ const tradeRecordsSlice = createSlice({
     initialState,
     reducers: {
         setListOfTrades: (state, action) => {
-            console.log("Payload received:", action.payload);
             state.listOfTrades = action.payload;
         },
         updateListOfTrades: (state, action) => {

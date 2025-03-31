@@ -3,9 +3,16 @@ import Image from "next/image";
 import { SignUpButton } from "@clerk/nextjs";
 import { CustomButton } from "../CustomButton";
 
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/components/ui/accordion";
+
 const HomePageFooter = () => {
     return (
-        <div className="md:h-screen flex-center py-2 px-2">
+        <div className="md:h-screen flex-center p-3">
             <div className="md:h-full w-full rounded-3xl flex flex-col items-center justify-center overflow-hidden text-primary">
                 <div className="md:h-1/2 w-full flex flex-col items-center justify-center gap-6 bg-[#201e1d] border-b border-zinc-900 max-md:py-12 max-md:px-4">
                     <span className="border border-zinc-700 py-1 px-2 rounded-md text-[.7rem] md:text-[.9rem] shadow-md shadow-zinc-900">
@@ -38,63 +45,126 @@ const HomePageFooter = () => {
                                 Journal
                             </p>
                         </div>
-                        <p className="text-zinc-400 text-center">
+                        <p className="text-darkPrimary text-center">
                             Loosely designed in Figma and coded in Visual Studio
                             Code. <br /> Built with Next.js and Tailwind CSS,
-                            deployed with AWS.
+                            deployed with Vercel.
                         </p>
                     </div>
                     <div className="md:w-1/2 md:flex items-center justify-center flex-col gap-4 px-2">
                         <h1 className="text-[2rem] text-center">FAQ</h1>
-                        <div className="grid grid-rows-3 md:grid-rows-2 grid-cols-2 gap-3">
-                            <div className="col-span-2 row-span-1">
-                                <h1 className="text-[1rem] md:text-[1.2rem] mb-2">
-                                    {" "}
-                                    What is Trade Journal ?
-                                </h1>
-                                <p className="text-[.7rem] md:text-[.9rem] text-zinc-300">
-                                    Trade Journal is my personal project,
-                                    developed entirely by me{" "}
-                                    <a
-                                        className="underline"
-                                        href="https://www.linkedin.com/in/bohdan-bilovodskyi-0437241b7/"
-                                        target="_blank">
-                                        (Hi!👋 Feel free to connect with me on
-                                        LinkedIn if you&apos;d like to chat).{" "}
-                                    </a>
-                                    I have two passions: trading and coding. At
-                                    one point, I decided to combine them, which
-                                    led to the creation of this project.
-                                    I&apos;m thrilled that this journal has
-                                    earned the approval of thousands of traders
-                                    worldwide.
-                                </p>
-                            </div>
-                            <div className="col-span-2 md:col-span-1 row-span-1">
-                                <h1 className="text-[1rem] md:text-[1.2rem] mb-2">
-                                    Is this trading journal free ?
-                                </h1>
-                                <p className="text-[.7rem] md:text-[.9rem] text-zinc-300">
-                                    This app is completely free for everyone. My
-                                    goal was to meet the needs of all traders by
-                                    incorporating key features such as a
-                                    calendar, a history page, and a variety of
-                                    charts with statistics.
-                                </p>
-                            </div>
-                            <div className="col-span-2 md:col-span-1 row-span-1">
-                                <h1 className="text-[1rem] md:text-[1.2rem] mb-2">
-                                    What assets are supported?
-                                </h1>
-                                <p className="text-[.7rem] md:text-[.9rem] text-zinc-300">
-                                    You can add any assets you trade—it&apos;s
-                                    fully customizable. Whether it&apos;s
-                                    indexes, stocks, options, futures, crypto,
-                                    or forex, you have the flexibility to tailor
-                                    the app to your trading needs.
-                                </p>
-                            </div>
-                        </div>
+
+                        <Accordion type="single" collapsible className="w-full">
+                            <AccordionItem value="item-1">
+                                <AccordionTrigger>
+                                    What is AI Trade Journal ?
+                                </AccordionTrigger>
+                                <AccordionContent>
+                                    Trade Journal is your personal trading
+                                    companion that keeps track of all your
+                                    market moves, analyzes performance with
+                                    advanced algorithms, and offers practical
+                                    advice to sharpen your strategy. Simply log
+                                    all your trades and let our AI generate
+                                    in-depth reports that identify both your
+                                    blind spots and winning moves. The system
+                                    highlights exactly where you&apos;re leaving
+                                    money on the table and reinforces the
+                                    strategies that are already working for you.
+                                </AccordionContent>
+                            </AccordionItem>
+                            <AccordionItem value="item-2">
+                                <AccordionTrigger>
+                                    Is This AI Trading Journal Free ?
+                                </AccordionTrigger>
+                                <AccordionContent>
+                                    Yes, AI Trading Journal is completely free
+                                    to use with next features including:
+                                    <ul className="mt-1">
+                                        <li>
+                                            &bull; Comprehensive Calendar: Track
+                                            all your trading activities in one
+                                            organized view
+                                        </li>
+                                        <li>
+                                            &bull; Detailed History Page: Review
+                                            all past trades with complete
+                                            transaction data
+                                        </li>
+                                        <li>
+                                            &bull; Advanced Statistics: Access
+                                            powerful analytics that reveal your
+                                            trading patterns and performance
+                                            metrics
+                                        </li>
+                                        <li>
+                                            &bull; AI-Powered Insights: Get
+                                            started with 5 complimentary tokens
+                                            for our premium AI analysis engine
+                                        </li>
+                                    </ul>
+                                </AccordionContent>
+                            </AccordionItem>
+                            <AccordionItem value="item-3">
+                                <AccordionTrigger>
+                                    What Assets Are Supported?
+                                </AccordionTrigger>
+                                <AccordionContent>
+                                    AI Trading Journal supports all major asset
+                                    classes with unlimited customization
+                                    options:
+                                    <ul className="mt-1">
+                                        <li>
+                                            &bull; Equities: Individual stocks,
+                                            ETFs, and global market indexes.
+                                        </li>
+                                        <li>
+                                            &bull; Cryptocurrencies: Bitcoin,
+                                            Ethereum, altcoins, and emerging
+                                            digital assets.
+                                        </li>
+                                        <li>
+                                            &bull; Forex: All major and exotic
+                                            currency pairs
+                                        </li>
+                                        <li>
+                                            &bull; Commodities: Precious metals,
+                                            energy products, and agricultural
+                                            futures
+                                        </li>
+                                    </ul>
+                                </AccordionContent>
+                            </AccordionItem>
+                            <AccordionItem value="item-4">
+                                <AccordionTrigger>
+                                    How AI Trading Journal Improves Your
+                                    Performance
+                                </AccordionTrigger>
+                                <AccordionContent>
+                                    AI Trading Journal supports all major asset
+                                    classes with unlimited customization
+                                    options:
+                                    <ul className="mt-1">
+                                        <li>
+                                            &bull; Boost Trading Profitability
+                                        </li>
+                                        <li>
+                                            &bull; Comprehensive Risk Management
+                                        </li>
+                                        <li>
+                                            &bull; Powerful Pattern Recognition
+                                        </li>
+                                        <li>
+                                            &bull; Trading Psychology Insights
+                                        </li>
+
+                                        <li>
+                                            &bull; Trade Planning Optimization
+                                        </li>
+                                    </ul>
+                                </AccordionContent>
+                            </AccordionItem>
+                        </Accordion>
                     </div>
                 </div>
             </div>

@@ -49,13 +49,13 @@ export default function Page() {
             timeframe,
             tradesToSort,
         });
-        const redusedTotal = result.reduce(
+        const reducedTotal = result.reduce(
             (acc, cur) => acc + Number(cur.result),
             0
         );
         setSortedTrades(result);
-        setTotal(redusedTotal);
-    }, [tradesToSort, sortBy, timeframe, trades, filteredTrades]);
+        setTotal(reducedTotal);
+    }, [tradesToSort, sortBy, timeframe]);
 
     const handleDeleteTradeRecord = async (
         tradeId: string,
@@ -163,7 +163,7 @@ export default function Page() {
                                         "de-DE"
                                     )}
                                 </TableCell>
-                                <TableCell className="w-[10%]">
+                                <TableCell className="w-[10%] max-md:text-end pr-8 md:pr-0">
                                     {Number(trade.result).toLocaleString(
                                         "de-DE"
                                     )}
@@ -198,7 +198,7 @@ export default function Page() {
                 </Table>
             </div>
             <Table>
-                <TableFooter className="sticky bottom-0 right-0 left-0 bg-primary w-full text-[1rem] px-2 py-1 mt-auto">
+                <TableFooter className="sticky bottom-0 right-0 left-0 bg-white w-full text-[1rem] px-2 py-1 mt-auto">
                     <TableRow className="flex justify-between">
                         <TableCell>Total</TableCell>
                         <TableCell>{total.toLocaleString("de-DE")}</TableCell>

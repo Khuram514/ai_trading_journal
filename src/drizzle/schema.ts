@@ -1,8 +1,19 @@
-import { index, pgTable, text } from "drizzle-orm/pg-core";
+import {
+    boolean,
+    index,
+    integer,
+    jsonb,
+    pgTable,
+    text,
+    timestamp,
+    uuid,
+} from "drizzle-orm/pg-core";
 
 export const UserTable = pgTable("user", {
     id: text("id").notNull().unique(),
     capital: text("capital").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    tokens: integer("tokens"),
 });
 
 export const TradeTable = pgTable(
@@ -27,3 +38,18 @@ export const TradeTable = pgTable(
         ),
     })
 );
+
+export const ReportsTable = pgTable("reports", {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: text("user_id").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    reportData: jsonb("report_data").notNull(),
+    isFavorite: boolean("is_favorite").default(false).notNull(),
+});
+
+export const TransactionsTable = pgTable("transactions", {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: text("user_id").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    plan: text("plan").notNull(),
+});

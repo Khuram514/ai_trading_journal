@@ -15,6 +15,8 @@ import HomePageCalendar from "./HomePageCalendar";
 import HomePageFooter from "./HomePageFooter";
 import { fakeDataChartTwo, otherData, tradingData } from "@/data/data";
 import Link from "next/link";
+import HomePageAi from "./HomePageAI";
+import { SiClaude } from "react-icons/si";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -78,31 +80,30 @@ export default function HomePage() {
         const mm = gsap.matchMedia();
 
         mm.add("(min-width: 769px)", () => {
-            mainTimeLine
-                .to(
-                    "#navbar",
-                    {
-                        width: "60%",
-                        boxShadow:
-                            "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
-                    },
-                    0
-                )
-                .to(
-                    "#logo-text",
-                    {
-                        transform: "translateX(20%)",
-                        opacity: 0,
-                    },
-                    0
-                )
-                .to(
-                    "#nav-buttons",
-                    {
-                        transform: "translateX(-20%)",
-                    },
-                    0
-                );
+            mainTimeLine.to(
+                "#navbar",
+                {
+                    width: "60%",
+                    boxShadow:
+                        "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+                },
+                0
+            );
+            // .to(
+            //     "#logo-text",
+            //     {
+            //         transform: "translateX(20%)",
+            //         opacity: 0,
+            //     },
+            //     0
+            // );
+            // .to(
+            //     "#nav-buttons",
+            //     {
+            //         transform: "translateX(-15px)",
+            //     },
+            //     0
+            // );
         });
     });
 
@@ -123,37 +124,40 @@ export default function HomePage() {
                 <nav
                     id="navbar"
                     className="flex items-center justify-between text-sm p-3 w-full rounded-2xl bg-white max-md:shadow-md">
-                    <div className="flex gap-2 items-center">
+                    <div className="flex gap-3 items-center">
                         <Image
                             src="/logo.svg"
                             alt="logo"
                             width={40}
                             height={40}
                         />
-                        <p
-                            id="logo-text"
-                            className="font-semibold text-xl max-md:hidden">
-                            Journal
-                        </p>
+                        <p className="text-[1rem]">Journal</p>
+                        <p className="text-[1rem] md:hidden">&</p>
+                        <SiClaude
+                            size={24}
+                            className="text-[#da7756] md:hidden"
+                        />
                     </div>
-                    <div
-                        id="nav-buttons"
-                        className="flex gap-4 max-md:text-[.75rem]">
-                        <Link href="/sign-in">
-                            <div className="nav-link">Calendar</div>
-                        </Link>
-                        <Link href="/sign-in">
-                            <div className="nav-link">History</div>
-                        </Link>
-                        <Link href="/sign-in">
-                            <div className="nav-link">Statistics</div>
-                        </Link>
-                        {/* <div className="nav-link">TradeAI</div> */}
+                    <div className="hidden md:flex justify-center md:mr-[35px]">
+                        <div id="nav-buttons" className="flex gap-4">
+                            <Link href="/sign-in">
+                                <div className="nav-link">Calendar</div>
+                            </Link>
+                            <Link href="/sign-in">
+                                <div className="nav-link">History</div>
+                            </Link>
+                            <Link href="/sign-in">
+                                <div className="nav-link">Statistics</div>
+                            </Link>
+                            <Link href="/sign-in">
+                                <div className="nav-link">TradeAI</div>
+                            </Link>
+                            {/* <div className="nav-link">TradeAI</div> */}
+                        </div>
                     </div>
-
                     <CustomButton isBlack={false}>
                         <SignUpButton>
-                            <span>Log in</span>
+                            <span className="max-md:text-[.75rem]">Log in</span>
                         </SignUpButton>
                     </CustomButton>
                 </nav>
@@ -287,6 +291,7 @@ export default function HomePage() {
                     <div className="absolute top-[1600px] h-[100px] w-1"></div>
                 </div>
             </div>
+
             <div className="flex-center py-8 px-3 lg:px-48">
                 <div className="py-10 bg-primary rounded-xl w-full flex flex-col items-center justify-center background-class">
                     <div className="flex flex-col items-center justify-center gap-4 pb-4">
@@ -294,7 +299,7 @@ export default function HomePage() {
                             Summary
                         </span>
                         <h1 className="text-[2rem] md:text-[3rem] text-center font-semibold">
-                            Your achievements, <br /> all in one place.
+                            Your trading achievements, <br /> all in one place.
                         </h1>
                         <p className="max-md:px-2 text-[.9rem] md:text-[1rem] mb-4">
                             See your growth and success, and take pride in every
@@ -331,7 +336,7 @@ export default function HomePage() {
                             />
                         )}
                     </div>
-                    <div className="md:hidden w-full mt-4">
+                    <div className="md:hidden w-full mt-4 flex justify-center">
                         {isSwitchChartsActive ? (
                             <Image
                                 src="/statistics-page-one-mobile.png"
@@ -350,8 +355,9 @@ export default function HomePage() {
                     </div>
                 </div>
             </div>
-            <HomePageReviews />
+            <HomePageAi />
             <HomePageCalendar />
+            <HomePageReviews />
             <HomePageFooter />
         </div>
     );

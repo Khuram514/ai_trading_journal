@@ -152,16 +152,16 @@ export default function CalendarLayout({ children }: { children: ReactNode }) {
                     </div>
                     <div>
                         {calendarView === "Month" ? (
-                            <p>{`${months[month ?? currentMonth]} ${
-                                year ?? currentYear
-                            }`}</p>
+                            <p className="text-center md:text-start">{`${
+                                months[month ?? currentMonth]
+                            } ${year ?? currentYear}`}</p>
                         ) : (
                             <p>{yearView ?? currentYear}</p>
                         )}
                     </div>
                 </div>
                 <div className="flex max-md:justify-between max-md:w-full md:gap-5 items-center">
-                    <div className="ml-2">
+                    <div className="md:ml-2 md:border-r md:border-l border-darkPrimary md:px-4 py-2">
                         {calendarView === "Month"
                             ? monthViewTotal && (
                                   <p>Total capital change: {monthViewTotal}</p>
@@ -182,7 +182,7 @@ export default function CalendarLayout({ children }: { children: ReactNode }) {
                             );
                             dispatch(setYearView(currentYear));
                         }}>
-                        <SelectTrigger className="w-[120px]">
+                        <SelectTrigger className="w-[100px]">
                             <SelectValue placeholder="Month" />
                         </SelectTrigger>
                         <SelectContent>

@@ -27,7 +27,6 @@ import {
     SelectGroup,
     SelectItem,
     SelectTrigger,
-    SelectValue,
 } from "../ui/select";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -70,7 +69,7 @@ export default function CustomDialogContent({
     } = useForm<z.infer<typeof newTradeFormSchema>>({
         resolver: zodResolver(newTradeFormSchema),
         defaultValues: {
-            positionType: undefined,
+            positionType: "buy",
             openDate: undefined,
             openTime: "12:30",
             closeDate: undefined,
@@ -147,7 +146,7 @@ export default function CustomDialogContent({
                     Add a New Trade
                 </DialogTitle>
 
-                <DialogDescription className="bg-primary p-2 rounded-xl max-md:hidden">
+                <DialogDescription className="bg-secondary px-4 py-2 rounded-xl max-md:hidden text-black text-[.8rem]">
                     Important! The more data you add, the better you can refine
                     your strategy, improve future outcomes, and enhance
                     AI-powered analysis.
@@ -361,51 +360,86 @@ export default function CustomDialogContent({
                     )}
                 />
             </div>
-            <div className="mb-2 flex flex-col">
-                <div className="flex items-center justify-between">
-                    <Label htmlFor="deposit" className="mb-1 text-[.75rem]">
-                        Deposit amount:
-                    </Label>
-                    {errors.deposit ? (
-                        <span className="mb-1 text-[.75rem] text-red-500">
-                            {errors.deposit.message}
-                        </span>
-                    ) : (
-                        <span className="mb-1 text-[.65rem] text-black/50">
-                            (Without commas or dots.)
-                        </span>
-                    )}
+            <div className="flex gap-2">
+                <div className="mb-2 flex flex-col flex-1">
+                    <div className="flex items-center justify-between">
+                        <Label htmlFor="deposit" className="mb-1 text-[.75rem]">
+                            Deposit amount:
+                        </Label>
+                        {errors.deposit ? (
+                            <span className="mb-1 text-[.75rem] text-red-500">
+                                {errors.deposit.message}
+                            </span>
+                        ) : (
+                            <span className="mb-1 text-[.65rem] text-black/50">
+                                (Only numbers.)
+                            </span>
+                        )}
+                    </div>
+                    <Input
+                        type="number"
+                        id="deposit"
+                        className="w-full max-md:text-[.75rem]"
+                        {...register("deposit")}
+                    />
                 </div>
-                <Input
-                    type="number"
-                    id="deposit"
-                    className="w-full max-md:text-[.75rem]"
-                    {...register("deposit")}
-                />
+                <div className="mb-2 flex flex-col flex-1">
+                    <div className="flex items-center justify-between">
+                        <Label htmlFor="result" className="mb-1 text-[.75rem]">
+                            Result (Earned/Lost):
+                        </Label>
+                        {errors.result ? (
+                            <span className="mb-1 text-[.75rem] text-red-500">
+                                {errors.result.message}
+                            </span>
+                        ) : (
+                            <span className="mb-1 text-[.65rem] text-black/50">
+                                (Only numbers.)
+                            </span>
+                        )}
+                    </div>
+                    <Input
+                        type="number"
+                        id="result"
+                        className="w-full max-md:text-[.75rem]"
+                        {...register("result")}
+                    />
+                </div>
             </div>
             <div className="mb-2 flex flex-col">
                 <div className="flex items-center justify-between">
-                    <Label htmlFor="result" className="mb-1 text-[.75rem]">
-                        Result (Earned/Lost):
-                    </Label>
-                    {errors.result ? (
+                    <Label className="mb-1 text-[.75rem]">Position type:</Label>
+                    {errors.positionType ? (
                         <span className="mb-1 text-[.75rem] text-red-500">
-                            {errors.result.message}
+                            {errors.positionType.message}
                         </span>
                     ) : (
                         <span className="mb-1 text-[.65rem] text-black/50">
-                            (Without commas or dots.)
+                            (Click to change)
                         </span>
                     )}
                 </div>
-                <Input
-                    type="number"
-                    id="result"
-                    className="w-full max-md:text-[.75rem]"
-                    {...register("result")}
+                <Controller
+                    name="positionType"
+                    control={control}
+                    render={({ field }) => (
+                        <div
+                            className={`h-[50px] ${
+                                field.value === "buy" ? "bg-buy" : "bg-sell"
+                            } rounded-md cursor-pointer flex-center`}
+                            onClick={() =>
+                                field.value === "buy"
+                                    ? setValue("positionType", "sell")
+                                    : setValue("positionType", "buy")
+                            }>
+                            <p className="text-white">
+                                {field.value === "buy" ? "Buy" : "Sell"}
+                            </p>
+                        </div>
+                    )}
                 />
             </div>
-            <div className="mb-2 flex flex-col">
+            {/* <div className="mb-2 flex flex-col">
                 <div className="flex items-center justify-between">
                     <Label className="mb-1 text-[.75rem]">Position type:</Label>
                     {errors.positionType && (
@@ -431,7 +465,7 @@ export default function CustomDialogContent({
                         </Select>
                     )}
                 />
-            </div>
+            </div> */}
             <div className="mb-6 flex flex-col">
                 <Label htmlFor="notes" className="mb-1 text-[.75rem]">
                     Notes (optional):

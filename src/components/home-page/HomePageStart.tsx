@@ -45,8 +45,8 @@ const HomePageStart = () => {
                     <div className="h-[20px] w-[0.5px] bg-zinc-300" />
                     Trusted by over 1,000 traders worldwide!
                 </div>
-                <h1 className="main-text text-[3.5rem] md:text-[7rem]">
-                    Trade Journal
+                <h1 className="main-text text-[3rem] md:text-[6rem] max-md:my-3">
+                    AI Trade Journal
                 </h1>
                 <div className="mb-10 flex flex-col items-center">
                     <h2 className="main-text text-[1.5rem] md:text-[3rem] flex items-center justify-center gap-2">

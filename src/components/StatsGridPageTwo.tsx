@@ -1,6 +1,6 @@
 import { BarChart, LineChart, PieChart } from "@mui/x-charts";
 import { ArrowUp } from "lucide-react";
-import { createTheme, ThemeProvider } from "@mui/material";
+import { Box, createTheme, ThemeProvider, useMediaQuery } from "@mui/material";
 import Odometer from "@/features/odometer/Odometer";
 import { daysOfTheWeek } from "@/data/data";
 import AddCapitalDialog from "./statistics/AddCapitalDialog";
@@ -47,6 +47,7 @@ export function StatsGridPageTwo({
         }[];
     };
 }) {
+    const isMobile = useMediaQuery("(max-width:768px)");
     return (
         <ThemeProvider theme={theme}>
             <div className="grid grid-rows-5 md:grid-rows-2 grid-cols-1 md:grid-cols-12 gap-4 max-md:py-4 md:p-4 md:h-[80vh] bg-transparent w-full">
@@ -70,34 +71,58 @@ export function StatsGridPageTwo({
                             <p>S&P500</p>
                         </div>
                     </div>
-                    <LineChart
-                        xAxis={[
-                            {
-                                scaleType: "point",
-                                data: oterData.chartOne.dateLabels ?? [],
-                            },
-                        ]}
-                        series={[
-                            {
-                                data: oterData.chartOne.capitalChanges ?? [],
-                                color: "var(--customOrange)",
-                                showMark: false,
-                                label: "Your returns",
-                            },
-                            {
-                                data: oterData.chartOne.sp500Alternative ?? [],
-                                color: "#E3E0DE",
-                                showMark: false,
-                                label: "S&P500",
-                            },
-                        ]}
-                        slotProps={{
-                            legend: {
-                                hidden: true,
-                            },
-                        }}
-                        margin={{ left: 65, top: 25, right: 30 }}
-                    />
+                    <Box
+                        sx={{
+                            width: "100%",
+                            height: 250,
+                            position: "relative",
+
+                            "&::after": isMobile
+                                ? {
+                                      content: '""',
+                                      position: "absolute",
+                                      top: 0,
+                                      left: 0,
+                                      right: 0,
+                                      bottom: 0,
+                                      zIndex: 10,
+                                      pointerEvents: "auto",
+                                      cursor: "default",
+                                  }
+                                : {},
+                        }}>
+                        <LineChart
+                            xAxis={[
+                                {
+                                    scaleType: "point",
+                                    data: oterData.chartOne.dateLabels ?? [],
+                                },
+                            ]}
+                            series={[
+                                {
+                                    data:
+                                        oterData.chartOne.capitalChanges ?? [],
+                                    color: "var(--customOrange)",
+                                    showMark: false,
+                                    label: "Your returns",
+                                },
+                                {
+                                    data:
+                                        oterData.chartOne.sp500Alternative ??
+                                        [],
+                                    color: "#E3E0DE",
+                                    showMark: false,
+                                    label: "S&P500",
+                                },
+                            ]}
+                            slotProps={{
+                                legend: {
+                                    hidden: true,
+                                },
+                            }}
+                            margin={{ left: 65, top: 25, right: 30 }}
+                        />
+                    </Box>
                 </div>
                 <div className="max-md:h-[350px] col-span-1 md:col-span-4 row-span-1 bg-white rounded-lg border border-gray-200 flex flex-col items-center justify-start shadow-md">
                     <div className="font-semibold border-[0.5px] border-gray-200 w-full p-2">
@@ -135,60 +160,107 @@ export function StatsGridPageTwo({
                             </p>
                         </div>
                     </div>
-                    <PieChart
-                        colors={[
-                            "var(--customBlue)",
-                            "var(--customYellow)",
-                            "var(--customOrange)",
-                            "#E3E0DE",
-                        ]}
-                        series={[
-                            {
-                                data: oterData.chartTwo.topTrades ?? [],
-                                innerRadius: 80,
-                                paddingAngle: 2,
-                                cornerRadius: 5,
-                                highlightScope: {
-                                    fade: "global",
-                                    highlight: "item",
+                    <Box
+                        sx={{
+                            width: "100%",
+                            height: 250,
+                            position: "relative",
+
+                            "&::after": isMobile
+                                ? {
+                                      content: '""',
+                                      position: "absolute",
+                                      top: 0,
+                                      left: 0,
+                                      right: 0,
+                                      bottom: 0,
+                                      zIndex: 10,
+                                      pointerEvents: "auto",
+                                      cursor: "default",
+                                  }
+                                : {},
+                        }}>
+                        <PieChart
+                            colors={[
+                                "var(--customBlue)",
+                                "var(--customYellow)",
+                                "var(--customOrange)",
+                                "#E3E0DE",
+                            ]}
+                            series={[
+                                {
+                                    data: oterData.chartTwo.topTrades ?? [],
+                                    innerRadius: 80,
+                                    paddingAngle: 2,
+                                    cornerRadius: 5,
+                                    highlightScope: {
+                                        fade: "global",
+                                        highlight: "item",
+                                    },
                                 },
-                            },
-                        ]}
-                        margin={{ top: 25, bottom: 25, left: 25, right: 25 }}
-                        slotProps={{
-                            popper: {
-                                sx: {
-                                    fontSize: "0.75rem",
+                            ]}
+                            margin={{
+                                top: 25,
+                                bottom: 25,
+                                left: 25,
+                                right: 25,
+                            }}
+                            slotProps={{
+                                popper: {
+                                    sx: {
+                                        fontSize: "0.75rem",
+                                    },
                                 },
-                            },
-                            legend: {
-                                hidden: true,
-                            },
-                        }}
-                    />
+                                legend: {
+                                    hidden: true,
+                                },
+                            }}
+                        />
+                    </Box>
                 </div>
 
                 <div className="max-md:h-[350px] col-span-1 md:col-span-5 row-span-1 bg-white rounded-lg border border-gray-200 flex flex-col items-center justify-start relative shadow-md">
                     <div className="font-semibold border-[0.5px] border-gray-200 w-full p-2">
                         <p>Days with the Biggest Gains</p>
                     </div>
-                    <BarChart
-                        xAxis={[
-                            {
-                                scaleType: "band",
-                                data: oterData.chartThree.dates ?? [],
-                            },
-                        ]}
-                        borderRadius={5}
-                        series={[
-                            {
-                                data: oterData.chartThree.results ?? [],
-                                color: "var(--buy)",
-                                label: "Earned on This Day",
-                            },
-                        ]}
-                        slotProps={{ legend: { hidden: true } }}
-                    />
+                    <Box
+                        sx={{
+                            width: "100%",
+                            height: 250,
+                            position: "relative",
+
+                            "&::after": isMobile
+                                ? {
+                                      content: '""',
+                                      position: "absolute",
+                                      top: 0,
+                                      left: 0,
+                                      right: 0,
+                                      bottom: 0,
+                                      zIndex: 10,
+                                      pointerEvents: "auto",
+                                      cursor: "default",
+                                  }
+                                : {},
+                        }}>
+                        <BarChart
+                            xAxis={[
+                                {
+                                    scaleType: "band",
+                                    data: oterData.chartThree.dates ?? [],
+                                },
+                            ]}
+                            borderRadius={5}
+                            series={[
+                                {
+                                    data: oterData.chartThree.results ?? [],
+                                    color: "var(--buy)",
+                                    label: "Earned on This Day",
+                                },
+                            ]}
+                            slotProps={{ legend: { hidden: true } }}
+                        />
+                    </Box>
                 </div>
                 <div className="max-md:h-[350px] col-span-1 md:col-span-7 row-span-1 bg-white rounded-lg border border-gray-200 flex flex-col items-center justify-start shadow-md">
                     <div className="font-semibold border-[0.5px] border-gray-200 w-full p-2">
@@ -220,21 +292,42 @@ export function StatsGridPageTwo({
                             </p>
                         </div>
                     </div>
-                    <BarChart
-                        xAxis={[
-                            {
-                                scaleType: "band",
-                                data: daysOfTheWeek,
-                            },
-                        ]}
-                        borderRadius={5}
-                        series={oterData.chartFour ?? []}
-                        slotProps={{
-                            legend: {
-                                hidden: true,
-                            },
-                        }}
-                    />
+                    <Box
+                        sx={{
+                            width: "100%",
+                            height: 250,
+                            position: "relative",
+
+                            "&::after": isMobile
+                                ? {
+                                      content: '""',
+                                      position: "absolute",
+                                      top: 0,
+                                      left: 0,
+                                      right: 0,
+                                      bottom: 0,
+                                      zIndex: 10,
+                                      pointerEvents: "auto",
+                                      cursor: "default",
+                                  }
+                                : {},
+                        }}>
+                        <BarChart
+                            xAxis={[
+                                {
+                                    scaleType: "band",
+                                    data: daysOfTheWeek,
+                                },
+                            ]}
+                            borderRadius={5}
+                            series={oterData.chartFour ?? []}
+                            slotProps={{
+                                legend: {
+                                    hidden: true,
+                                },
+                            }}
+                        />
+                    </Box>
                 </div>
             </div>
         </ThemeProvider>
