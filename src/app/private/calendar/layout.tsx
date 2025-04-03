@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import {
     MdOutlineKeyboardArrowRight,
     MdOutlineKeyboardArrowLeft,
@@ -29,6 +29,8 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import CustomDialogContent from "@/components/calendar/CustomDialogContent";
 
 export default function CalendarLayout({ children }: { children: ReactNode }) {
+    const [isDataLoaded, setIsDataLoaded] = useState(false);
+
     const { month, year } = useAppSelector((state) => state.calendar.monthView);
     const yearView = useAppSelector((state) => state.calendar.yearView);
     const calendarView = useAppSelector((state) => state.calendar.calendarType);
@@ -47,6 +49,15 @@ export default function CalendarLayout({ children }: { children: ReactNode }) {
     const yearTradeSummaryForYearView = useAppSelector(
         (state) => state.tradeRecords.totalOfParticularYearSummary
     );
+
+    useEffect(() => {
+        if (
+            Object.keys(monthTradeSummaryForMonthView || {}).length > 0 ||
+            Object.keys(yearTradeSummaryForYearView || {}).length > 0
+        ) {
+            setIsDataLoaded(true);
+        }
+    }, [monthTradeSummaryForMonthView, yearTradeSummaryForYearView]);
 
     const yearViewTotal = yearTradeSummaryForYearView[yearView ?? currentYear];
 
@@ -108,6 +119,18 @@ export default function CalendarLayout({ children }: { children: ReactNode }) {
         dispatch(setMonthView({ month: currentMonth, year: currentYear }));
         dispatch(setYearView(currentYear));
     };
+
+    if (!isDataLoaded) {
+        return (
+            <div className="flex-center h-screen">
+                <div className="running-algorithm">
+                    <span className="dot"></span>
+                    <span className="dot"></span>
+                    <span className="dot"></span>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col h-full">

@@ -2,14 +2,14 @@ import { Trades } from "@/types";
 import { createSlice } from "@reduxjs/toolkit";
 
 type documentState = {
-    listOfTrades: Trades[] | undefined;
-    monthViewSummary: { [key: string]: number };
-    yearViewSummary: { [key: string]: number };
-    totalOfParticularYearSummary: { [key: string]: number };
+    listOfTrades: Trades[] | null;
+    monthViewSummary: Record<string, any>;
+    yearViewSummary: Record<string, any>;
+    totalOfParticularYearSummary: Record<string, any>;
 };
 
 const initialState: documentState = {
-    listOfTrades: undefined,
+    listOfTrades: null,
     monthViewSummary: {},
     yearViewSummary: {},
     totalOfParticularYearSummary: {},
@@ -23,7 +23,7 @@ const tradeRecordsSlice = createSlice({
             state.listOfTrades = action.payload;
         },
         updateListOfTrades: (state, action) => {
-            if (state.listOfTrades !== undefined) {
+            if (state.listOfTrades !== null) {
                 const newRecord = action.payload;
                 const newRecordTime = new Date(newRecord.closeDate).getTime();
 
@@ -48,7 +48,7 @@ const tradeRecordsSlice = createSlice({
             }
         },
         removeRecordFromListOfTrades: (state, action) => {
-            if (state.listOfTrades !== undefined) {
+            if (state.listOfTrades !== null) {
                 state.listOfTrades = state.listOfTrades.filter(
                     (trade) => trade.id !== action.payload
                 );
@@ -73,7 +73,10 @@ const tradeRecordsSlice = createSlice({
         },
         setYearViewSummary: (state, action) => {
             const { year, value } = action.payload;
-            if (state.yearViewSummary[year] !== undefined) {
+            if (
+                state.yearViewSummary[year] !== undefined &&
+                state.yearViewSummary[year] !== null
+            ) {
                 state.yearViewSummary[year] += value;
             } else {
                 state.yearViewSummary[year] = value;
@@ -87,7 +90,10 @@ const tradeRecordsSlice = createSlice({
         },
         setTotalOfParticularYearSummary: (state, action) => {
             const { year, value } = action.payload;
-            if (state.totalOfParticularYearSummary[year] !== undefined) {
+            if (
+                state.totalOfParticularYearSummary[year] !== undefined &&
+                state.totalOfParticularYearSummary[year] !== null
+            ) {
                 state.totalOfParticularYearSummary[year] += value;
             } else {
                 state.totalOfParticularYearSummary[year] = value;
