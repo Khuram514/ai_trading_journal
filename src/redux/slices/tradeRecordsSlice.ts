@@ -3,9 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 type documentState = {
     listOfTrades: Trades[] | null;
-    monthViewSummary: Record<string, any>;
-    yearViewSummary: Record<string, any>;
-    totalOfParticularYearSummary: Record<string, any>;
+    monthViewSummary: Record<string, number>;
+    yearViewSummary: Record<string, number>;
+    totalOfParticularYearSummary: Record<string, number>;
 };
 
 const initialState: documentState = {
