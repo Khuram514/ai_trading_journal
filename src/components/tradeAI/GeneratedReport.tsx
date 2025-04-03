@@ -18,7 +18,7 @@ import CustomLoading from "../CustomLoading";
 
 type GeneratedReportType = {
     report: ReportType;
-    trades: Trades[] | undefined;
+    trades: Trades[] | null;
     setReport: Dispatch<SetStateAction<ReportType | null>>;
     setTokens: Dispatch<SetStateAction<number | undefined>>;
 };
