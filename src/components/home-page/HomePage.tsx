@@ -56,7 +56,7 @@ export default function HomePage() {
             scrollTrigger: {
                 start: 10,
                 scrub: false,
-                toggleActions: "play reverse play reverse",
+                toggleActions: "play none none reverse",
             },
         });
 

@@ -41,13 +41,7 @@ export default function Page() {
     );
 
     const handleGetReport = async () => {
-        if (!trades) {
-            toast.error(
-                "An unexpected error occurred. Please try again later!"
-            );
-            return;
-        }
-        if (trades.length < 3) {
+        if (!trades || trades.length < 3) {
             toast.error(
                 "You don’t have enough trades. You must have at least 3 trades to get the report!"
             );
@@ -130,6 +124,10 @@ export default function Page() {
                 toast.error(checkTokens.message);
             }
         } catch (err) {
+            if (err instanceof Error) {
+                toast.error(err.message);
+                console.log(err.message);
+            }
             toast.error("Error occured! Try again later!");
             console.log(err);
         }

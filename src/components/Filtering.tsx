@@ -67,8 +67,8 @@ export default function Filtering({
     };
     return (
         <div className="px-3 md:px-6 flex max-md:flex-col max-md:gap-3 items-center justify-between py-3 md:py-2 border-b border-zinc-200 max-md:overflow-hidden">
-            <div className="flex gap-2 w-full md:w-1/2 md:flex-wrap overflow-auto p-1">
-                {removedItems.length > 0 && (
+            {removedItems.length > 0 && (
+                <div className="flex gap-2 w-full md:w-1/2 md:flex-wrap overflow-auto p-1">
                     <Select
                         onValueChange={(value) =>
                             addInstrumentToTheList(value)
@@ -86,18 +86,20 @@ export default function Filtering({
                             </SelectGroup>
                         </SelectContent>
                     </Select>
-                )}
-                {instrumentLabels.map((instrument) => (
-                    <CustomButton key={instrument} isBlack={false}>
-                        <div
-                            onClick={() => removeInstrumentFromList(instrument)}
-                            className="flex gap-1 items-center text-[.75rem]">
-                            {instrument}
-                            <IoClose className="text-[1rem]" />
-                        </div>
-                    </CustomButton>
-                ))}
-            </div>
+                    {instrumentLabels.map((instrument) => (
+                        <CustomButton key={instrument} isBlack={false}>
+                            <div
+                                onClick={() =>
+                                    removeInstrumentFromList(instrument)
+                                }
+                                className="flex gap-1 items-center text-[.75rem]">
+                                {instrument}
+                                <IoClose className="text-[1rem]" />
+                            </div>
+                        </CustomButton>
+                    ))}
+                </div>
+            )}
             {!isStatisticsPage && (
                 <div className="flex items-center max-md:justify-between max-md:w-full gap-4">
                     <Select

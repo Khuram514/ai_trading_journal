@@ -252,8 +252,8 @@ export default function Page() {
                     </div>
                 )}
                 {paginatedReports?.length === 0 && (
-                    <div className="min-h-[400px] col-span-3 row-span-3 flex items-start justify-center">
-                        You don&apos;t have saved reports.
+                    <div className="min-h-[400px] col-span-3 row-span-3 flex items-center justify-center md:text-[1.5rem] text-zinc-500">
+                        Your reports archive is empty
                     </div>
                 )}
             </div>
