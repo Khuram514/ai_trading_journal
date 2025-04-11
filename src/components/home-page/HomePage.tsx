@@ -17,6 +17,8 @@ import { fakeDataChartTwo, otherData, tradingData } from "@/data/data";
 import Link from "next/link";
 import HomePageAi from "./HomePageAI";
 import { SiClaude } from "react-icons/si";
+import Test from "./HomePageMobileAI";
+import HomePageMobileAiPage from "./HomePageMobileAI";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -120,7 +122,7 @@ export default function HomePage() {
 
     return (
         <div className={`${isLargeScreen ? "background-class" : ""}`}>
-            <header className="flex-center py-2 w-full sticky top-2 px-3 lg:px-48 z-[999]">
+            <header className="flex-center py-2 w-full sticky top-0 md:top-2 px-3 lg:px-48 z-[999]">
                 <nav
                     id="navbar"
                     className="flex items-center justify-between text-sm p-3 w-full rounded-2xl bg-white max-md:shadow-md">
@@ -293,7 +295,7 @@ export default function HomePage() {
             </div>
 
             <div className="flex-center py-8 px-3 lg:px-48">
-                <div className="py-10 bg-primary rounded-xl w-full flex flex-col items-center justify-center background-class">
+                <div className="py-10 md:bg-primary rounded-xl w-full flex flex-col items-center justify-center background-class">
                     <div className="flex flex-col items-center justify-center gap-4 pb-4">
                         <span className="border border-zinc-200 py-1 px-2 rounded-md text-[.7rem] md:text-[.9rem] shadow-md">
                             Summary
@@ -356,6 +358,7 @@ export default function HomePage() {
                 </div>
             </div>
             <HomePageAi />
+            <HomePageMobileAiPage />
             <HomePageCalendar />
             <HomePageReviews />
             <HomePageFooter />

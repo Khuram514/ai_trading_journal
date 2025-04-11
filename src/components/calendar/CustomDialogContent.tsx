@@ -55,6 +55,7 @@ export default function CustomDialogContent({
     const [openDate, setOpenDate] = useState<Date>();
     const [closeDate, setCloseDate] = useState<Date>();
     const [instrumentLabels, setInstrumentLabels] = useState<string[]>([]);
+    const [submittingNewTrade, setSubmittingNewTrade] = useState(false);
 
     const trades = useAppSelector((state) => state.tradeRecords.listOfTrades);
 
@@ -82,9 +83,11 @@ export default function CustomDialogContent({
     });
 
     async function onSubmit(newTrade: z.infer<typeof newTradeFormSchema>) {
+        setSubmittingNewTrade(true);
         const customId = uuidv4();
         const data = await createNewTradeRecord(newTrade, customId);
         if (data?.error) {
+            setSubmittingNewTrade(false);
             return toast.error("There was an error saving your event!");
         } else {
             const [stringDay, month, year] = new Date(newTrade.closeDate)
@@ -121,6 +124,7 @@ export default function CustomDialogContent({
             toast.success("A new record has been created!");
             const dayKey = day !== undefined ? day.format("DD-MM-YYYY") : "any";
             dispatch(setIsDialogOpen({ key: dayKey, value: false }));
+            setSubmittingNewTrade(false);
         }
     }
 
@@ -482,7 +486,10 @@ export default function CustomDialogContent({
                 <DialogClose asChild>
                     <CustomButton isBlack={false}>Cancel</CustomButton>
                 </DialogClose>
-                <CustomButton isBlack type="submit">
+                <CustomButton
+                    isBlack
+                    type="submit"
+                    disabled={submittingNewTrade}>
                     Add Trade
                 </CustomButton>
             </div>

@@ -4,7 +4,7 @@ import { SiClaude } from "react-icons/si";
 
 const HomePageAi = () => {
     return (
-        <div className="flex-center md:h-screen p-3">
+        <div className="max-md:hidden flex-center h-screen p-3">
             <div className="bg-white rounded-xl w-full flex flex-col items-center justify-between overflow-hidden h-full">
                 <div
                     className="h-[100px] sm:h-[140px] lg:h-[250px] overflow-hidden   

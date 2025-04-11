@@ -12,7 +12,7 @@ import {
 
 const HomePageFooter = () => {
     return (
-        <div className="md:h-screen flex-center p-3">
+        <div className="md:h-screen flex-center p-1 md:p-3">
             <div className="md:h-full w-full rounded-3xl flex flex-col items-center justify-center overflow-hidden text-primary">
                 <div className="md:h-1/2 w-full flex flex-col items-center justify-center gap-6 bg-[#201e1d] border-b border-zinc-900 max-md:py-12 max-md:px-4">
                     <span className="border border-zinc-700 py-1 px-2 rounded-md text-[.7rem] md:text-[.9rem] shadow-md shadow-zinc-900">
@@ -22,7 +22,7 @@ const HomePageFooter = () => {
                     <h1 className="text-[2rem] md:text-[3rem] text-center font-semibold">
                         Join thousands of traders.
                     </h1>
-                    <p className="max-md:px-2 text-[.9rem] md:text-[1rem]">
+                    <p className="max-md:px-2 text-[.9rem] md:text-[1rem] max-md:text-center">
                         From beginners to pros, your trading success starts
                         here.
                     </p>

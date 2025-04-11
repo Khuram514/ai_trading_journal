@@ -39,7 +39,7 @@ export default function BuyTokensCards() {
     };
     return (
         <div className="md:min-h-[30rem] px-2 md:px-0 md:w-2/3 flex flex-col gap-4 md:flex-row md:gap-0">
-            <div className="border border-zinc-300 md:h-[38rem] flex-1 flex flex-col gap-5 rounded-xl md:max-w-96 px-6 pt-6 pb-10 md:pb-6 mt-[1rem]">
+            <div className="border border-zinc-300 md:h-[38rem] flex-1 flex flex-col gap-5 rounded-xl md:max-w-[400px] px-6 pt-6 pb-10 md:pb-6 mt-[1rem]">
                 <div className="flex flex-col gap-1">
                     <p className="flex items-center text-2xl">Stripe</p>
                     <div className="flex gap-1 items-baseline relative ml-4 mt-2">
@@ -96,7 +96,7 @@ export default function BuyTokensCards() {
                     </div>
                 </div>
             </div>
-            <div className="border border-claude bg-claudeBackground md:h-[40rem] flex-1 rounded-xl md:max-w-96 flex flex-col gap-6 px-6 pt-6 pb-10 md:pb-6">
+            <div className="border border-claude bg-claudeBackground md:h-[40rem] flex-1 rounded-xl md:max-w-[400px] flex flex-col gap-6 px-6 pt-6 pb-10 md:pb-6">
                 <div className="flex flex-col gap-2">
                     <div className="flex gap-2">
                         <p className="flex items-center text-2xl">Crypto</p>
@@ -170,7 +170,7 @@ export default function BuyTokensCards() {
                     </div>
                 </div>
             </div>
-            <div className="border border-zinc-300 md:h-[38rem] flex-1 flex flex-col gap-6 rounded-xl md:max-w-96 px-6 pt-6 pb-10 md:pb-6 mt-[1rem]">
+            <div className="border border-zinc-300 md:h-[38rem] flex-1 flex flex-col gap-6 rounded-xl md:max-w-[400px] px-6 pt-6 pb-10 md:pb-6 mt-[1rem]">
                 <div className="flex flex-col gap-1">
                     <p className="flex items-center text-2xl">Stripe</p>
                     <div className="flex gap-1 items-baseline relative ml-4 mt-2">

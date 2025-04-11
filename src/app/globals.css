@@ -67,12 +67,14 @@ mark {
     z-index: -1;
 }
 
-.background-class {
-    background-image: url("/background-bars-colors.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    width: 100%;
-    z-index: 0;
+@media (min-width: 768px) {
+    .background-class {
+        background-image: url("/background-bars-colors.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        width: 100%;
+        z-index: 0;
+    }
 }
 
 mark::after {
