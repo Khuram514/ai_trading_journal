@@ -17,7 +17,6 @@ import { fakeDataChartTwo, otherData, tradingData } from "@/data/data";
 import Link from "next/link";
 import HomePageAi from "./HomePageAI";
 import { SiClaude } from "react-icons/si";
-import Test from "./HomePageMobileAI";
 import HomePageMobileAiPage from "./HomePageMobileAI";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
