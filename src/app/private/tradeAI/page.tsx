@@ -144,26 +144,23 @@ export default function Page() {
     };
 
     return (
-        <div className="flex flex-col justify-between h-full">
+        <div className="flex flex-col items-center justify-between h-full">
+            <div className="h-[500px] overflow-hidden">
+                <video
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="h-full w-full object-cover object-bottom">
+                    <source src="/ai-video.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                </video>
+            </div>
             <div
-                className={`relative flex flex-col items-center duration-500 ${
+                className={`absolute top-1/2 -translate-y-1/2 flex flex-col items-center duration-500 ${
                     isReportGenerated &&
                     "-translate-y-[100px] lg:-translate-y-[250px]"
                 }`}>
-                <div
-                    className="h-[100px] lg:h-[250px] overflow-hidden   
-                   ">
-                    <video
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        poster="/before_tradeAi_video_is_loaded.png"
-                        className="scale-[2.5] xl:scale-[1.7] 2xl:xl:scale-[1.3]">
-                        <source src="/tradeAi-video.mov" />
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
                 <h1 className="relative text-4xl md:text-5xl text-center mb-12 mt-8 text-[#3D3929]">
                     Get your AI report
                 </h1>

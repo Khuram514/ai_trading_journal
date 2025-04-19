@@ -5,22 +5,20 @@ import { SiClaude } from "react-icons/si";
 const HomePageAi = () => {
     return (
         <div className="max-md:hidden flex-center h-screen p-3">
-            <div className="bg-white rounded-xl w-full flex flex-col items-center justify-between overflow-hidden h-full">
-                <div
-                    className="h-[100px] sm:h-[140px] lg:h-[250px] overflow-hidden   
-                   ">
+            <div className="bg-white relative rounded-xl w-full flex flex-col items-center justify-between overflow-hidden h-full">
+                <div className="h-[500px] overflow-hidden">
                     <video
                         autoPlay
                         loop
                         muted
                         playsInline
-                        poster="/before_tradeAi_video_is_loaded.png"
-                        className="scale-[2.5] md:scale-[1.5] xl:scale-[1.3] 2xl:xl:scale-[1.1]">
-                        <source src="./tradeAi-video.mov" />
+                        className="h-full w-full object-cover object-bottom">
+                        <source src="/ai-video.mp4" type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
                 </div>
-                <div className="my-[40px] flex flex-col items-center gap-4">
+
+                <div className="absolute top-1/2 -translate-y-1/2 z-10 flex flex-col items-center gap-4">
                     <h1 className="text-[2rem] md:text-[3rem] text-center font-semibold max-md:mb-4">
                         The Best AI Trading Journal
                     </h1>
@@ -47,17 +45,14 @@ const HomePageAi = () => {
                         <SiClaude size={24} className="text-[#da7756]" />
                     </div>
                 </div>
-                <div
-                    className="h-[100px] sm:h-[140px] lg:h-[250px] overflow-hidden rotate-180   
-                   ">
+                <div className="h-[500px] overflow-hidden rotate-180">
                     <video
                         autoPlay
                         loop
                         muted
                         playsInline
-                        poster="/before_tradeAi_video_is_loaded.png"
-                        className="scale-[2.5] md:scale-[1.5] xl:scale-[1.3] 2xl:xl:scale-[1.1]">
-                        <source src="/tradeAi-video.mov" />
+                        className="h-full w-full object-cover object-bottom">
+                        <source src="/ai-video.mp4" type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
                 </div>
