@@ -2,7 +2,7 @@
 The goal of this project is to help traders and investors improve their results by providing detailed AI reports based on their trading/investing history. Just simply log all your trades to the platform and you will be able to see:
 
 - Advanced algorithms for charts to visualize your results.
-- Latest Claude models to get AI reports, with detailed explanations of what you should fix and which areas you should focus on.
+- Latest Claude model to get AI reports, with detailed explanations of what you should fix and which areas you should focus on.
 
 # 🛠️ Tech Stack
 
