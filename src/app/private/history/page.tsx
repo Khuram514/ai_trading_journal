@@ -29,7 +29,6 @@ import { MdDelete } from "react-icons/md";
 import { FaArrowTrendDown, FaArrowTrendUp } from "react-icons/fa6";
 import { LiaHandPointer } from "react-icons/lia";
 import { PiCalendarDotsThin } from "react-icons/pi";
-import { CiTimer } from "react-icons/ci";
 
 import { toast } from "sonner";
 import { getCapital } from "@/server/actions/user";
