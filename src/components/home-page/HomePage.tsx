@@ -81,23 +81,24 @@ export default function HomePage() {
         const mm = gsap.matchMedia();
 
         mm.add("(min-width: 769px)", () => {
-            mainTimeLine.to(
-                "#navbar",
-                {
-                    width: "60%",
-                    boxShadow:
-                        "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
-                },
-                0
-            );
-            // .to(
-            //     "#logo-text",
-            //     {
-            //         transform: "translateX(20%)",
-            //         opacity: 0,
-            //     },
-            //     0
-            // );
+            mainTimeLine
+                .to(
+                    "#navbar",
+                    {
+                        width: "60%",
+                        boxShadow:
+                            "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+                    },
+                    0
+                )
+                .to(
+                    "#logo-text",
+                    {
+                        transform: "translateX(20%)",
+                        opacity: 0,
+                    },
+                    0
+                );
             // .to(
             //     "#nav-buttons",
             //     {
@@ -132,7 +133,9 @@ export default function HomePage() {
                             width={40}
                             height={40}
                         />
-                        <p className="text-[1rem]">Journal</p>
+                        <p id="logo-text" className="text-[1rem]">
+                            Journal
+                        </p>
                         <p className="text-[1rem] md:hidden">&</p>
                         <SiClaude
                             size={24}
@@ -140,7 +143,7 @@ export default function HomePage() {
                         />
                     </div>
                     <div className="hidden md:flex justify-center md:mr-[35px]">
-                        <div id="nav-buttons" className="flex gap-4">
+                        <div id="nav-buttons" className="flex gap-2 lg:gap-4">
                             <Link href="/sign-in">
                                 <div className="nav-link">Calendar</div>
                             </Link>

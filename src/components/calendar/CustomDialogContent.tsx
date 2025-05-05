@@ -150,7 +150,7 @@ export default function CustomDialogContent({
                     Add a New Trade
                 </DialogTitle>
 
-                <DialogDescription className="bg-secondary px-4 py-2 rounded-xl max-md:hidden text-black text-[.8rem]">
+                <DialogDescription className="bg-secondary px-4 py-2 rounded-xl max-md:hidden text-black">
                     Important! The more data you add, the better you can refine
                     your strategy, improve future outcomes, and enhance
                     AI-powered analysis.
@@ -477,7 +477,7 @@ export default function CustomDialogContent({
                 <textarea
                     id="notes"
                     rows={3}
-                    className="w-full outline-none rounded-md border border-zinc-200 px-3 py-1 resize-none text-[0.8rem]"
+                    className="w-full outline-none rounded-md border border-zinc-200 px-3 py-1 resize-none text-[0.9rem]"
                     {...register("notes")}
                 />
             </div>

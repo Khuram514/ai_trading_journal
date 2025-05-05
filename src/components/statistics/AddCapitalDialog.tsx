@@ -62,7 +62,9 @@ export default function AddCapitalDialog() {
             <DialogContent className="sm:max-w-[425px]">
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <DialogHeader>
-                        <DialogTitle>Add / Change capital here.</DialogTitle>
+                        <DialogTitle className="text-3xl md:mb-3">
+                            Add / Change capital.
+                        </DialogTitle>
                         <DialogDescription className="text-zinc-500">
                             If you add capital you will be able to track your
                             results.

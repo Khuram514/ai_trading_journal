@@ -31,7 +31,7 @@ body {
 }
 
 p {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
 }
 
 .mobile-navbar-shadow {
@@ -294,7 +294,7 @@ mark::after {
 }
 
 .nav-link {
-    @apply hover:bg-darkPrimary py-3 px-5 rounded-md cursor-pointer;
+    @apply hover:bg-darkPrimary py-1 lg:py-3 px-2 lg:px-5 rounded-md cursor-pointer;
 }
 
 @layer base {

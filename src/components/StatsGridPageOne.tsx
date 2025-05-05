@@ -68,9 +68,8 @@ export function StatsGridPageOne({
                     <Box
                         sx={{
                             width: "100%",
-                            height: 450,
+                            height: "100%",
                             position: "relative",
-
                             "&::after": isMobile
                                 ? {
                                       content: '""',
@@ -118,7 +117,7 @@ export function StatsGridPageOne({
                                     stack: "total",
                                     area: true,
                                     valueFormatter: (value) =>
-                                        `Capital: ${value} CAD`,
+                                        `Capital: ${value} $`,
                                 },
                             ]}
                             margin={{ left: 65, top: 25, right: 30 }}
@@ -127,7 +126,6 @@ export function StatsGridPageOne({
                                 "& .MuiAreaElement-series-capital": {
                                     opacity: 0.3,
                                 },
-                                width: "100px",
                             }}
                         />
                     </Box>
@@ -218,7 +216,7 @@ export function StatsGridPageOne({
                     <Box
                         sx={{
                             width: "100%",
-                            height: 120,
+                            height: "100%",
                             position: "relative",
 
                             "&::after": isMobile
@@ -275,7 +273,7 @@ export function StatsGridPageOne({
                     <Box
                         sx={{
                             width: "100%",
-                            height: 120,
+                            height: "100%",
                             position: "relative",
 
                             "&::after": isMobile
@@ -332,7 +330,7 @@ export function StatsGridPageOne({
                     <Box
                         sx={{
                             width: "100%",
-                            height: 120,
+                            height: "100%",
                             position: "relative",
 
                             "&::after": isMobile
@@ -390,7 +388,7 @@ export function StatsGridPageOne({
                     <Box
                         sx={{
                             width: "100%",
-                            height: 120,
+                            height: "100%",
                             position: "relative",
 
                             "&::after": isMobile

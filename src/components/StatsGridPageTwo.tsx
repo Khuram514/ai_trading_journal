@@ -74,7 +74,7 @@ export function StatsGridPageTwo({
                     <Box
                         sx={{
                             width: "100%",
-                            height: 250,
+                            height: "100%",
                             position: "relative",
 
                             "&::after": isMobile
@@ -163,7 +163,7 @@ export function StatsGridPageTwo({
                     <Box
                         sx={{
                             width: "100%",
-                            height: 250,
+                            height: "100%",
                             position: "relative",
 
                             "&::after": isMobile
@@ -226,7 +226,7 @@ export function StatsGridPageTwo({
                     <Box
                         sx={{
                             width: "100%",
-                            height: 250,
+                            height: "100%",
                             position: "relative",
 
                             "&::after": isMobile
@@ -295,7 +295,7 @@ export function StatsGridPageTwo({
                     <Box
                         sx={{
                             width: "100%",
-                            height: 250,
+                            height: "100%",
                             position: "relative",
 
                             "&::after": isMobile

@@ -23,6 +23,8 @@ import {
     NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import Link from "next/link";
+import { ExternalLink, Github } from "lucide-react";
+import { FaGithub } from "react-icons/fa6";
 
 interface PrivateLayoutClientProps {
     children: ReactNode;
@@ -107,21 +109,21 @@ export default function PrivateLayoutClient({
                     <div className="hidden md:flex gap-4">
                         <NavigationMenu>
                             <NavigationMenuList>
-                                <NavigationMenuItem className="px-4 py-2 text-[.8rem] text-zinc-700 rounded-md transition-colors hover:bg-zinc-100">
+                                <NavigationMenuItem className="px-4 py-2 text-[.85rem] text-zinc-700 rounded-md transition-colors hover:bg-zinc-100">
                                     <Link href="/private/calendar">
                                         Calendar{" "}
                                     </Link>
                                 </NavigationMenuItem>
-                                <NavigationMenuItem className="px-4 py-2 text-[.8rem] text-zinc-700 rounded-md transition-colors hover:bg-zinc-100">
+                                <NavigationMenuItem className="px-4 py-2 text-[.85rem] text-zinc-700 rounded-md transition-colors hover:bg-zinc-100">
                                     <Link href="/private/history">History</Link>
                                 </NavigationMenuItem>
-                                <NavigationMenuItem className="px-4 py-2 text-[.8rem] text-zinc-700 rounded-md transition-colors hover:bg-zinc-100">
+                                <NavigationMenuItem className="px-4 py-2 text-[.85rem] text-zinc-700 rounded-md transition-colors hover:bg-zinc-100">
                                     <Link href="/private/statistics">
                                         Statistics
                                     </Link>
                                 </NavigationMenuItem>
                                 <NavigationMenuItem>
-                                    <NavigationMenuTrigger className="text-[.8rem] text-zinc-700">
+                                    <NavigationMenuTrigger className="text-[.85rem] text-zinc-700">
                                         Trade AI
                                     </NavigationMenuTrigger>
                                     <NavigationMenuContent>
@@ -132,7 +134,7 @@ export default function PrivateLayoutClient({
                                                         <div className="mb-2 mt-4 text-lg text-white">
                                                             Trade AI
                                                         </div>
-                                                        <p className="leading-4 text-[.75rem] text-zinc-100">
+                                                        <p className="leading-5 text-[.85rem] text-zinc-100">
                                                             Powerful tool to
                                                             improve your results
                                                             with AI. Powered by
@@ -144,7 +146,7 @@ export default function PrivateLayoutClient({
                                             <li className="hover:bg-zinc-100 px-3 py-2 rounded-md cursor-pointer">
                                                 <Link href="/private/tradeAI">
                                                     <h1>Trade AI</h1>
-                                                    <span className="leading-none text-[.75rem] text-zinc-400">
+                                                    <span className="leading-none text-[.85rem] text-zinc-400">
                                                         Generate an AI-powered
                                                         report.
                                                     </span>
@@ -153,7 +155,7 @@ export default function PrivateLayoutClient({
                                             <li className="hover:bg-zinc-100 px-3 py-2 rounded-md cursor-pointer">
                                                 <Link href="/private/tokens">
                                                     <h1>Tokens</h1>
-                                                    <span className="leading-none text-[.75rem] text-zinc-400">
+                                                    <span className="leading-none text-[.85rem] text-zinc-400">
                                                         Get more tokens to boost
                                                         your results.
                                                     </span>
@@ -162,7 +164,7 @@ export default function PrivateLayoutClient({
                                             <li className="hover:bg-zinc-100 px-3 py-2 rounded-md cursor-pointer">
                                                 <Link href="/private/reports-history">
                                                     <h1>Archive</h1>
-                                                    <span className="leading-none text-[.75rem] text-zinc-400">
+                                                    <span className="leading-none text-[.85rem] text-zinc-400">
                                                         View the history of your
                                                         reports.
                                                     </span>
@@ -172,24 +174,25 @@ export default function PrivateLayoutClient({
                                     </NavigationMenuContent>
                                 </NavigationMenuItem>
                                 <NavigationMenuItem>
-                                    <NavigationMenuTrigger className="text-[.8rem] text-zinc-700">
+                                    <NavigationMenuTrigger className="text-[.85rem] text-zinc-700">
                                         Ecosystem
                                     </NavigationMenuTrigger>
                                     <NavigationMenuContent>
                                         <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                                            <li className="hover:bg-zinc-100 px-3 py-2 rounded-md">
+                                            <Link
+                                                href="https://www.investsquid.com"
+                                                target="_blank"
+                                                className="hover:bg-zinc-100 px-3 py-2 rounded-md cursor-pointer">
                                                 <div className="flex gap-4 items-center">
                                                     <h1>AI Investor</h1>
-                                                    <span className="text-[.8rem] bg-gradient-to-r from-emerald-400 to-blue-300 text-transparent bg-clip-text">
-                                                        Coming soon...
-                                                    </span>
+                                                    <ExternalLink className="h-4" />
                                                 </div>
-                                                <span className="leading-none text-[.75rem] text-zinc-400">
+                                                <span className="leading-none text-[.85rem] text-zinc-400">
                                                     Use AI and advanced
                                                     algorithms to pick the right
                                                     investments
                                                 </span>
-                                            </li>
+                                            </Link>
                                             <li className="hover:bg-zinc-100 px-3 py-2 rounded-md">
                                                 <div className="flex gap-4 items-center">
                                                     <h1>Championship</h1>
@@ -197,13 +200,26 @@ export default function PrivateLayoutClient({
                                                         Coming soon...
                                                     </span>
                                                 </div>
-                                                <span className="leading-none text-[.75rem] text-zinc-400">
+                                                <span className="leading-none text-[.85rem] text-zinc-400">
                                                     You have a demo account and
                                                     1 week to prove that
                                                     you&apos;re the best trader
                                                     in the competition.
                                                 </span>
                                             </li>
+                                            <Link
+                                                href="https://github.com/Bilovodskyi/ai-trade-journal"
+                                                target="_blank"
+                                                className="hover:bg-zinc-100 px-3 py-2 rounded-md">
+                                                <div className="flex gap-2 items-center">
+                                                    <h1>Give a ⭐ on GitHub</h1>
+                                                    <FaGithub />
+                                                </div>
+                                                <span className="leading-none text-[.85rem] text-zinc-400">
+                                                    Support the project — give
+                                                    it a star on GitHub.
+                                                </span>
+                                            </Link>
                                             <li className="hover:bg-zinc-100 px-3 py-2 rounded-md">
                                                 <div className="flex gap-4 items-center">
                                                     <h1>Articles</h1>
@@ -211,7 +227,7 @@ export default function PrivateLayoutClient({
                                                         Coming soon...
                                                     </span>
                                                 </div>
-                                                <span className="leading-none text-[.75rem] text-zinc-400">
+                                                <span className="leading-none text-[.85rem] text-zinc-400">
                                                     Learn and share your
                                                     knowledge with others.
                                                 </span>
