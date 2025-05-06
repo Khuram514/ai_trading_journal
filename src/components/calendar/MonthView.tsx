@@ -80,7 +80,7 @@ export default function MonthView() {
                                                     <FaArrowTrendDown className="text-sell max-md:hidden" />
                                                 )}
                                                 <p
-                                                    className={`md:text-[1rem] pt-4 ${
+                                                    className={`md:text-[1rem] pt-4 md:pt-0 ${
                                                         trades[
                                                             day.format(
                                                                 "DD-MM-YYYY"
