@@ -67,7 +67,7 @@ const HomePageStart = () => {
                     </SignUpButton>
                 </CustomButton>
             </div>
-            <div className="flex-center py-12 px-36 xl:px-48 max-md:hidden">
+            <div className="flex-center py-12 px-12 2xl:px-48 max-md:hidden">
                 <StatsGridPageTwo
                     start={"20000"}
                     end={"27560"}

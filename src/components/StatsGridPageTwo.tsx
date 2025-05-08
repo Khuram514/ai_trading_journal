@@ -50,7 +50,7 @@ export function StatsGridPageTwo({
     const isMobile = useMediaQuery("(max-width:768px)");
     return (
         <ThemeProvider theme={theme}>
-            <div className="grid grid-rows-5 md:grid-rows-2 grid-cols-1 md:grid-cols-12 gap-4 max-md:py-4 md:p-4 md:h-[80vh] bg-transparent w-full">
+            <div className="grid grid-rows-5 md:grid-rows-2 grid-cols-1 md:grid-cols-12 gap-4 max-md:py-4 md:p-4 md:h-[78vh] 2xl:h-[80vh] bg-transparent w-full">
                 <div className="max-md:h-[350px] col-span-1 md:col-span-4 row-span-1 bg-white rounded-lg border border-gray-200 flex flex-col items-center justify-start shadow-md">
                     <div className="font-semibold border-[0.5px] border-gray-200 w-full p-2">
                         <p>Start Capital vs. Current Capital:</p>
