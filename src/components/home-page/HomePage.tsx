@@ -147,16 +147,17 @@ export default function HomePage() {
                             <Link href="/sign-in">
                                 <div className="nav-link">Calendar</div>
                             </Link>
-                            <Link href="/sign-in">
-                                <div className="nav-link">History</div>
-                            </Link>
+                            {/* <Link href="/sign-in">
+                                <div className="nav-link">
+                                    History
+                                </div>
+                            </Link> */}
                             <Link href="/sign-in">
                                 <div className="nav-link">Statistics</div>
                             </Link>
                             <Link href="/sign-in">
                                 <div className="nav-link">TradeAI</div>
                             </Link>
-                            {/* <div className="nav-link">TradeAI</div> */}
                         </div>
                     </div>
                     <CustomButton isBlack={false}>
@@ -192,7 +193,7 @@ export default function HomePage() {
                     className="flex flex-col items-center justify-center gap-4 absolute w-full">
                     {/* top | right */}
 
-                    <ParallaxScrollCard position="top-[150px] left-[75%]">
+                    <ParallaxScrollCard position="top-[150px] right-[8%]">
                         <Image
                             src="/scroll-parallax-1.png"
                             width={340}
@@ -203,7 +204,7 @@ export default function HomePage() {
                     </ParallaxScrollCard>
                     {/* Background | top | right */}
 
-                    <BackgroundParallaxScrollCard position="top-[350px] left-[80%]">
+                    <BackgroundParallaxScrollCard position="top-[350px] right-[4%]">
                         <Image
                             src="/scroll-parallax-4.png"
                             width={340}
@@ -213,7 +214,7 @@ export default function HomePage() {
                     </BackgroundParallaxScrollCard>
                     {/* top | left */}
 
-                    <ParallaxScrollCard position="top-[200px] left-[10%]">
+                    <ParallaxScrollCard position="top-[200px] left-[8%]">
                         <Image
                             src="/scroll-parallax-2.png"
                             width={340}
@@ -244,7 +245,7 @@ export default function HomePage() {
                         />
                     </ParallaxScrollCard>
                     {/* Backgound | bottom | right */}
-                    <BackgroundParallaxScrollCard position="top-[900px] left-[72%]">
+                    <BackgroundParallaxScrollCard position="top-[900px] right-[6%]">
                         <Image
                             src="/scroll-parallax-2.png"
                             width={340}
@@ -253,7 +254,7 @@ export default function HomePage() {
                         />
                     </BackgroundParallaxScrollCard>
                     {/* center | left */}
-                    <ParallaxScrollCard position="top-[700px] left-[15%]">
+                    <ParallaxScrollCard position="top-[700px] left-[13%]">
                         <Image
                             src="/scroll-parallax-4.png"
                             width={340}
@@ -263,7 +264,7 @@ export default function HomePage() {
                         />
                     </ParallaxScrollCard>
                     {/* Backgound | bottom | left */}
-                    <BackgroundParallaxScrollCard position="top-[900px] left-[6%]">
+                    <BackgroundParallaxScrollCard position="top-[900px] left-[5%]">
                         <Image
                             src="/scroll-parallax-5.png"
                             width={340}
@@ -272,7 +273,7 @@ export default function HomePage() {
                         />
                     </BackgroundParallaxScrollCard>
                     {/* bottom | right */}
-                    <ParallaxScrollCard position="top-[1150px] left-[75%]">
+                    <ParallaxScrollCard position="top-[1150px] right-[7%]">
                         <Image
                             src="/scroll-parallax-5.png"
                             width={340}
@@ -296,7 +297,7 @@ export default function HomePage() {
                 </div>
             </div>
 
-            <div className="flex-center py-8 px-3 lg:px-48">
+            <div className="flex-center py-8 px-3 md:px-12 2xl:px-48">
                 <div className="py-10 md:bg-primary rounded-xl w-full flex flex-col items-center justify-center background-class">
                     <div className="flex flex-col items-center justify-center gap-4 pb-4">
                         <span className="border border-zinc-200 py-1 px-2 rounded-md text-[.7rem] md:text-[.9rem] shadow-md">

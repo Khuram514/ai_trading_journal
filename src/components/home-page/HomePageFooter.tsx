@@ -59,7 +59,7 @@ const HomePageFooter = () => {
                                 <AccordionTrigger>
                                     What is AI Trade Journal ?
                                 </AccordionTrigger>
-                                <AccordionContent>
+                                <AccordionContent className="text-[.8rem]">
                                     Trade Journal is your personal trading
                                     companion that keeps track of all your
                                     market moves, analyzes performance with
@@ -77,7 +77,7 @@ const HomePageFooter = () => {
                                 <AccordionTrigger>
                                     Is This AI Trading Journal Free ?
                                 </AccordionTrigger>
-                                <AccordionContent>
+                                <AccordionContent className="text-[.8rem]">
                                     Yes, AI Trading Journal is completely free
                                     to use with next features including:
                                     <ul className="mt-1">
@@ -109,7 +109,7 @@ const HomePageFooter = () => {
                                 <AccordionTrigger>
                                     What Assets Are Supported?
                                 </AccordionTrigger>
-                                <AccordionContent>
+                                <AccordionContent className="text-[.8rem]">
                                     AI Trading Journal supports all major asset
                                     classes with unlimited customization
                                     options:
@@ -140,7 +140,7 @@ const HomePageFooter = () => {
                                     How AI Trading Journal Improves Your
                                     Performance
                                 </AccordionTrigger>
-                                <AccordionContent>
+                                <AccordionContent className="text-[.8rem]">
                                     AI Trading Journal supports all major asset
                                     classes with unlimited customization
                                     options:

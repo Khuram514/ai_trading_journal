@@ -59,7 +59,7 @@ export function StatsGridPageOne({
     const isMobile = useMediaQuery("(max-width:768px)");
     return (
         <ThemeProvider theme={theme}>
-            <div className="grid grid-rows-10 md:grid-rows-4 grid-cols-1 md:grid-cols-4 gap-4 max-md:py-4 md:p-4 md:h-[80vh] bg-transparent rounded-xl w-full">
+            <div className="grid grid-rows-10 md:grid-rows-4 grid-cols-1 md:grid-cols-4 gap-4 max-md:py-4 md:p-4 md:h-[78vh] 2xl:h-[80vh] bg-transparent rounded-xl w-full">
                 <div className="max-md:h-[500px] col-span-1 md:col-span-3 row-span-3 bg-white rounded-lg border border-gray-200 flex flex-col items-center justify-start shadow-md">
                     <div className="font-semibold border-[0.5px] border-gray-200 w-full p-2">
                         <p>Summary:</p>
@@ -380,9 +380,7 @@ export function StatsGridPageOne({
                 </div>
                 <div className="col-span-1 row-span-1 bg-white rounded-lg border border-gray-200 flex flex-col items-center justify-start shadow-md">
                     <div className="font-semibold border-[0.5px] border-gray-200 w-full p-2">
-                        <p>
-                            Max sequence of profitable/unprofitable transactions
-                        </p>
+                        <p>Max seq. of win / loss transactions</p>
                     </div>
                     {/* Box to disable interactions with chart on mobile devices */}
                     <Box
