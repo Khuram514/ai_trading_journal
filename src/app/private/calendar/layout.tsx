@@ -138,9 +138,9 @@ export default function CalendarLayout({ children }: { children: ReactNode }) {
                 className={`px-3 md:px-6 flex items-center justify-between py-4 md:py-2 border-b border-zinc-200 ${
                     calendarView === "Month" ? "max-md:flex-col" : ""
                 }  gap-4`}>
-                <div className="flex items-center md:justify-between max-md:w-full gap-4 md:gap-5">
+                <div className="flex items-center justify-between max-md:w-full gap-4 md:gap-5">
                     <div
-                        className={`flex gap-4 ${
+                        className={`flex gap-3 ${
                             calendarView === "Year" ? "max-md:hidden" : ""
                         }`}>
                         <Dialog
@@ -165,9 +165,7 @@ export default function CalendarLayout({ children }: { children: ReactNode }) {
                             isBlack={false}>
                             Today
                         </CustomButton>
-                    </div>
 
-                    <div className="flex gap-2">
                         <CustomButton
                             isBlack={false}
                             onClick={
