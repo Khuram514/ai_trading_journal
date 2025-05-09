@@ -141,7 +141,7 @@ export default function Page() {
         <div
             className={`flex flex-col ${
                 totalPages > 1 ? "justify-between" : "justify-start"
-            } gap-8 lg:gap-20 py-6 md:py-16 px-4 md:px-36 md:mx-[64px] h-full`}>
+            } gap-8 2xl:gap-20 py-6 2xl:py-16 px-4 md:px-16 2xl:px-36 2xl:mx-[64px] h-full`}>
             <div className="flex max-md:flex-col gap-4 md:gap-0 items-center justify-between">
                 <span className="text-zinc-500 text-[.9rem] px-4 py-2 border border-gray-200 rounded-lg">
                     View the history of your saved reports. You can ask the AI
@@ -182,7 +182,7 @@ export default function Page() {
                     </Select>
                 </div>
             </div>
-            <div className="grid grid-cols-3 grid-rows-3 gap-x-8 gap-y-8 pb-[24px] lg:pb-0">
+            <div className="grid grid-cols-3 grid-rows-3 gap-x-4 2xl:gap-x-8 gap-y-4 2xl:gap-y-8 pb-[24px] lg:pb-0">
                 {paginatedReports ? (
                     paginatedReports?.map((report) => (
                         <Link

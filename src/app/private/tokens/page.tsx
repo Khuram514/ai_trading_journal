@@ -13,7 +13,7 @@ export default async function Page() {
     const tokens = await checkIfUserHasTokens();
 
     return (
-        <div className="pt-6 md:pt-12 pb-6 flex md:items-center justify-between flex-col h-full relative">
+        <div className="flex lg:gap-4 2xl:gap-8 md:items-center justify-center flex-col md:h-full relative">
             <h1 className="md:text-center text-[2rem] pl-4">Buy Tokens</h1>
             <div className="top-7 md:top-12 absolute right-4 md:right-12 flex gap-6">
                 {!tokens.success ? (
@@ -42,10 +42,10 @@ export default async function Page() {
                 )}
             </div>
             <BuyTokensCards />
-            <p className="text-zinc-400 text-center max-md:py-2">
+            {/* <p className="text-zinc-400 text-center max-md:py-2">
                 If you have any issues. Please contact support:
                 tradejournal@gmail.com
-            </p>
+            </p> */}
         </div>
     );
 }

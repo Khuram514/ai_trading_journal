@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 const TypingTextAnimation = ({
     items,
-    typingSpeed = 100,
+    typingSpeed = 25,
     delay = 500,
 }: {
     items: string[];
@@ -42,7 +42,7 @@ const TypingTextAnimation = ({
 
     return (
         <div className="flex flex-col gap-2">
-            <ul className="py-2 px-4">
+            <ul className="py-2">
                 {displayedItems.map((item, i) => (
                     <li
                         key={i}
@@ -51,7 +51,7 @@ const TypingTextAnimation = ({
                     </li>
                 ))}
                 {currentIndex < items.length && (
-                    <li className="p-2 bg-zinc-500/15 rounded-md flex justify-between">
+                    <li className="py-2 bg-zinc-500/15 rounded-md flex justify-between">
                         <h1 className="text-zinc-400">{typedText}</h1>
                     </li>
                 )}

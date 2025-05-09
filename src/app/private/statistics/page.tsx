@@ -70,8 +70,8 @@ export default function Page() {
     );
 
     return (
-        <div className="">
-            <div className="flex items-center justify-between pt-3 md:px-4">
+        <div className="md:h-full">
+            <div className="flex items-center justify-between pt-2 md:px-4">
                 <div className="flex items-center gap-4">
                     <p className="max-md:text-[.7rem]">Details</p>
 

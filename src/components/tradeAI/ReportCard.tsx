@@ -1,55 +1,75 @@
 import TypingAnimation from "@/features/ai/typingAnimation";
 import { dialogWindowType } from "@/types/tradeAI.types";
-import { ReactNode, useEffect, useRef } from "react";
-import { SiClaude } from "react-icons/si";
+import { ReactNode, useEffect, useLayoutEffect, useRef, useState } from "react";
 import CustomLoading from "../CustomLoading";
 
 export const ReportCard = ({
     items,
-    title,
     loading,
 }: {
     items: dialogWindowType[];
-    title: string;
     loading: boolean;
 }) => {
-    return (
-        <div className="flex-1 max-md:max-h-svh rounded-2xl border border-gray-200 shadow-md overflow-hidden relative pb-6">
-            <div className="border-b-[0.5px] border-gray-300 p-4 flex gap-4">
-                <SiClaude size={24} className="text-[#da7756]" />
-                <h1>{title}</h1>
-            </div>
+    const prevCountRef = useRef(items.length);
 
-            <AutoScrollDiv height="calc(100% - 50px)">
-                {items.map((item, index) => (
-                    <div
-                        key={index}
-                        className={`mb-4 ${
-                            item.type === "user" ? "flex justify-end px-4" : ""
-                        }`}>
-                        {item.type === "user" ? (
-                            <div className="flex flex-col gap-6 max-w-full md:max-w-[66%]">
-                                <div className="flex gap-2 bg-blue-100 rounded-lg py-3 px-4 items-end">
-                                    <div>
-                                        {item.content.map((text, textIndex) => (
+    const [animateFrom, setAnimateFrom] = useState<number>(Infinity);
+
+    useEffect(() => {
+        if (items.length > prevCountRef.current) {
+            setAnimateFrom(prevCountRef.current);
+            prevCountRef.current = items.length;
+        }
+
+        if (items.length < prevCountRef.current) {
+            prevCountRef.current = items.length;
+            setAnimateFrom(Infinity);
+        }
+    }, [items.length]);
+    return (
+        <div className="relative mx-auto px-4 md:px-0 flex-col w-full max-w-3xl">
+            <AutoScrollDiv height="calc(100% - 50px)" items={items}>
+                {items.map((item, index) => {
+                    const isNew = index >= animateFrom;
+
+                    if (item.type === "user") {
+                        return (
+                            <div key={index} className="mb-8 flex justify-end">
+                                <div className="flex flex-col gap-6 max-w-full md:max-w-[66%]">
+                                    <div className="flex gap-2 bg-neutral-200 rounded-full py-3 px-6 items-end">
+                                        {item.content.map((text, i) => (
                                             <p
-                                                key={textIndex}
-                                                className="mb-2 text-zinc-600 text-[.9rem]">
+                                                key={i}
+                                                className="text-zinc-600 text-[.9rem]">
                                                 {text}
                                             </p>
                                         ))}
                                     </div>
                                 </div>
-                                {loading && <CustomLoading />}
                             </div>
-                        ) : (
-                            <TypingAnimation
-                                items={item.content}
-                                typingSpeed={25}
-                            />
-                        )}
-                    </div>
-                ))}
+                        );
+                    }
+                    return (
+                        <div key={index} className="mb-8 leading-7">
+                            {isNew ? (
+                                // only the newly appended message animates
+                                <TypingAnimation
+                                    items={item.content}
+                                    typingSpeed={25}
+                                />
+                            ) : (
+                                // everything else just shows up
+                                <>
+                                    {item.content.map((text, i) => (
+                                        <h1 key={i} className="mb-2">
+                                            {text}
+                                        </h1>
+                                    ))}
+                                </>
+                            )}
+                        </div>
+                    );
+                })}
+                {loading && <CustomLoading />}
             </AutoScrollDiv>
         </div>
     );
@@ -59,41 +79,29 @@ interface AutoScrollDivProps {
     children: ReactNode;
     height: string;
     className?: string;
+    items: dialogWindowType[];
 }
 
 const AutoScrollDiv: React.FC<AutoScrollDivProps> = ({
     children,
     height,
     className = "",
+    items,
 }) => {
-    const divRef = useRef<HTMLDivElement | null>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const bottomRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        const scrollToBottom = () => {
-            if (divRef.current) {
-                divRef.current.scrollTop = divRef.current.scrollHeight;
-            }
-        };
-
-        scrollToBottom();
-
-        const observer = new MutationObserver(scrollToBottom);
-        if (divRef.current) {
-            observer.observe(divRef.current, {
-                childList: true,
-                subtree: true,
-            });
-        }
-
-        return () => observer.disconnect();
-    }, [children]);
+    useLayoutEffect(() => {
+        bottomRef.current?.scrollIntoView({ block: "end" });
+    }, [items.length]);
 
     return (
         <div
-            ref={divRef}
-            className={`overflow-y-auto md:p-2.5 rounded-md ${className}`}
+            ref={containerRef}
+            className={`overflow-y-auto mb-[120px] ${className}`}
             style={{ height }}>
             {children}
+            <div ref={bottomRef} />
         </div>
     );
 };
