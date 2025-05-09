@@ -12,7 +12,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import ReportPage from "@/components/tradeAI/ReportPage";
 
-export default function page() {
+export default function Report() {
     const trades = useAppSelector((state) => state.tradeRecords.listOfTrades);
 
     const [tokens, setTokens] = useState<number | undefined>();

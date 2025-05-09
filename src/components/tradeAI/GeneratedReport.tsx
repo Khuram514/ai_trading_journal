@@ -6,7 +6,6 @@ import { ArrowUp } from "lucide-react";
 
 import { Category, ReportType } from "@/types/tradeAI.types";
 import { toast } from "sonner";
-import { Trades } from "@/types/index";
 import CustomLoading from "../CustomLoading";
 import AutoResizeTextarea from "@/features/archive/AutoResizeTextarea";
 import { useAppSelector } from "@/redux/store";
