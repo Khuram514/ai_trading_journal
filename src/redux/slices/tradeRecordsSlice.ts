@@ -23,29 +23,30 @@ const tradeRecordsSlice = createSlice({
             state.listOfTrades = action.payload;
         },
         updateListOfTrades: (state, action) => {
-            if (state.listOfTrades !== null) {
-                const newRecord = action.payload;
-                const newRecordTime = new Date(newRecord.closeDate).getTime();
-
-                let left = 0;
-                let right = state.listOfTrades.length - 1;
-                let insertionIndex = state.listOfTrades.length;
-
-                while (left <= right) {
-                    const mid = Math.floor((left + right) / 2);
-                    const midTime = new Date(
-                        state.listOfTrades[mid].closeDate
-                    ).getTime();
-
-                    if (midTime < newRecordTime) {
-                        left = mid + 1;
-                    } else {
-                        insertionIndex = mid;
-                        right = mid - 1;
-                    }
-                }
-                state.listOfTrades.splice(insertionIndex, 0, newRecord);
+            if (state.listOfTrades === null) {
+                state.listOfTrades = [];
             }
+            const newRecord = action.payload;
+            const newRecordTime = new Date(newRecord.closeDate).getTime();
+
+            let left = 0;
+            let right = state.listOfTrades.length - 1;
+            let insertionIndex = state.listOfTrades.length;
+
+            while (left <= right) {
+                const mid = Math.floor((left + right) / 2);
+                const midTime = new Date(
+                    state.listOfTrades[mid].closeDate
+                ).getTime();
+
+                if (midTime < newRecordTime) {
+                    left = mid + 1;
+                } else {
+                    insertionIndex = mid;
+                    right = mid - 1;
+                }
+            }
+            state.listOfTrades.splice(insertionIndex, 0, newRecord);
         },
         removeRecordFromListOfTrades: (state, action) => {
             if (state.listOfTrades !== null) {

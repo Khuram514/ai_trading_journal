@@ -387,7 +387,7 @@ const ParallaxScrollCard = ({
 
 const BackgroundParallaxScrollCard = ({
     position,
-    dataSpeed = "1.2",
+    dataSpeed = "1.5",
     children,
 }: {
     position: string;
