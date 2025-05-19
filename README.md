@@ -77,7 +77,7 @@ Let's face it – trading is all about making money, but emotions can seriously 
 - Follow up with a question (you can keep asking Claude after it generate report)
   
 
-https://github.com/user-attachments/assets/50ebd4b7-da6e-479b-b4ad-707c9fbf54b7
+https://github.com/user-attachments/assets/ff19b8b4-f324-4f2e-b63b-0a32a4376cbc
 
 
 ### Tokens 
