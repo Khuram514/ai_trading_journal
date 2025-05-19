@@ -25,7 +25,7 @@ import { deleteTradeRecord } from "@/server/actions/trades";
 import { Trades } from "@/types";
 import { useEffect, useState } from "react";
 
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdEdit, MdStar } from "react-icons/md";
 import { FaArrowTrendDown, FaArrowTrendUp } from "react-icons/fa6";
 import { LiaHandPointer } from "react-icons/lia";
 import { PiCalendarDotsThin } from "react-icons/pi";
@@ -35,6 +35,7 @@ import { getCapital } from "@/server/actions/user";
 import { Moon, Sun } from "lucide-react";
 import { isInMorningRange } from "@/features/history/isInMorningRange";
 import Image from "next/image";
+import { FollowedStrategyPie } from "@/components/history/FollowedStrategyPie";
 
 export default function Page() {
     const [sortedTrades, setSortedTrades] = useState<Trades[]>([]);
@@ -129,18 +130,16 @@ export default function Page() {
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead className="w-[10%]">
-                            Instrument name
-                        </TableHead>
-                        <TableHead className="w-[10%] max-md:hidden">
-                            Position type
+                        <TableHead className="w-[10%]">Instrument</TableHead>
+                        <TableHead className="w-[5%] max-md:hidden">
+                            Type
                         </TableHead>
                         <TableHead className="w-[10%]">Open date</TableHead>
-                        <TableHead className="w-[10%] max-md:hidden">
+                        <TableHead className="w-[7.5%] max-md:hidden">
                             Open time
                         </TableHead>
                         <TableHead className="w-[10%]">Close date</TableHead>
-                        <TableHead className="w-[10%] max-md:hidden">
+                        <TableHead className="w-[7.5%] max-md:hidden">
                             Close time
                         </TableHead>
                         <TableHead className="w-[10%] max-md:hidden">
@@ -148,10 +147,19 @@ export default function Page() {
                             <p className="text-[.75rem]">(% of capital)</p>
                         </TableHead>
                         <TableHead className="w-[10%]">Result</TableHead>
-                        <TableHead className="w-[10%] max-md:hidden">
+                        <TableHead className="w-[5%] max-md:hidden">
                             Note
                         </TableHead>
+                        <TableHead className="text-center w-[5%]">
+                            Strategy
+                        </TableHead>
                         <TableHead className="text-center w-[10%]">
+                            Rating
+                        </TableHead>
+                        <TableHead className="text-center w-[5%]">
+                            Edit
+                        </TableHead>
+                        <TableHead className="text-center w-[5%]">
                             Delete
                         </TableHead>
                     </TableRow>
@@ -165,7 +173,7 @@ export default function Page() {
                                 <TableCell className="font-medium w-[10%]">
                                     {trade.instrumentName}
                                 </TableCell>
-                                <TableCell className="w-[10%] max-md:hidden">
+                                <TableCell className="w-[5%] max-md:hidden">
                                     <p
                                         className={`bg-${
                                             trade.positionType === "sell"
@@ -185,7 +193,7 @@ export default function Page() {
                                         }).format(new Date(trade.openDate))}
                                     </div>
                                 </TableCell>
-                                <TableCell className="w-[10%] max-md:hidden text-neutral-500">
+                                <TableCell className="w-[7.5%] max-md:hidden text-neutral-500">
                                     <div className="flex gap-2 items-center">
                                         {isInMorningRange(trade.openTime) ? (
                                             <Sun className="h-3" />
@@ -205,7 +213,7 @@ export default function Page() {
                                         }).format(new Date(trade.closeDate))}
                                     </div>
                                 </TableCell>
-                                <TableCell className="w-[10%] max-md:hidden text-neutral-500">
+                                <TableCell className="w-[7.5%] max-md:hidden text-neutral-500">
                                     <div className="flex gap-2 items-center">
                                         {isInMorningRange(trade.closeTime) ? (
                                             <Sun className="h-3" />
@@ -252,13 +260,12 @@ export default function Page() {
                                         )}
                                     </div>
                                 </TableCell>
-                                <TableCell className="w-[10%] max-md:hidden">
+                                <TableCell className="w-[5%] max-md:hidden">
                                     {trade.notes && (
                                         <HoverCard>
                                             <HoverCardTrigger>
-                                                <div className="w-fit flex gap-1 items-center bg-blue-500 cursor-pointer rounded-md px-2 text-[0.75rem] text-white">
-                                                    <LiaHandPointer />
-                                                    Hover
+                                                <div className="w-fit flex gap-1 items-center bg-blue-400 cursor-pointer rounded-full p-2 text-[0.75rem] text-white">
+                                                    <LiaHandPointer className="text-[1rem]" />
                                                 </div>
                                             </HoverCardTrigger>
                                             <HoverCardContent>
@@ -282,7 +289,22 @@ export default function Page() {
                                         </HoverCard>
                                     )}
                                 </TableCell>
+                                <TableCell className="w-[5%]">
+                                    <FollowedStrategyPie />
+                                </TableCell>
                                 <TableCell className="w-[10%]">
+                                    <div className="w-full flex-center">
+                                        <MdStar className="text-customOrange" />
+                                        <MdStar className="text-customOrange" />
+                                        <MdStar className="text-customOrange" />
+                                        <MdStar className="text-customOrange" />
+                                        <MdStar className="text-neutral-400" />
+                                    </div>
+                                </TableCell>
+                                <TableCell className="w-[5%] text-center">
+                                    <MdEdit className="w-full" />
+                                </TableCell>
+                                <TableCell className="w-[5%]">
                                     <MdDelete
                                         onClick={() =>
                                             handleDeleteTradeRecord(

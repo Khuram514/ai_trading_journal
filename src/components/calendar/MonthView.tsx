@@ -23,6 +23,8 @@ export default function MonthView() {
     const toggleDialog = (dayKey: string, open: boolean) => {
         dispatch(setIsDialogOpen({ key: dayKey, value: open }));
     };
+
+    console.log(trades);
     return (
         <div
             className={`grid grid-cols-7 grid-rows-${currentMonth.length} h-full w-full`}>

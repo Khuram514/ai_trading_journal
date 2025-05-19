@@ -190,16 +190,16 @@ export default function Page() {
                             href={`/private/reports-history/${report.reportId}`}
                             key={report.reportId}>
                             <div className="pointer-events-none absolute -inset-px z-2 overflow-hidden">
-                                <div className="absolute right-[1rem] top-0 size-[7rem] -translate-y-[20%] translate-x-1/3 transform-gpu rounded-full bg-[radial-gradient(theme(colors.sky.300),transparent)] opacity-10 blur-lg"></div>
-                                <div className="absolute right-[15rem] top-0 size-[10rem] -translate-y-[50%] translate-x-1/3 transform-gpu rounded-full bg-[radial-gradient(theme(colors.emerald.300),transparent)] opacity-10 blur-lg"></div>
-                                <div className="absolute right-[10rem] top-0 size-[12rem] translate-y-[40%] translate-x-1/3 transform-gpu rounded-full bg-[radial-gradient(theme(colors.orange.400),transparent)] opacity-10 blur-lg"></div>
+                                <div className="absolute right-[1rem] top-0 size-[7rem] -translate-y-[20%] translate-x-1/3 transform-gpu rounded-full bg-[radial-gradient(theme(colors.sky.300),transparent)] opacity-5 blur-lg"></div>
+                                <div className="absolute right-[15rem] top-0 size-[10rem] -translate-y-[50%] translate-x-1/3 transform-gpu rounded-full bg-[radial-gradient(theme(colors.emerald.300),transparent)] opacity-5 blur-lg"></div>
+                                <div className="absolute right-[10rem] top-0 size-[12rem] translate-y-[40%] translate-x-1/3 transform-gpu rounded-full bg-[radial-gradient(theme(colors.orange.400),transparent)] opacity-5 blur-lg"></div>
                             </div>
                             <Image
                                 src="/logo-watermark.png"
                                 height={270}
                                 width={270}
                                 alt="logo"
-                                className="absolute opacity-10 right-0 top-0"
+                                className="absolute opacity-5 right-0 top-0"
                             />
                             <div className="flex justify-between items-center">
                                 <div className="flex gap-4 items-center">

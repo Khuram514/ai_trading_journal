@@ -114,13 +114,62 @@ export default function PrivateLayoutClient({
                                         Calendar{" "}
                                     </Link>
                                 </NavigationMenuItem>
-                                <NavigationMenuItem className="px-4 py-2 text-[.85rem] text-zinc-700 rounded-md transition-colors hover:bg-zinc-100">
+                                {/* <NavigationMenuItem className="px-4 py-2 text-[.85rem] text-zinc-700 rounded-md transition-colors hover:bg-zinc-100">
                                     <Link href="/private/history">History</Link>
                                 </NavigationMenuItem>
                                 <NavigationMenuItem className="px-4 py-2 text-[.85rem] text-zinc-700 rounded-md transition-colors hover:bg-zinc-100">
                                     <Link href="/private/statistics">
                                         Statistics
                                     </Link>
+                                </NavigationMenuItem> */}
+                                <NavigationMenuItem>
+                                    <NavigationMenuTrigger className="text-[.85rem] text-zinc-700">
+                                        Analytics
+                                    </NavigationMenuTrigger>
+                                    <NavigationMenuContent>
+                                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                                            <Link
+                                                href="/private/history"
+                                                className="hover:bg-zinc-100 px-3 py-2 rounded-md cursor-pointer">
+                                                <h1>History</h1>
+                                                <span className="leading-none text-[.85rem] text-zinc-400">
+                                                    View your entire trading
+                                                    history.
+                                                </span>
+                                            </Link>
+                                            <li className="hover:bg-zinc-100 px-3 py-2 rounded-md">
+                                                <div className="flex gap-4 items-center">
+                                                    <h1>Strategies</h1>
+                                                </div>
+                                                <span className="leading-none text-[.85rem] text-zinc-400">
+                                                    Create custom strategies to
+                                                    help you stay in control.
+                                                </span>
+                                            </li>
+                                            <Link
+                                                href="/private/statistics"
+                                                className="hover:bg-zinc-100 px-3 py-2 rounded-md cursor-pointer">
+                                                <h1>Statistics</h1>
+                                                <span className="leading-none text-[.85rem] text-zinc-400">
+                                                    Detailed charts that show
+                                                    your performance
+                                                </span>
+                                            </Link>
+                                            <li className="hover:bg-zinc-100 px-3 py-2 rounded-md">
+                                                <div className="flex gap-4 items-center">
+                                                    <h1>Journal</h1>
+                                                    <span className="text-[.8rem] bg-gradient-to-r from-emerald-400 to-blue-300 text-transparent bg-clip-text">
+                                                        Coming soon...
+                                                    </span>
+                                                </div>
+                                                <span className="leading-none text-[.85rem] text-zinc-400">
+                                                    Journal your thoughts.
+                                                    Summarize your days, weeks,
+                                                    and months.
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </NavigationMenuContent>
                                 </NavigationMenuItem>
                                 <NavigationMenuItem>
                                     <NavigationMenuTrigger className="text-[.85rem] text-zinc-700">
