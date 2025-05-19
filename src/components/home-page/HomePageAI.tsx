@@ -6,7 +6,7 @@ const HomePageAi = () => {
     return (
         <div className="max-md:hidden flex-center h-screen p-3">
             <div className="bg-white relative rounded-xl w-full flex flex-col items-center justify-between overflow-hidden h-full">
-                <div className="h-[500px] overflow-hidden">
+                <div className="h-[500px] w-full overflow-hidden">
                     <video
                         autoPlay
                         loop
@@ -45,7 +45,7 @@ const HomePageAi = () => {
                         <SiClaude size={24} className="text-[#da7756]" />
                     </div>
                 </div>
-                <div className="h-[500px] overflow-hidden rotate-180">
+                <div className="h-[500px] w-full overflow-hidden rotate-180">
                     <video
                         autoPlay
                         loop
