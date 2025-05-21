@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/hover-card";
 import { getPlural } from "@/lib/utils";
 import { checkIfUserHasTokens } from "@/server/actions/user";
-import { Coins } from "lucide-react";
+import { RiCoinsLine } from "react-icons/ri";
 import React from "react";
 
 export default async function Page() {
@@ -31,13 +31,14 @@ export default async function Page() {
                     </HoverCard>
                 ) : tokens.tokens ? (
                     <div className="p-2 flex items-center gap-2">
-                        <Coins className="text-[#da7756]" />
+                        <RiCoinsLine size={20} className="text-[#da7756]" />
                         {tokens.tokens}{" "}
                         {getPlural(tokens.tokens, "Token", "Tokens")}
                     </div>
                 ) : (
                     <div className="p-2 flex items-center gap-2">
-                        <Coins className="text-[#da7756]" />0 Tokens
+                        <RiCoinsLine size={20} className="text-[#da7756]" />0
+                        Tokens
                     </div>
                 )}
             </div>

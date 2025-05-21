@@ -19,6 +19,7 @@ import {
     setMonthViewSummary,
     setTotalOfParticularYearSummary,
     setYearViewSummary,
+    updateTradeDetailsForEachDay,
 } from "@/redux/slices/tradeRecordsSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { deleteTradeRecord } from "@/server/actions/trades";
@@ -109,6 +110,13 @@ export default function Page() {
                 setTotalOfParticularYearSummary({
                     year: year,
                     value: -Number(result),
+                })
+            );
+            dispatch(
+                updateTradeDetailsForEachDay({
+                    date: convertedMonthView,
+                    result: Number(result),
+                    value: -1,
                 })
             );
             toast.success("Record has been deleted!");

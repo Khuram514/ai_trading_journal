@@ -8,6 +8,7 @@ import CustomDialogContent from "./CustomDialogContent";
 
 import { FaArrowTrendDown, FaArrowTrendUp } from "react-icons/fa6";
 import { setIsDialogOpen } from "@/redux/slices/calendarSlice";
+import { ArrowDown, ArrowUp, Layers } from "lucide-react";
 
 export default function MonthView() {
     const { month, year } = useAppSelector((state) => state.calendar.monthView);
@@ -15,6 +16,10 @@ export default function MonthView() {
         (state) => state.tradeRecords.monthViewSummary
     );
     const isDialogOpen = useAppSelector((state) => state.calendar.isDialogOpen);
+
+    const tradeDetailsForEachDay = useAppSelector(
+        (state) => state.tradeRecords.tradeDetailsForEachDay
+    );
 
     const currentMonth = getMonth(month, year);
 
@@ -72,13 +77,13 @@ export default function MonthView() {
                                         {trades[day.format("DD-MM-YYYY")] !==
                                             undefined && (
                                             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex gap-2 items-center">
-                                                {trades[
+                                                {/* {trades[
                                                     day.format("DD-MM-YYYY")
                                                 ] >= 0 ? (
                                                     <FaArrowTrendUp className="text-buy max-md:hidden" />
                                                 ) : (
                                                     <FaArrowTrendDown className="text-sell max-md:hidden" />
-                                                )}
+                                                )} */}
                                                 <p
                                                     className={`md:text-[1rem] pt-4 md:pt-0 ${
                                                         trades[
@@ -93,6 +98,42 @@ export default function MonthView() {
                                                         day.format("DD-MM-YYYY")
                                                     ].toLocaleString("de-DE")}
                                                 </p>
+                                            </div>
+                                        )}
+                                        {tradeDetailsForEachDay[
+                                            day.format("DD-MM-YYYY")
+                                        ] !== undefined && (
+                                            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 hidden md:flex gap-2 items-center justify-around w-full px-6">
+                                                <div className="text-[.7rem] flex items-center gap-2 text-neutral-500">
+                                                    <Layers size={16} />
+                                                    {
+                                                        tradeDetailsForEachDay[
+                                                            day.format(
+                                                                "DD-MM-YYYY"
+                                                            )
+                                                        ].result
+                                                    }
+                                                </div>
+                                                <div className="text-[.7rem] flex items-center gap-2 text-neutral-500">
+                                                    <ArrowUp size={16} />
+                                                    {
+                                                        tradeDetailsForEachDay[
+                                                            day.format(
+                                                                "DD-MM-YYYY"
+                                                            )
+                                                        ].win
+                                                    }
+                                                </div>
+                                                <div className="text-[.7rem] flex items-center gap-2 text-neutral-500">
+                                                    <ArrowDown size={16} />
+                                                    {
+                                                        tradeDetailsForEachDay[
+                                                            day.format(
+                                                                "DD-MM-YYYY"
+                                                            )
+                                                        ].lost
+                                                    }
+                                                </div>
                                             </div>
                                         )}
                                     </div>
