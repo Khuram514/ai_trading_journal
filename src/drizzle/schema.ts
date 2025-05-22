@@ -30,6 +30,7 @@ export const TradeTable = pgTable(
         deposit: text("deposit").notNull(),
         result: text("result").notNull(),
         notes: text("notes"),
+        rating: integer("rating").default(0),
     },
     (table) => ({
         userIdCloseDateIndex: index("userIdCloseDateIndex").on(

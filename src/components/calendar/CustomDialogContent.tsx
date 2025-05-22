@@ -1,14 +1,8 @@
 "use client";
 
-import {
-    DialogClose,
-    DialogTitle,
-    DialogDescription,
-    DialogHeader,
-} from "../ui/dialog";
+import { DialogClose, DialogTitle, DialogHeader } from "../ui/dialog";
 
 import { months } from "@/data/data";
-import Image from "next/image";
 import { CustomButton } from "../CustomButton";
 
 import { format } from "date-fns";
@@ -83,6 +77,7 @@ export default function CustomDialogContent({
             instrumentName: "",
             result: "",
             notes: "",
+            rating: 0,
         },
     });
 
@@ -168,7 +163,7 @@ export default function CustomDialogContent({
                 </DialogDescription> */}
             </DialogHeader>
             <Tabs defaultValue="account">
-                <TabsList className="grid w-full grid-cols-2 mb-4">
+                <TabsList className="grid w-full grid-cols-2 mb-6">
                     <TabsTrigger value="details">Details</TabsTrigger>
                     <TabsTrigger value="strategy">Strategy</TabsTrigger>
                 </TabsList>
@@ -243,7 +238,7 @@ export default function CustomDialogContent({
                                 <Label htmlFor="open-time" className="mb-1">
                                     Open time:
                                 </Label>
-                                <span className="mb-1 text-[.65rem] text-black/50">
+                                <span className="text-[.75rem] text-black/50">
                                     (default time)
                                 </span>
                             </div>
@@ -318,7 +313,7 @@ export default function CustomDialogContent({
                                 <Label htmlFor="close-time" className="mb-1">
                                     Close time:
                                 </Label>
-                                <span className="mb-1 text-[.65rem] text-black/50">
+                                <span className="text-[.75rem] text-black/50">
                                     (default time)
                                 </span>
                             </div>
@@ -342,7 +337,7 @@ export default function CustomDialogContent({
                                     {errors.instrumentName.message}
                                 </span>
                             ) : (
-                                <span className="mb-1 text-[.65rem] text-black/50">
+                                <span className="mb-1 text-[.75rem] text-black/50">
                                     (e.g. Bitcoin or BTC)
                                 </span>
                             )}
@@ -383,52 +378,6 @@ export default function CustomDialogContent({
                             )}
                         />
                     </div>
-                    <div className="flex gap-2">
-                        <div className="mb-2 flex flex-col flex-1 gap-1">
-                            <div className="flex items-center justify-between">
-                                <Label htmlFor="deposit" className="mb-1">
-                                    Deposit:
-                                </Label>
-                                {errors.deposit ? (
-                                    <span className="mb-1 text-[.75rem] text-red-500">
-                                        {errors.deposit.message}
-                                    </span>
-                                ) : (
-                                    <span className="mb-1 text-[.65rem] text-black/50">
-                                        (Only num.)
-                                    </span>
-                                )}
-                            </div>
-                            <Input
-                                type="number"
-                                id="deposit"
-                                className="w-full max-md:text-[.75rem]"
-                                {...register("deposit")}
-                            />
-                        </div>
-                        <div className="mb-2 flex flex-col flex-1 gap-1">
-                            <div className="flex items-center justify-between">
-                                <Label htmlFor="result" className="mb-1">
-                                    Result:
-                                </Label>
-                                {errors.result ? (
-                                    <span className="mb-1 text-[.75rem] text-red-500">
-                                        {errors.result.message}
-                                    </span>
-                                ) : (
-                                    <span className="mb-1 text-[.65rem] text-black/50">
-                                        (Only num.)
-                                    </span>
-                                )}
-                            </div>
-                            <Input
-                                type="number"
-                                id="result"
-                                className="w-full max-md:text-[.75rem]"
-                                {...register("result")}
-                            />
-                        </div>
-                    </div>
                     <div className="mb-2 flex flex-col gap-1">
                         <div className="flex items-center justify-between">
                             <Label className="mb-1">Position type:</Label>
@@ -437,7 +386,7 @@ export default function CustomDialogContent({
                                     {errors.positionType.message}
                                 </span>
                             ) : (
-                                <span className="mb-1 text-[.65rem] text-black/50">
+                                <span className="mb-1 text-[.75rem] text-black/50">
                                     (Click to change)
                                 </span>
                             )}
@@ -464,7 +413,63 @@ export default function CustomDialogContent({
                             )}
                         />
                     </div>
-                    <div className="mb-2 flex flex-col gap-1">
+                    <div className="flex gap-2">
+                        <div className="mb-2 flex flex-col flex-1 gap-1">
+                            <div className="flex items-center justify-between">
+                                <Label htmlFor="deposit" className="mb-1">
+                                    Deposit:
+                                </Label>
+                                {errors.deposit ? (
+                                    <span className="mb-1 text-[.75rem] text-red-500">
+                                        {errors.deposit.message}
+                                    </span>
+                                ) : (
+                                    <span className="mb-1 text-[.75rem] text-black/50">
+                                        (Only num.)
+                                    </span>
+                                )}
+                            </div>
+                            <Input
+                                type="number"
+                                id="deposit"
+                                className="w-full max-md:text-[.75rem]"
+                                {...register("deposit")}
+                            />
+                        </div>
+                        <div className="mb-2 flex flex-col flex-1 gap-1">
+                            <div className="flex items-center justify-between">
+                                <Label htmlFor="result" className="mb-1">
+                                    Result:
+                                </Label>
+                                {errors.result ? (
+                                    <span className="mb-1 text-[.75rem] text-red-500">
+                                        {errors.result.message}
+                                    </span>
+                                ) : (
+                                    <span className="mb-1 text-[.75rem] text-black/50">
+                                        (Only num.)
+                                    </span>
+                                )}
+                            </div>
+                            <Input
+                                type="number"
+                                id="result"
+                                className="w-full max-md:text-[.75rem]"
+                                {...register("result")}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="mb-2 flex flex-col gap-2">
+                        <Label htmlFor="rating" className="mb-1">
+                            Rate your trade:{" "}
+                            <span className="ml-2 text-[.75rem] text-black/50">
+                                (default 0)
+                            </span>
+                        </Label>
+                        <StarRating setValue={setValue} />
+                    </div>
+                    <div className="mb-4 flex flex-col gap-1">
                         <Label htmlFor="notes" className="mb-1">
                             Notes (optional):
                         </Label>
@@ -474,12 +479,6 @@ export default function CustomDialogContent({
                             className="w-full outline-none rounded-md border border-zinc-200 px-3 py-1 resize-none text-[0.9rem]"
                             {...register("notes")}
                         />
-                    </div>
-                    <div className="mb-4 flex flex-col gap-2">
-                        <Label htmlFor="rating" className="mb-1">
-                            Rate your trade:
-                        </Label>
-                        <StarRating />
                     </div>
 
                     <div className="flex gap-6 justify-end">

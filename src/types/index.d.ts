@@ -9,6 +9,7 @@ export type Trades = {
     closeTime: string;
     deposit: string;
     instrumentName: string;
+    rating: number;
 };
 
 export type SortByType =

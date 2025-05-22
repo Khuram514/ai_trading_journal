@@ -22,6 +22,10 @@ export const newTradeFormSchema = z.object({
         .min(1, { message: "Instrument name is required." }),
 
     notes: z.string().optional(),
+    rating: z
+        .number()
+        .max(5, { message: "Rating cannot be more than 5" })
+        .default(0),
 });
 
 export const addCapitalFormSchema = z.object({

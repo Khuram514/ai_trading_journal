@@ -71,6 +71,13 @@
       "when": 1743200612877,
       "tag": "0009_fixed_big_bertha",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1747875527853,
+      "tag": "0010_chemical_shotgun",
+      "breakpoints": true
     }
   ]
 }

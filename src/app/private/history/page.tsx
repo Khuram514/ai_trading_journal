@@ -298,15 +298,27 @@ export default function Page() {
                                     )}
                                 </TableCell>
                                 <TableCell className="w-[5%]">
-                                    <FollowedStrategyPie />
+                                    {startCapital && <FollowedStrategyPie />}
                                 </TableCell>
                                 <TableCell className="w-[10%]">
-                                    <div className="w-full flex-center">
+                                    {/* <div className="w-full flex-center">
                                         <MdStar className="text-customOrange" />
                                         <MdStar className="text-customOrange" />
                                         <MdStar className="text-customOrange" />
                                         <MdStar className="text-customOrange" />
                                         <MdStar className="text-neutral-400" />
+                                    </div> */}
+                                    <div className="w-full flex-center">
+                                        {[...Array(5)].map((_, i) => (
+                                            <MdStar
+                                                key={i}
+                                                className={`${
+                                                    trade.rating > i
+                                                        ? "text-yellow-500"
+                                                        : "text-neutral-400"
+                                                }`}
+                                            />
+                                        ))}
                                     </div>
                                 </TableCell>
                                 <TableCell className="w-[5%] text-center">
