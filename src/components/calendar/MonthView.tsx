@@ -104,7 +104,7 @@ export default function MonthView() {
                                             day.format("DD-MM-YYYY")
                                         ] !== undefined && (
                                             <div className="absolute bottom-2 left-1/2 -translate-x-1/2 hidden md:flex gap-2 items-center justify-around w-full px-6">
-                                                <div className="text-[.7rem] flex items-center gap-2 text-neutral-500">
+                                                <div className="text-[.7rem] flex items-center gap-2 text-zinc-500">
                                                     <Layers size={16} />
                                                     {
                                                         tradeDetailsForEachDay[
@@ -114,7 +114,7 @@ export default function MonthView() {
                                                         ].result
                                                     }
                                                 </div>
-                                                <div className="text-[.7rem] flex items-center gap-2 text-neutral-500">
+                                                <div className="text-[.7rem] flex items-center gap-2 text-zinc-500">
                                                     <ArrowUp size={16} />
                                                     {
                                                         tradeDetailsForEachDay[
@@ -124,7 +124,7 @@ export default function MonthView() {
                                                         ].win
                                                     }
                                                 </div>
-                                                <div className="text-[.7rem] flex items-center gap-2 text-neutral-500">
+                                                <div className="text-[.7rem] flex items-center gap-2 text-zinc-500">
                                                     <ArrowDown size={16} />
                                                     {
                                                         tradeDetailsForEachDay[

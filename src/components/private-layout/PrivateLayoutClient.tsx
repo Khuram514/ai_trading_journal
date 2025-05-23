@@ -160,7 +160,9 @@ export default function PrivateLayoutClient({
                                                     deletions
                                                 </span>
                                             </Link>
-                                            <li className="hover:bg-zinc-100 px-3 py-2 rounded-md">
+                                            <Link
+                                                href="/private/strategies"
+                                                className="hover:bg-zinc-100 px-3 py-2 rounded-md cursor-pointer">
                                                 <div className="flex gap-2 items-center">
                                                     <PiStrategyLight />
                                                     <h1>Strategies</h1>
@@ -169,7 +171,7 @@ export default function PrivateLayoutClient({
                                                     Create custom strategies to
                                                     help you stay in control.
                                                 </span>
-                                            </li>
+                                            </Link>
                                             <Link
                                                 href="/private/statistics"
                                                 className="hover:bg-zinc-100 px-3 py-2 rounded-md cursor-pointer">
