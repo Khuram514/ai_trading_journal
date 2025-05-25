@@ -8,7 +8,7 @@ import CustomDialogContent from "./CustomDialogContent";
 
 import { FaArrowTrendDown, FaArrowTrendUp } from "react-icons/fa6";
 import { setIsDialogOpen } from "@/redux/slices/calendarSlice";
-import { ArrowDown, ArrowUp, Layers } from "lucide-react";
+import { ArrowDown, ArrowUp, DollarSign, Layers } from "lucide-react";
 
 export default function MonthView() {
     const { month, year } = useAppSelector((state) => state.calendar.monthView);
@@ -46,7 +46,7 @@ export default function MonthView() {
                                 }>
                                 <DialogTrigger asChild>
                                     <div
-                                        className={`relative border-[0.5px] ${
+                                        className={`relative cursor-pointer border-[0.5px] ${
                                             trades[day.format("DD-MM-YYYY")] !==
                                             undefined
                                                 ? "border-white"
@@ -76,14 +76,7 @@ export default function MonthView() {
                                         </p>
                                         {trades[day.format("DD-MM-YYYY")] !==
                                             undefined && (
-                                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex gap-2 items-center">
-                                                {/* {trades[
-                                                    day.format("DD-MM-YYYY")
-                                                ] >= 0 ? (
-                                                    <FaArrowTrendUp className="text-buy max-md:hidden" />
-                                                ) : (
-                                                    <FaArrowTrendDown className="text-sell max-md:hidden" />
-                                                )} */}
+                                            <div className=" absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex md:hidden gap-2 items-center">
                                                 <p
                                                     className={`md:text-[1rem] pt-4 md:pt-0 ${
                                                         trades[
@@ -103,19 +96,35 @@ export default function MonthView() {
                                         {tradeDetailsForEachDay[
                                             day.format("DD-MM-YYYY")
                                         ] !== undefined && (
-                                            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 hidden md:flex gap-2 items-center justify-around w-full px-6">
-                                                <div className="text-[.7rem] flex items-center gap-2 text-zinc-500">
-                                                    <Layers size={16} />
-                                                    {
+                                            <div
+                                                className={`absolute bottom-2 left-1/2 -translate-x-1/2 hidden md:flex gap-4 items-center justify-start py-1 px-3 2xl:px-6 rounded-full bg-white shadow-md
+                                                    // trades[
+                                                    //     day.format("DD-MM-YYYY")
+                                                    // ] > 0
+                                                    //     ? "bg-[#76b562]/50"
+                                                    //     : "bg-[#e96a5e]/50"
+                                                `}>
+                                                <div className="text-[.8rem] flex items-center gap-2">
+                                                    <DollarSign
+                                                        size={12}
+                                                        className="text-zinc-500"
+                                                    />
+                                                    {/* {
                                                         tradeDetailsForEachDay[
                                                             day.format(
                                                                 "DD-MM-YYYY"
                                                             )
                                                         ].result
-                                                    }
+                                                    } */}
+                                                    {trades[
+                                                        day.format("DD-MM-YYYY")
+                                                    ].toLocaleString("de-DE")}
                                                 </div>
-                                                <div className="text-[.7rem] flex items-center gap-2 text-zinc-500">
-                                                    <ArrowUp size={16} />
+                                                <div className="text-[.8rem] flex items-center gap-2">
+                                                    <ArrowUp
+                                                        size={12}
+                                                        className="text-zinc-500"
+                                                    />
                                                     {
                                                         tradeDetailsForEachDay[
                                                             day.format(
@@ -124,8 +133,11 @@ export default function MonthView() {
                                                         ].win
                                                     }
                                                 </div>
-                                                <div className="text-[.7rem] flex items-center gap-2 text-zinc-500">
-                                                    <ArrowDown size={16} />
+                                                <div className="text-[.8rem] flex items-center gap-2">
+                                                    <ArrowDown
+                                                        size={12}
+                                                        className="text-zinc-500"
+                                                    />
                                                     {
                                                         tradeDetailsForEachDay[
                                                             day.format(

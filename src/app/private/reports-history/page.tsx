@@ -143,7 +143,7 @@ export default function Page() {
                 totalPages > 1 ? "justify-between" : "justify-start"
             } gap-8 2xl:gap-20 py-6 2xl:py-16 px-4 md:px-16 2xl:px-36 2xl:mx-[64px] h-full`}>
             <div className="flex max-md:flex-col gap-4 md:gap-0 items-center justify-between">
-                <span className="text-zinc-500 text-[.9rem] px-4 py-2 border border-gray-200 rounded-lg">
+                <span className="text-zinc-500 text-[.9rem] px-4 py-2 border border-gray-200 rounded-lg ">
                     View the history of your saved reports. You can ask the AI
                     more questions by picking up where you left off.
                 </span>
@@ -186,7 +186,7 @@ export default function Page() {
                 {paginatedReports ? (
                     paginatedReports?.map((report) => (
                         <Link
-                            className="relative max-h-[170px] col-span-3 lg:col-span-1 row-span-1 border border-gray-200 md:hover:border-gray-400 duration-300 rounded-2xl py-4 px-6 flex flex-col gap-2 shadow-md overflow-hidden"
+                            className="relative max-h-[170px] col-span-3 lg:col-span-1 row-span-1 border border-gray-200 md:hover:border-gray-400 duration-300 rounded-lg py-4 px-6 flex flex-col gap-2 shadow-md overflow-hidden"
                             href={`/private/reports-history/${report.reportId}`}
                             key={report.reportId}>
                             <div className="pointer-events-none absolute -inset-px z-2 overflow-hidden">
