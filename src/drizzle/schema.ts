@@ -54,7 +54,7 @@ export const TradeTable = pgTable(
 export const StrategyTable = pgTable(
     "strategies",
     {
-        id: uuid("id").primaryKey().defaultRandom(),
+        id: uuid("id").primaryKey().notNull(),
         userId: text("userId")
             .notNull()
             .references(() => UserTable.id),

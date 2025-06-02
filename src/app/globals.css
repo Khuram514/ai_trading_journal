@@ -146,11 +146,11 @@ mark::after {
 .button-shadow {
     cursor: pointer;
     background-color: rgb(58, 53, 50);
-    box-shadow: rgba(45, 32, 17, 0.12) 0px 1px 1px 0px,
-        rgba(45, 32, 17, 0.24) 0px 1.50259px 3px 0px,
-        rgba(45, 32, 17, 0.32) 0px 4px 8px 0px,
-        rgba(45, 32, 17, 0.4) 0px 12px 24px -6px,
-        rgb(0, 0, 0) 0px -0.456353px 0px 0px inset;
+    box-shadow: rgba(45, 32, 17, 0.12) 0px 0.5px 0.5px 0px,
+        rgba(45, 32, 17, 0.24) 0px 1px 2px 0px,
+        rgba(45, 32, 17, 0.32) 0px 2px 4px 0px,
+        rgba(45, 32, 17, 0.4) 0px 6px 12px -3px,
+        rgb(0, 0, 0) 0px -0.2px 0px 0px inset;
 }
 
 .button-shadow-white {
@@ -162,9 +162,9 @@ mark::after {
 
 @media (min-width: 768px) {
     .button-shadow:hover {
-        background-color: #413c3a;
-        box-shadow: 0 1px 1px #2d20111f, 0 1.50259px 3px #2d20113d,
-            0 4px 8px #2d201152, 0 12px 24px -6px #2d201166, 0 -2px #000 inset;
+        background-color: #4c4746;
+        box-shadow: 0 0.5px 0.5px #2d20111f, 0 1px 2px #2d20113d,
+            0 2px 4px #2d201152, 0 6px 12px -3px #2d201166, 0 -0.2px #000 inset;
     }
     .button-shadow-white:hover {
         cursor: pointer;
@@ -295,6 +295,10 @@ mark::after {
 
 .nav-link {
     @apply hover:bg-darkPrimary py-1 lg:py-3 px-2 lg:px-5 rounded-md cursor-pointer;
+}
+
+.custom-button {
+    @apply px-2 md:px-4 py-2 rounded-md border border-zinc-200 md:hover:bg-neutral-100 shadow-sm;
 }
 
 @layer base {
