@@ -4,7 +4,7 @@ import { TableRow, TableCell } from "@/components/ui/table";
 
 import { rulesStyle } from "./AddStrategyDialog";
 import { Rule } from "@/types/dbSchema.types";
-import { Trash2 } from "lucide-react";
+import { Trash2, X } from "lucide-react";
 import { useState } from "react";
 import { CustomButton } from "../CustomButton";
 import { toast } from "sonner";
@@ -51,9 +51,22 @@ export default function NewRuleForDialog({
                         className="outline-none bg-transparent"
                         autoFocus
                     />
-                    <CustomButton isBlack={false} onClick={handleSaveNewName}>
-                        Save
-                    </CustomButton>
+                    <div className="flex items-center gap-2">
+                        {newName.length > 0 ? (
+                            <X
+                                onClick={() => setNewName("")}
+                                className="cursor-pointer"
+                                size={16}
+                            />
+                        ) : (
+                            <X className="opacity-0" size={16} />
+                        )}
+                        <CustomButton
+                            isBlack={false}
+                            onClick={handleSaveNewName}>
+                            Save
+                        </CustomButton>
+                    </div>
                 </TableCell>
             ) : (
                 <TableCell className="w-[60%]">

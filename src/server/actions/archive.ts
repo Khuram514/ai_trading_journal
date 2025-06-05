@@ -167,7 +167,7 @@ export async function deleteReportFromDB(
             success: true,
         };
     } catch (error) {
-        console.error("Failed to fetch reports:", error);
+        console.error("Failed to delete report:", error);
         if (error instanceof Error) {
             return { success: false, error: error.message };
         }

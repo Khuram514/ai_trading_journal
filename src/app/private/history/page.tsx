@@ -127,7 +127,7 @@ export default function Page() {
 
     if (sortedTrades.length === 0) {
         return (
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 md:text-[1.5rem] text-zinc-500">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-zinc-500">
                 No trades found - create one to get started
             </div>
         );

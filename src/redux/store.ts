@@ -5,6 +5,7 @@ import calendarReducer from "./slices/calendarSlice";
 import tradeRecordsReducer from "./slices/tradeRecordsSlice";
 import historyPageReducer from "./slices/historyPageSlice";
 import statisticsReducer from "./slices/statisticsSlice";
+import strategyReducer from "./slices/strategySlice";
 
 const store = configureStore({
     reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
         tradeRecords: tradeRecordsReducer,
         history: historyPageReducer,
         statistics: statisticsReducer,
+        strategies: strategyReducer,
     },
     devTools: true,
 });

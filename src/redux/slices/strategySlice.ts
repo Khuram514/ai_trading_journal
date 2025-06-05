@@ -1,32 +1,35 @@
-import { Rule } from "@/types/dbSchema.types";
+import { Strategy } from "@/types/strategies.types";
 import { createSlice } from "@reduxjs/toolkit";
 
-type Strategy = {
-    id: string;
-    userId: string;
-    strategyName: string;
-    openPositionRules: Rule[];
-    closePositionRules: Rule[];
-};
-
 type strategyState = {
-    strategies: Strategy[] | undefined;
+    strategies: Strategy[];
 };
 
 const initialState: strategyState = {
-    strategies: undefined,
+    strategies: [],
 };
 
 const strategiesSlice = createSlice({
-    name: "statistics",
+    name: "strategies",
     initialState,
     reducers: {
+        setStrategyState: (state, action) => {
+            state.strategies = action.payload;
+        },
         addStrategyToTheState: (state, action) => {
-            state.strategies?.push(action.payload);
+            state.strategies.push(action.payload);
+        },
+        deleteLocalStrategy: (state, action) => {
+            const { id } = action.payload;
+
+            state.strategies = state.strategies.filter(
+                (strategy) => strategy.id !== id
+            );
         },
     },
 });
 
-export const { addStrategyToTheState } = strategiesSlice.actions;
+export const { setStrategyState, addStrategyToTheState, deleteLocalStrategy } =
+    strategiesSlice.actions;
 
 export default strategiesSlice.reducer;
