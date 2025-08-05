@@ -8,13 +8,20 @@ import { setStrategyState } from "@/redux/slices/strategySlice";
 
 export default function StrategyPageClientSideRenderig({
     strategies,
+    hideAll = false,
 }: {
     strategies: Strategy[];
+    hideAll?: boolean;
 }) {
     const dispatch = useAppDispatch();
 
-    const { strategies: localStrategies } = useAppSelector(
+    const { strategies: localStrategies, searchQuery } = useAppSelector(
         (state) => state.strategies
+    );
+
+    // Filter strategies based on search query
+    const filteredStrategies = localStrategies.filter((strategy) =>
+        strategy.strategyName.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     useEffect(() => {
@@ -22,13 +29,16 @@ export default function StrategyPageClientSideRenderig({
     }, [dispatch, strategies]);
     return (
         <div className="px-8 py-4 space-y-4 overflow-scroll flex-1 min-h-0">
-            {localStrategies.length > 0 ? (
-                localStrategies.map((strategy) => (
-                    <StrategyCard key={strategy.id} strategy={strategy} />
+            {filteredStrategies.length > 0 ? (
+                filteredStrategies.map((strategy) => (
+                    <StrategyCard key={strategy.id} strategy={strategy} hideAll={hideAll} />
                 ))
             ) : (
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-zinc-500">
-                    No strategies found. Create your first strategy!
+                    {searchQuery ?
+                        `No strategies found matching "${searchQuery}"` :
+                        "No strategies found. Create your first strategy!"
+                    }
                 </div>
             )}
         </div>

@@ -1,3 +1,7 @@
+"use client";
+
+import { CustomButton } from "@/components/CustomButton";
+import CustomLoading from "@/components/CustomLoading";
 import AddStrategyDialog from "@/components/strategies/AddStrategyDialog";
 import SearchStrategy from "@/components/strategies/SearchStrategy";
 import SlidingTabs from "@/components/strategies/SlidingTabs";
@@ -8,9 +12,9 @@ import {
     GetStrategiesResult,
     GetStrategiesSuccess,
 } from "@/types/strategies.types";
-import { auth } from "@clerk/nextjs/server";
+import { useAuth } from "@clerk/nextjs";
 import Image from "next/image";
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 function isGetStrategiesSuccess(
     result: GetStrategiesResult
@@ -24,16 +28,19 @@ function isGetStrategiesError(
     return result.success === false && "error" in result;
 }
 
-export default async function StrategiesPage() {
-    const { userId } = await auth();
+export default function StrategiesPage() {
+    const { userId } = useAuth();
+    const [strategies, setStrategies] = useState<GetStrategiesResult | null>(null);
+    const [hideAll, setHideAll] = useState(false);
 
-    if (!userId) return;
+    useEffect(() => {
+        if (userId) {
+            getAllStrategies(userId).then(setStrategies);
+        }
+    }, [userId]);
 
-    const strategies = await getAllStrategies(userId);
-
-    if (strategies === null) {
-        return;
-    }
+    if (!userId) return <div>Please sign in</div>;
+    if (!strategies) return <CustomLoading />
 
     if (isGetStrategiesError(strategies)) {
         return <div>Error loading strategies: {strategies.error}</div>;
@@ -59,12 +66,20 @@ export default async function StrategiesPage() {
                 </div>
                 <div className="flex justify-between">
                     <SlidingTabs />
-                    <SearchStrategy />
+
+                    <div className="flex items-center gap-4">
+                        <SearchStrategy />
+                        <CustomButton isBlack={false} onClick={() => setHideAll(!hideAll)}>
+                            {hideAll ? "Show all" : "Hide all"}
+                        </CustomButton>
+                    </div>
+
                 </div>
             </div>
             <StrategyPageClientSideRenderig
                 strategies={strategies.strategies}
+                hideAll={hideAll}
             />
-        </div>
+        </div >
     );
 }

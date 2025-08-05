@@ -21,7 +21,18 @@ import {
     SelectGroup,
     SelectItem,
     SelectTrigger,
+    SelectValue,
 } from "../ui/select";
+
+import {
+    Table,
+    TableHeader,
+    TableRow,
+    TableHead,
+    TableBody,
+    TableCell,
+} from "../ui/table";
+import { Checkbox } from "../ui/checkbox";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -45,6 +56,12 @@ import { setIsDialogOpen } from "@/redux/slices/calendarSlice";
 import { v4 as uuidv4 } from "uuid";
 import { StarRating } from "./StarRating";
 
+const priorityColors = {
+    high: "bg-sellWithOpacity text-sell",
+    medium: "bg-yellow-400 text-yellow-600 bg-opacity-50",
+    low: "bg-buyWithOpacity text-buy",
+};
+
 export default function CustomDialogContent({
     day,
 }: {
@@ -54,10 +71,49 @@ export default function CustomDialogContent({
     const [closeDate, setCloseDate] = useState<Date>();
     const [instrumentLabels, setInstrumentLabels] = useState<string[]>([]);
     const [submittingNewTrade, setSubmittingNewTrade] = useState(false);
+    const [selectedStrategyId, setSelectedStrategyId] = useState<string>("");
+    const [checkedOpenRules, setCheckedOpenRules] = useState<string[]>([]);
+    const [checkedCloseRules, setCheckedCloseRules] = useState<string[]>([]);
 
     const trades = useAppSelector((state) => state.tradeRecords.listOfTrades);
+    const { strategies: localStrategies } = useAppSelector(
+        (state) => state.strategies
+    );
 
     const dispatch = useAppDispatch();
+
+    // Helper functions for rule checkbox handling
+    const handleOpenRuleToggle = (ruleId: string, rule: any) => {
+        const updatedCheckedRules = checkedOpenRules.includes(ruleId)
+            ? checkedOpenRules.filter(id => id !== ruleId)
+            : [...checkedOpenRules, ruleId];
+
+        setCheckedOpenRules(updatedCheckedRules);
+
+        const selectedStrategy = localStrategies.find(s => s.id === selectedStrategyId);
+        if (selectedStrategy) {
+            const appliedRules = selectedStrategy.openPositionRules.filter(r =>
+                updatedCheckedRules.includes(r.id)
+            );
+            setValue("appliedOpenRules", appliedRules);
+        }
+    };
+
+    const handleCloseRuleToggle = (ruleId: string, rule: any) => {
+        const updatedCheckedRules = checkedCloseRules.includes(ruleId)
+            ? checkedCloseRules.filter(id => id !== ruleId)
+            : [...checkedCloseRules, ruleId];
+
+        setCheckedCloseRules(updatedCheckedRules);
+
+        const selectedStrategy = localStrategies.find(s => s.id === selectedStrategyId);
+        if (selectedStrategy) {
+            const appliedRules = selectedStrategy.closePositionRules.filter(r =>
+                updatedCheckedRules.includes(r.id)
+            );
+            setValue("appliedCloseRules", appliedRules);
+        }
+    };
 
     const {
         register,
@@ -75,6 +131,10 @@ export default function CustomDialogContent({
             closeTime: "12:30",
             deposit: "",
             instrumentName: "",
+            strategyName: "",
+            strategyId: null,
+            appliedOpenRules: [],
+            appliedCloseRules: [],
             result: "",
             notes: "",
             rating: 0,
@@ -222,9 +282,9 @@ export default function CustomDialogContent({
                                                 defaultMonth={
                                                     day
                                                         ? new Date(
-                                                              day?.year(),
-                                                              day?.month()
-                                                          )
+                                                            day?.year(),
+                                                            day?.month()
+                                                        )
                                                         : new Date()
                                                 }
                                             />
@@ -396,11 +456,10 @@ export default function CustomDialogContent({
                             control={control}
                             render={({ field }) => (
                                 <div
-                                    className={`h-[40px] ${
-                                        field.value === "buy"
-                                            ? "bg-buy"
-                                            : "bg-sell"
-                                    } rounded-md cursor-pointer flex-center`}
+                                    className={`h-[40px] ${field.value === "buy"
+                                        ? "bg-buy"
+                                        : "bg-sell"
+                                        } rounded-md cursor-pointer flex-center`}
                                     onClick={() =>
                                         field.value === "buy"
                                             ? setValue("positionType", "sell")
@@ -494,7 +553,154 @@ export default function CustomDialogContent({
                     </div>
                 </TabsContent>
                 <TabsContent value="strategy">
-                    <div>test</div>
+                    <div className="mb-4 flex flex-col gap-1">
+                        <Label htmlFor="strategyName" className="mb-1">
+                            Strategy (optional):
+                        </Label>
+                        <Controller
+                            name="strategyName"
+                            control={control}
+                            render={({ field }) => (
+                                <Select
+                                    onValueChange={(value) => {
+                                        field.onChange(value);
+                                        const selectedStrategy = localStrategies.find(s => s.strategyName === value);
+                                        const strategyId = selectedStrategy?.id || "";
+                                        setSelectedStrategyId(strategyId);
+                                        setValue("strategyId", strategyId || null);
+                                        // Reset checked rules when strategy changes
+                                        setCheckedOpenRules([]);
+                                        setCheckedCloseRules([]);
+                                        setValue("appliedOpenRules", []);
+                                        setValue("appliedCloseRules", []);
+                                    }}
+                                    value={field.value}
+                                >
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="Select a strategy" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup>
+                                            {localStrategies.map((strategy) => (
+                                                <SelectItem
+                                                    key={strategy.id}
+                                                    value={strategy.strategyName}>
+                                                    {strategy.strategyName}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+                            )}
+                        />
+                        {errors.strategyName && (
+                            <p className="text-red-500 text-sm">
+                                {errors.strategyName.message}
+                            </p>
+                        )}
+                    </div>
+
+                    {/* Display strategy rules when strategy is selected */}
+                    {selectedStrategyId && (() => {
+                        const selectedStrategy = localStrategies.find(s => s.id === selectedStrategyId);
+                        if (!selectedStrategy) return null;
+
+                        return (
+                            <div className="mb-6 space-y-4 py-8">
+                                {/* Open Position Rules */}
+                                {selectedStrategy.openPositionRules.length > 0 && (
+                                    <div className="space-y-2">
+                                        <h3 className="font-semibold text-sm">
+                                            Open Position Rules
+                                        </h3>
+                                        <Table>
+                                            <TableHeader>
+                                                <TableRow>
+                                                    <TableHead></TableHead>
+                                                    <TableHead>Name</TableHead>
+                                                    <TableHead>Priority</TableHead>
+                                                </TableRow>
+                                            </TableHeader>
+                                            <TableBody>
+                                                {selectedStrategy.openPositionRules.map((rule) => (
+                                                    <TableRow key={rule.id}>
+                                                        <TableCell className="w-[5%]">
+                                                            <Checkbox
+                                                                checked={checkedOpenRules.includes(rule.id)}
+                                                                onCheckedChange={() => handleOpenRuleToggle(rule.id, rule)}
+                                                            />
+                                                        </TableCell>
+                                                        <TableCell className="w-[70%]">
+                                                            {rule.rule}
+                                                        </TableCell>
+                                                        <TableCell className="w-[25%]">
+                                                            <div
+                                                                className={`${priorityColors[rule.priority]
+                                                                    } px-3 p-1 rounded-lg w-fit flex-center`}>
+                                                                &bull; {rule.priority}
+                                                            </div>
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </div>
+                                )}
+
+                                {/* Close Position Rules */}
+                                {selectedStrategy.closePositionRules.length > 0 && (
+                                    <div className="space-y-2">
+                                        <h3 className="font-semibold text-sm">
+                                            Close Position Rules
+                                        </h3>
+                                        <Table>
+                                            <TableHeader>
+                                                <TableRow>
+                                                    <TableHead></TableHead>
+                                                    <TableHead>Name</TableHead>
+                                                    <TableHead>Priority</TableHead>
+                                                </TableRow>
+                                            </TableHeader>
+                                            <TableBody>
+                                                {selectedStrategy.closePositionRules.map((rule) => (
+                                                    <TableRow key={rule.id}>
+                                                        <TableCell className="w-[5%]">
+                                                            <Checkbox
+                                                                checked={checkedCloseRules.includes(rule.id)}
+                                                                onCheckedChange={() => handleCloseRuleToggle(rule.id, rule)}
+                                                            />
+                                                        </TableCell>
+                                                        <TableCell className="w-[70%]">
+                                                            {rule.rule}
+                                                        </TableCell>
+                                                        <TableCell className="w-[25%]">
+                                                            <div
+                                                                className={`${priorityColors[rule.priority]
+                                                                    } px-3 p-1 rounded-lg w-fit flex-center`}>
+                                                                &bull; {rule.priority}
+                                                            </div>
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })()}
+
+                    <div className="flex gap-6 justify-end">
+                        <DialogClose asChild>
+                            <CustomButton isBlack={false}>Cancel</CustomButton>
+                        </DialogClose>
+                        <CustomButton
+                            isBlack
+                            type="submit"
+                            disabled={submittingNewTrade}>
+                            Add Trade
+                        </CustomButton>
+                    </div>
                 </TabsContent>
             </Tabs>
         </form>

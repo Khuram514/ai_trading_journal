@@ -8,6 +8,7 @@ import {
     GetStrategiesResult,
     Strategy,
 } from "@/types/strategies.types";
+import { auth } from "@clerk/nextjs/server";
 import { desc, eq } from "drizzle-orm";
 
 export async function saveStrategy({
@@ -23,6 +24,9 @@ export async function saveStrategy({
     id: string;
     strategyName: string;
 }) {
+    const { userId: userIdFromAuth } = await auth();
+    if (userIdFromAuth !== userId) return null;
+
     try {
         const result = await db.insert(StrategyTable).values({
             userId,
@@ -49,7 +53,8 @@ export async function saveStrategy({
 export async function getAllStrategies(
     userId: string | undefined
 ): Promise<GetStrategiesResult | null> {
-    if (!userId) return null;
+    const { userId: userIdFromAuth } = await auth();
+    if (userIdFromAuth !== userId) return null;
 
     try {
         const strategies = await db
@@ -91,6 +96,41 @@ export async function deleteStrategyFromDB(
         };
     } catch (error) {
         console.error("Failed to delete strategy:", error);
+        if (error instanceof Error) {
+            return { success: false, error: error.message };
+        }
+        return { success: false, error: "Unknown error occurred!" };
+    }
+}
+
+export async function editStrategy({
+    openPositionRules,
+    closePositionRules,
+    userId,
+    id,
+    strategyName,
+}: {
+    openPositionRules: Rule[];
+    closePositionRules: Rule[];
+    userId: string;
+    id: string;
+    strategyName: string;
+}) {
+    const { userId: userIdFromAuth } = await auth();
+    if (userIdFromAuth !== userId) return null;
+    try {
+        await db.update(StrategyTable).set({
+            openPositionRules,
+            closePositionRules,
+            strategyName,
+        }).where(eq(StrategyTable.id, id));
+
+        return {
+            success: true,
+            message: "Strategy edited successfully.",
+        };
+    } catch (error) {
+        console.error("Failed to edit strategy:", error);
         if (error instanceof Error) {
             return { success: false, error: error.message };
         }

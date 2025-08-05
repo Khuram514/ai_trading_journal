@@ -64,6 +64,16 @@ const tradeRecordsSlice = createSlice({
                 );
             }
         },
+        updateTradeInList: (state, action) => {
+            if (state.listOfTrades !== null) {
+                const index = state.listOfTrades.findIndex(
+                    (trade) => trade.id === action.payload.id
+                );
+                if (index !== -1) {
+                    state.listOfTrades[index] = action.payload;
+                }
+            }
+        },
         setInitialMonthViewSummary: (state, action) => {
             state.monthViewSummary = action.payload;
         },
@@ -146,6 +156,7 @@ export const {
     setListOfTrades,
     updateListOfTrades,
     removeRecordFromListOfTrades,
+    updateTradeInList,
     setInitialMonthViewSummary,
     setMonthViewSummary,
     setInitialYearViewSummary,

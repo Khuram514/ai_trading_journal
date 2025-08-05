@@ -14,7 +14,9 @@ import {
     setListOfTrades,
     setTradeDetailsForEachDay,
 } from "@/redux/slices/tradeRecordsSlice";
+import { setStrategyState } from "@/redux/slices/strategySlice";
 import { Trades } from "@/types";
+import { Strategy } from "@/types/strategies.types";
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -36,6 +38,7 @@ import { VscFolderLibrary } from "react-icons/vsc";
 interface PrivateLayoutClientProps {
     children: ReactNode;
     initialTradeRecords: Trades[];
+    initialStrategies: Strategy[];
     initialMonthViewTrades: { [key: string]: number };
     initialYearViewTrades: { [key: string]: number };
     initialParticularYearTrades: { [key: string]: number };
@@ -51,6 +54,7 @@ interface PrivateLayoutClientProps {
 export default function PrivateLayoutClient({
     children,
     initialTradeRecords,
+    initialStrategies,
     initialMonthViewTrades,
     initialYearViewTrades,
     initialParticularYearTrades,
@@ -65,6 +69,11 @@ export default function PrivateLayoutClient({
 
         if (initialTradeRecords?.length > 0) {
             dispatch(setListOfTrades(initialTradeRecords));
+        }
+
+        // Initialize strategies in Redux
+        if (initialStrategies?.length > 0) {
+            dispatch(setStrategyState(initialStrategies));
         }
 
         if (Object.keys(initialMonthViewTrades).length > 0) {
@@ -88,6 +97,7 @@ export default function PrivateLayoutClient({
     }, [
         dispatch,
         initialTradeRecords,
+        initialStrategies,
         initialMonthViewTrades,
         initialYearViewTrades,
         initialParticularYearTrades,
@@ -99,7 +109,7 @@ export default function PrivateLayoutClient({
         return (
             user.firstName ??
             (user.username ?? "").charAt(0).toLocaleUpperCase() +
-                (user.username ?? "").slice(1)
+            (user.username ?? "").slice(1)
         );
     };
 
@@ -284,16 +294,10 @@ export default function PrivateLayoutClient({
                                             </Link>
                                             <li className="hover:bg-zinc-100 px-3 py-2 rounded-md">
                                                 <div className="flex gap-4 items-center">
-                                                    <h1>Championship</h1>
-                                                    <span className="text-[.8rem] bg-gradient-to-r from-emerald-400 to-blue-300 text-transparent bg-clip-text">
-                                                        Coming soon...
-                                                    </span>
+                                                    <h1>Feedback</h1>
                                                 </div>
                                                 <span className="leading-none text-[.85rem] text-zinc-400">
-                                                    You have a demo account and
-                                                    1 week to prove that
-                                                    you&apos;re the best trader
-                                                    in the competition.
+                                                    Help us improve the app.
                                                 </span>
                                             </li>
                                             <Link

@@ -1,9 +1,12 @@
 "use client";
 import React, { useRef, useState, useEffect } from "react";
 import { GalleryVerticalEnd, ListTodo } from "lucide-react";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { setActiveTab } from "@/redux/slices/strategySlice";
 
 const SlidingTabs: React.FC = () => {
-    const [activeTab, setActiveTab] = useState<"history" | "rules">("rules");
+    const dispatch = useAppDispatch();
+    const activeTab = useAppSelector((state) => state.strategies.activeTab);
     const [underlineStyle, setUnderlineStyle] = useState({ left: 0, width: 0 });
     const historyRef = useRef<HTMLButtonElement>(null);
     const rulesRef = useRef<HTMLButtonElement>(null);
@@ -34,23 +37,21 @@ const SlidingTabs: React.FC = () => {
             <div className="relative flex gap-8">
                 <button
                     ref={rulesRef}
-                    onClick={() => setActiveTab("rules")}
-                    className={`py-3 flex gap-2 transition-colors duration-300 ${
-                        activeTab === "rules"
-                            ? "text-black"
-                            : "text-neutral-500 hover:text-black"
-                    }`}>
+                    onClick={() => dispatch(setActiveTab("rules"))}
+                    className={`py-3 flex gap-2 transition-colors duration-300 ${activeTab === "rules"
+                        ? "text-black"
+                        : "text-neutral-500 hover:text-black"
+                        }`}>
                     <ListTodo />
                     View rules
                 </button>
                 <button
                     ref={historyRef}
-                    onClick={() => setActiveTab("history")}
-                    className={`py-3 flex gap-2 transition-colors duration-300 ${
-                        activeTab === "history"
-                            ? "text-black"
-                            : "text-neutral-500 hover:text-black"
-                    }`}>
+                    onClick={() => dispatch(setActiveTab("history"))}
+                    className={`py-3 flex gap-2 transition-colors duration-300 ${activeTab === "history"
+                        ? "text-black"
+                        : "text-neutral-500 hover:text-black"
+                        }`}>
                     <GalleryVerticalEnd />
                     View history
                 </button>

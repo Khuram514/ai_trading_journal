@@ -1,4 +1,12 @@
 import { z } from "zod";
+import { Rule } from "@/types/dbSchema.types";
+
+const ruleSchema = z.object({
+    id: z.string(),
+    rule: z.string(),
+    satisfied: z.boolean(),
+    priority: z.enum(["low", "medium", "high"]),
+});
 
 export const newTradeFormSchema = z.object({
     positionType: z.string().min(1, { message: "Position Type is required." }),
@@ -21,6 +29,10 @@ export const newTradeFormSchema = z.object({
         .string()
         .min(1, { message: "Instrument name is required." }),
 
+    strategyName: z.string().optional(),
+    strategyId: z.string().optional().nullable(),
+    appliedOpenRules: z.array(ruleSchema).optional().default([]),
+    appliedCloseRules: z.array(ruleSchema).optional().default([]),
     notes: z.string().optional(),
     rating: z
         .number()

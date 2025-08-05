@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     DialogTitle,
     DialogHeader,
@@ -9,7 +9,7 @@ import {
     DialogContent,
     DialogTrigger,
 } from "../ui/dialog";
-import { Plus } from "lucide-react";
+import { Pencil, Plus } from "lucide-react";
 import { Rule } from "@/types/dbSchema.types";
 import { v4 as uuidv4 } from "uuid";
 
@@ -25,12 +25,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import NewRuleForDialog from "./NewRuleForDialog";
 import { CustomButton } from "../CustomButton";
-import { saveStrategy } from "@/server/actions/strategies";
+import { editStrategy, saveStrategy } from "@/server/actions/strategies";
 import { useUser } from "@clerk/nextjs";
 import { Input } from "../ui/input";
 import { toast } from "sonner";
 import { useAppDispatch } from "@/redux/store";
-import { addStrategyToTheState } from "@/redux/slices/strategySlice";
+import { addStrategyToTheState, editStrategyInTheState } from "@/redux/slices/strategySlice";
 
 export const rulesStyle = {
     low: "bg-buyWithOpacity text-buy",
@@ -38,7 +38,17 @@ export const rulesStyle = {
     high: "bg-sellWithOpacity text-sell",
 };
 
-export default function AddStrategyDialog() {
+export default function AddStrategyDialog({
+    openPositionRulesEditing,
+    closePositionRulesEditing,
+    strategyNameEditing,
+    idEditing,
+}: {
+    openPositionRulesEditing?: Rule[];
+    closePositionRulesEditing?: Rule[];
+    strategyNameEditing?: string;
+    idEditing?: string;
+}) {
     const [openPositionRules, setOpenPositionRules] = useState<Rule[]>([]);
     const [closePositionRules, setClosePositionRules] = useState<Rule[]>([]);
     const [strategyName, setStrategyName] = useState("");
@@ -50,6 +60,14 @@ export default function AddStrategyDialog() {
     const { user } = useUser();
 
     const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        if (strategyNameEditing && openPositionRulesEditing && closePositionRulesEditing) {
+            setStrategyName(strategyNameEditing);
+            setOpenPositionRules(openPositionRulesEditing);
+            setClosePositionRules(closePositionRulesEditing);
+        }
+    }, [strategyNameEditing, openPositionRulesEditing, closePositionRulesEditing]);
 
     const handleCreateNewRule = ({ type }: { type: "open" | "close" }) => {
         const randomId = uuidv4();
@@ -216,14 +234,69 @@ export default function AddStrategyDialog() {
         }
     };
 
+    const handleEditStrategy = async (e: React.MouseEvent) => {
+        e?.preventDefault();
+        e?.stopPropagation();
+
+        if (strategyName.length === 0) {
+            toast.error("Strategy name is required");
+        } else if (
+            closePositionRules.length === 0 &&
+            openPositionRules.length === 0
+        ) {
+            toast.error("You must provide at least 1 rule");
+        }  else if (strategyName === strategyNameEditing && openPositionRules === openPositionRulesEditing && closePositionRules === closePositionRulesEditing) {
+            toast.error("No changes made");
+        } else {
+            setSubmittingNewStrategy(true);
+            try {
+                await editStrategy({
+                    openPositionRules,
+                    closePositionRules,
+                    userId: user?.id ?? "",
+                    strategyName,
+                    id: idEditing ?? "",
+                });
+                dispatch(
+                    editStrategyInTheState({
+                        openPositionRules,
+                        closePositionRules,
+                        id: idEditing ?? "",
+                        strategyName,
+                    })
+                );
+                toast.success("Strategy edited successfully!");
+                setIsDialogOpen(false);
+            } catch (error) {
+                if (error instanceof Error) {
+                    toast.error(error.message);
+                    console.log(error.message);
+                } else {
+                    console.log(error);
+                    toast.error("Unexpected error occured. Try again later");
+                }
+            } finally {
+                setSubmittingNewStrategy(false);
+            }
+        }
+    }
+
+
     return (
         <>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger>
+                    {
+                        strategyNameEditing ? (
+                        <div className="p-1 rounded-md md:hover:bg-neutral-200">
+                            <Pencil size={18} />
+                        </div>) : (
                     <div className="flex gap-2 items-center text-sm border border-zinc-200 md:hover:text-zinc-900 md:hover:bg-zinc-100 px-3 py-2 rounded-md shadow-sm">
                         <Plus size={16} />
                         New Strategy
-                    </div>
+                    </div>)
+                    }
+                    
                 </DialogTrigger>
                 <DialogContent>
                     <form className="sm:max-w-[460px] flex flex-col justify-between min-h-[312px] max-h-[calc(100vh-120px)]">
@@ -393,8 +466,8 @@ export default function AddStrategyDialog() {
                                 isBlack
                                 type="submit"
                                 disabled={submittingNewStrategy}
-                                onClick={createStrategy}>
-                                Create a Strategy
+                                onClick={strategyNameEditing ? handleEditStrategy : createStrategy}>
+                                {strategyNameEditing ? "Edit Strategy" : "Create a Strategy"}
                             </CustomButton>
                         </div>
                     </form>

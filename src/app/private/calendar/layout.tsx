@@ -26,7 +26,7 @@ import {
 import dayjs from "dayjs";
 import { months } from "@/data/data";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import CustomDialogContent from "@/components/calendar/CustomDialogContent";
+import { TradeDialog } from "@/components/trade-dialog";
 
 export default function CalendarLayout({ children }: { children: ReactNode }) {
     const [isDataLoaded, setIsDataLoaded] = useState(false);
@@ -135,14 +135,12 @@ export default function CalendarLayout({ children }: { children: ReactNode }) {
     return (
         <div className="flex flex-col h-full">
             <div
-                className={`px-3 md:px-6 flex items-center justify-between py-4 md:py-2 border-b border-zinc-200 ${
-                    calendarView === "Month" ? "max-md:flex-col" : ""
-                }  gap-4`}>
+                className={`px-3 md:px-6 flex items-center justify-between py-4 md:py-2 border-b border-zinc-200 ${calendarView === "Month" ? "max-md:flex-col" : ""
+                    }  gap-4`}>
                 <div className="flex items-center justify-between max-md:w-full gap-4 md:gap-5">
                     <div
-                        className={`flex gap-3 ${
-                            calendarView === "Year" ? "max-md:hidden" : ""
-                        }`}>
+                        className={`flex gap-3 ${calendarView === "Year" ? "max-md:hidden" : ""
+                            }`}>
                         <Dialog
                             open={!!isDialogOpen["any"]}
                             onOpenChange={(open) =>
@@ -157,7 +155,7 @@ export default function CalendarLayout({ children }: { children: ReactNode }) {
                                 <CustomButton isBlack>New</CustomButton>
                             </DialogTrigger>
                             <DialogContent>
-                                <CustomDialogContent day={undefined} />
+                                <TradeDialog day={undefined} />
                             </DialogContent>
                         </Dialog>
                         <CustomButton
@@ -187,9 +185,8 @@ export default function CalendarLayout({ children }: { children: ReactNode }) {
                     </div>
                     <div>
                         {calendarView === "Month" ? (
-                            <p className="text-center md:text-start">{`${
-                                months[month ?? currentMonth]
-                            } ${year ?? currentYear}`}</p>
+                            <p className="text-center md:text-start">{`${months[month ?? currentMonth]
+                                } ${year ?? currentYear}`}</p>
                         ) : (
                             <p>{yearView ?? currentYear}</p>
                         )}
@@ -199,11 +196,11 @@ export default function CalendarLayout({ children }: { children: ReactNode }) {
                     <div className="md:ml-2 md:px-4 py-2">
                         {calendarView === "Month"
                             ? monthViewTotal && (
-                                  <p>Total capital change: {monthViewTotal}</p>
-                              )
+                                <p>Total capital change: {monthViewTotal}</p>
+                            )
                             : yearViewTotal && (
-                                  <p>Total capital change: {yearViewTotal}</p>
-                              )}
+                                <p>Total capital change: {yearViewTotal}</p>
+                            )}
                     </div>
                     <Select
                         value={calendarView}

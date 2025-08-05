@@ -1,4 +1,5 @@
 import React from "react";
+import { LiaHandPointer } from "react-icons/lia";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 export const FollowedStrategyPie = ({ percentage = 65 }) => {
@@ -12,7 +13,7 @@ export const FollowedStrategyPie = ({ percentage = 65 }) => {
     return (
         <div className="h-8 flex items-center justify-center relative">
             <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
+                <PieChart >
                     <Pie
                         data={data}
                         cx="50%"
@@ -22,6 +23,7 @@ export const FollowedStrategyPie = ({ percentage = 65 }) => {
                         innerRadius={11}
                         outerRadius={16}
                         paddingAngle={0}
+
                         dataKey="value"
                         strokeWidth={0}>
                         {data.map((entry, index) => (
@@ -32,13 +34,19 @@ export const FollowedStrategyPie = ({ percentage = 65 }) => {
                         ))}
                     </Pie>
                 </PieChart>
+
             </ResponsiveContainer>
 
+            {/* Icon in the center */}
+
             {/* Percentage text in the center */}
-            {/* <div className="absolute inset-0 flex items-center justify-center">
+            <div className="absolute inset-0 flex items-center justify-center cursor-pointer">
+
+            </div>
+            {/* <div className="absolute inset-0 flex items-center justify-center cursor-pointer">
                 <div className="text-center">
-                    <span className="text-[0.7rem] font-bold">
-                        {percentage}%
+                    <span className="text-[0.6rem] font-bold">
+                        {Math.round(percentage)}%
                     </span>
                 </div>
             </div> */}
