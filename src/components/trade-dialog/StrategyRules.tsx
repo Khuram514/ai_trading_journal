@@ -1,6 +1,7 @@
 "use client";
 
 import { Strategy } from "@/types/strategies.types";
+import { Rule } from "@/types/dbSchema.types";
 import {
     Table,
     TableHeader,
@@ -21,8 +22,8 @@ interface StrategyRulesProps {
     strategy: Strategy;
     checkedOpenRules: string[];
     checkedCloseRules: string[];
-    onOpenRuleToggle: (ruleId: string, rule: any) => void;
-    onCloseRuleToggle: (ruleId: string, rule: any) => void;
+    onOpenRuleToggle: (ruleId: string, rule: Rule) => void;
+    onCloseRuleToggle: (ruleId: string, rule: Rule) => void;
 }
 
 export const StrategyRules = ({

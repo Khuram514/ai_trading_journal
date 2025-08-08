@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 
 import { setIsDialogOpen } from "@/redux/slices/calendarSlice";
-import { ArrowDown, ArrowUp, DollarSign, Layers } from "lucide-react";
+import { ArrowDown, ArrowUp, DollarSign } from "lucide-react";
 import { TradeDialog } from "../trade-dialog";
 
 export default function MonthView() {

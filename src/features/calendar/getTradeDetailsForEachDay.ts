@@ -11,7 +11,7 @@ export function getTradeDetailsForEachDay(data: Trades[]): {
             trade
         ) => {
             const closeDate = new Date(trade.closeDate);
-            let dateKey = closeDate
+            const dateKey = closeDate
                 .toLocaleDateString("en-GB")
                 .split("/")
                 .join("-");

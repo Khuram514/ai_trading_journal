@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { Rule } from "@/types/dbSchema.types";
 
 const ruleSchema = z.object({
     id: z.string(),

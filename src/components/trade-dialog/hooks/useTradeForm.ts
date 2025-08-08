@@ -80,12 +80,15 @@ export const useTradeForm = ({ editMode = false, existingTrade, day }: UseTradeF
     });
 
     // Helper functions for rule checkbox handling
-    const handleOpenRuleToggle = (ruleId: string, rule: any) => {
+    const handleOpenRuleToggle = (ruleId: string, rule: unknown) => {
         const updatedCheckedRules = checkedOpenRules.includes(ruleId)
             ? checkedOpenRules.filter(id => id !== ruleId)
             : [...checkedOpenRules, ruleId];
 
         setCheckedOpenRules(updatedCheckedRules);
+
+        // Mark parameter as intentionally unused
+        void rule;
 
         const selectedStrategy = localStrategies.find(s => s.id === selectedStrategyId);
         if (selectedStrategy) {
@@ -96,12 +99,15 @@ export const useTradeForm = ({ editMode = false, existingTrade, day }: UseTradeF
         }
     };
 
-    const handleCloseRuleToggle = (ruleId: string, rule: any) => {
+    const handleCloseRuleToggle = (ruleId: string, rule: unknown) => {
         const updatedCheckedRules = checkedCloseRules.includes(ruleId)
             ? checkedCloseRules.filter(id => id !== ruleId)
             : [...checkedCloseRules, ruleId];
 
         setCheckedCloseRules(updatedCheckedRules);
+
+        // Mark parameter as intentionally unused
+        void rule;
 
         const selectedStrategy = localStrategies.find(s => s.id === selectedStrategyId);
         if (selectedStrategy) {
@@ -220,7 +226,7 @@ export const useTradeForm = ({ editMode = false, existingTrade, day }: UseTradeF
             // Close dialog
             const dayKey = day !== undefined ? day.format("DD-MM-YYYY") : "any";
             dispatch(setIsDialogOpen({ key: dayKey, value: false }));
-        } catch (error) {
+        } catch {
             toast.error("An unexpected error occurred!");
         } finally {
             setSubmittingTrade(false);

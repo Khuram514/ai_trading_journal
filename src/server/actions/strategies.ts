@@ -6,7 +6,6 @@ import { Rule } from "@/types/dbSchema.types";
 import {
     DeleteStrategyFromDBResult,
     GetStrategiesResult,
-    Strategy,
 } from "@/types/strategies.types";
 import { auth } from "@clerk/nextjs/server";
 import { desc, eq } from "drizzle-orm";
@@ -28,7 +27,7 @@ export async function saveStrategy({
     if (userIdFromAuth !== userId) return null;
 
     try {
-        const result = await db.insert(StrategyTable).values({
+        await db.insert(StrategyTable).values({
             userId,
             id,
             openPositionRules,

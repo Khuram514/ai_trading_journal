@@ -18,7 +18,6 @@ import {
     DialogContent,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from "@/components/ui/dialog";
 import { sortTrades } from "@/features/history/sortTrades";
 import { useAppSelector } from "@/redux/store";

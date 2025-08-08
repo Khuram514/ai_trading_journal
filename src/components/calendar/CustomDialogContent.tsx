@@ -83,7 +83,7 @@ export default function CustomDialogContent({
     const dispatch = useAppDispatch();
 
     // Helper functions for rule checkbox handling
-    const handleOpenRuleToggle = (ruleId: string, rule: any) => {
+    const handleOpenRuleToggle = (ruleId: string) => {
         const updatedCheckedRules = checkedOpenRules.includes(ruleId)
             ? checkedOpenRules.filter(id => id !== ruleId)
             : [...checkedOpenRules, ruleId];
@@ -99,7 +99,7 @@ export default function CustomDialogContent({
         }
     };
 
-    const handleCloseRuleToggle = (ruleId: string, rule: any) => {
+    const handleCloseRuleToggle = (ruleId: string) => {
         const updatedCheckedRules = checkedCloseRules.includes(ruleId)
             ? checkedCloseRules.filter(id => id !== ruleId)
             : [...checkedCloseRules, ruleId];
@@ -627,7 +627,7 @@ export default function CustomDialogContent({
                                                         <TableCell className="w-[5%]">
                                                             <Checkbox
                                                                 checked={checkedOpenRules.includes(rule.id)}
-                                                                onCheckedChange={() => handleOpenRuleToggle(rule.id, rule)}
+                                                                onCheckedChange={() => handleOpenRuleToggle(rule.id)}
                                                             />
                                                         </TableCell>
                                                         <TableCell className="w-[70%]">
@@ -667,7 +667,7 @@ export default function CustomDialogContent({
                                                         <TableCell className="w-[5%]">
                                                             <Checkbox
                                                                 checked={checkedCloseRules.includes(rule.id)}
-                                                                onCheckedChange={() => handleCloseRuleToggle(rule.id, rule)}
+                                                                onCheckedChange={() => handleCloseRuleToggle(rule.id)}
                                                             />
                                                         </TableCell>
                                                         <TableCell className="w-[70%]">

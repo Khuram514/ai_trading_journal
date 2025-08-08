@@ -5,6 +5,7 @@ import { z } from "zod";
 
 import { newTradeFormSchema } from "@/zodSchema/schema";
 import { Strategy } from "@/types/strategies.types";
+import { Rule } from "@/types/dbSchema.types";
 import { Label } from "../ui/label";
 import {
     Select,
@@ -23,8 +24,8 @@ interface StrategyTabProps {
     checkedOpenRules: string[];
     checkedCloseRules: string[];
     onStrategyChange: (value: string) => void;
-    onOpenRuleToggle: (ruleId: string, rule: any) => void;
-    onCloseRuleToggle: (ruleId: string, rule: any) => void;
+    onOpenRuleToggle: (ruleId: string, rule: Rule) => void;
+    onCloseRuleToggle: (ruleId: string, rule: Rule) => void;
 }
 
 export const StrategyTab = ({

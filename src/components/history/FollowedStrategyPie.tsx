@@ -1,5 +1,4 @@
 import React from "react";
-import { LiaHandPointer } from "react-icons/lia";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 export const FollowedStrategyPie = ({ percentage = 65 }) => {
