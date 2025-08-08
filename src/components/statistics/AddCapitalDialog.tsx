@@ -8,11 +8,11 @@ import {
     DialogHeader,
     DialogTitle,
     DialogFooter,
+    DialogDescription,
 } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { CustomButton } from "../CustomButton";
 import { CirclePlus } from "lucide-react";
-import { DialogDescription } from "@radix-ui/react-dialog";
 import { useForm } from "react-hook-form";
 import { addCapitalFormSchema } from "@/zodSchema/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -62,12 +62,12 @@ export default function AddCapitalDialog() {
             <DialogContent className="sm:max-w-[425px]">
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <DialogHeader>
-                        <DialogTitle className="text-3xl md:mb-3">
+                        <DialogTitle className="text-lg">
                             Add / Change capital.
                         </DialogTitle>
-                        <DialogDescription className="text-zinc-500">
+                        <DialogDescription>
                             If you add capital you will be able to track your
-                            results.
+                            results and get AI reports.
                         </DialogDescription>
                     </DialogHeader>
                     <div className="flex flex-col gap-2 py-4">
@@ -86,7 +86,7 @@ export default function AddCapitalDialog() {
                         />
                     </div>
                     <DialogFooter>
-                        <CustomButton isBlack type="submit">
+                        <CustomButton isBlack type="submit" className="w-full">
                             Save changes
                         </CustomButton>
                     </DialogFooter>

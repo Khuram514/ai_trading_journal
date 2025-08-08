@@ -39,6 +39,28 @@ export async function getAllTradeRecords(): Promise<Trades[]> {
     return [...processedData].reverse();
 }
 
+export async function updateTradeRecord(
+    unsafeData: z.infer<typeof newTradeFormSchema>,
+    tradeId: string
+): Promise<{ error: boolean } | undefined> {
+    const { userId } = await auth();
+    const { success, data } = newTradeFormSchema.safeParse(unsafeData);
+    if (!success || userId == null) {
+        return { error: true };
+    }
+
+    try {
+        await db
+            .update(TradeTable)
+            .set({ ...data })
+            .where(eq(TradeTable.id, tradeId));
+    } catch (err) {
+        console.log(err);
+        return { error: true };
+    }
+    return;
+}
+
 export async function deleteTradeRecord(
     recordId: string
 ): Promise<{ error: boolean } | undefined> {

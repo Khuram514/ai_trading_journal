@@ -6,6 +6,14 @@ type documentState = {
     monthViewSummary: Record<string, number>;
     yearViewSummary: Record<string, number>;
     totalOfParticularYearSummary: Record<string, number>;
+    tradeDetailsForEachDay: Record<
+        string,
+        {
+            result: number;
+            win: number;
+            lost: number;
+        }
+    >;
 };
 
 const initialState: documentState = {
@@ -13,6 +21,7 @@ const initialState: documentState = {
     monthViewSummary: {},
     yearViewSummary: {},
     totalOfParticularYearSummary: {},
+    tradeDetailsForEachDay: {},
 };
 
 const tradeRecordsSlice = createSlice({
@@ -53,6 +62,16 @@ const tradeRecordsSlice = createSlice({
                 state.listOfTrades = state.listOfTrades.filter(
                     (trade) => trade.id !== action.payload
                 );
+            }
+        },
+        updateTradeInList: (state, action) => {
+            if (state.listOfTrades !== null) {
+                const index = state.listOfTrades.findIndex(
+                    (trade) => trade.id === action.payload.id
+                );
+                if (index !== -1) {
+                    state.listOfTrades[index] = action.payload;
+                }
             }
         },
         setInitialMonthViewSummary: (state, action) => {
@@ -103,6 +122,33 @@ const tradeRecordsSlice = createSlice({
                 delete state.totalOfParticularYearSummary[year];
             }
         },
+        setTradeDetailsForEachDay: (state, action) => {
+            state.tradeDetailsForEachDay = action.payload;
+        },
+        updateTradeDetailsForEachDay: (state, action) => {
+            const { result, date, value } = action.payload;
+
+            if (state.tradeDetailsForEachDay[date]) {
+                state.tradeDetailsForEachDay[date] = {
+                    result: (state.tradeDetailsForEachDay[date].result +=
+                        value),
+                    win:
+                        result >= 0
+                            ? (state.tradeDetailsForEachDay[date].win += value)
+                            : state.tradeDetailsForEachDay[date].win,
+                    lost:
+                        result < 0
+                            ? (state.tradeDetailsForEachDay[date].lost += value)
+                            : state.tradeDetailsForEachDay[date].lost,
+                };
+            } else {
+                state.tradeDetailsForEachDay[date] = {
+                    result: 1,
+                    win: result >= 0 ? 1 : 0,
+                    lost: result < 0 ? 1 : 0,
+                };
+            }
+        },
     },
 });
 
@@ -110,12 +156,15 @@ export const {
     setListOfTrades,
     updateListOfTrades,
     removeRecordFromListOfTrades,
+    updateTradeInList,
     setInitialMonthViewSummary,
     setMonthViewSummary,
     setInitialYearViewSummary,
     setYearViewSummary,
     setInitialTotalOfParticularYearSummary,
     setTotalOfParticularYearSummary,
+    setTradeDetailsForEachDay,
+    updateTradeDetailsForEachDay,
 } = tradeRecordsSlice.actions;
 
 export default tradeRecordsSlice.reducer;

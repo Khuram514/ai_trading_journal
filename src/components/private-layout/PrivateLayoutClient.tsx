@@ -12,8 +12,11 @@ import {
     setInitialTotalOfParticularYearSummary,
     setInitialYearViewSummary,
     setListOfTrades,
+    setTradeDetailsForEachDay,
 } from "@/redux/slices/tradeRecordsSlice";
+import { setStrategyState } from "@/redux/slices/strategySlice";
 import { Trades } from "@/types";
+import { Strategy } from "@/types/strategies.types";
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -25,21 +28,37 @@ import {
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 import { FaGithub } from "react-icons/fa6";
+import { BsJournalCheck } from "react-icons/bs";
+import { LuChartSpline } from "react-icons/lu";
+import { VscHistory } from "react-icons/vsc";
+import { PiStrategyLight } from "react-icons/pi";
+import { RiMoneyDollarCircleLine } from "react-icons/ri";
+import { VscFolderLibrary } from "react-icons/vsc";
 
 interface PrivateLayoutClientProps {
     children: ReactNode;
     initialTradeRecords: Trades[];
+    initialStrategies: Strategy[];
     initialMonthViewTrades: { [key: string]: number };
     initialYearViewTrades: { [key: string]: number };
     initialParticularYearTrades: { [key: string]: number };
+    initialTradeDetailsForEachDay: {
+        [key: string]: {
+            result: number;
+            win: number;
+            lost: number;
+        };
+    };
 }
 
 export default function PrivateLayoutClient({
     children,
     initialTradeRecords,
+    initialStrategies,
     initialMonthViewTrades,
     initialYearViewTrades,
     initialParticularYearTrades,
+    initialTradeDetailsForEachDay,
 }: PrivateLayoutClientProps) {
     const { user } = useUser();
     const dispatch = useAppDispatch();
@@ -50,6 +69,11 @@ export default function PrivateLayoutClient({
 
         if (initialTradeRecords?.length > 0) {
             dispatch(setListOfTrades(initialTradeRecords));
+        }
+
+        // Initialize strategies in Redux
+        if (initialStrategies?.length > 0) {
+            dispatch(setStrategyState(initialStrategies));
         }
 
         if (Object.keys(initialMonthViewTrades).length > 0) {
@@ -67,12 +91,17 @@ export default function PrivateLayoutClient({
                 )
             );
         }
+        if (Object.keys(initialTradeDetailsForEachDay).length > 0) {
+            dispatch(setTradeDetailsForEachDay(initialTradeDetailsForEachDay));
+        }
     }, [
         dispatch,
         initialTradeRecords,
+        initialStrategies,
         initialMonthViewTrades,
         initialYearViewTrades,
         initialParticularYearTrades,
+        initialTradeDetailsForEachDay,
     ]);
 
     const getUserDisplayName = () => {
@@ -80,7 +109,7 @@ export default function PrivateLayoutClient({
         return (
             user.firstName ??
             (user.username ?? "").charAt(0).toLocaleUpperCase() +
-                (user.username ?? "").slice(1)
+            (user.username ?? "").slice(1)
         );
     };
 
@@ -114,13 +143,75 @@ export default function PrivateLayoutClient({
                                         Calendar{" "}
                                     </Link>
                                 </NavigationMenuItem>
-                                <NavigationMenuItem className="px-4 py-2 text-[.85rem] text-zinc-700 rounded-md transition-colors hover:bg-zinc-100">
+                                {/* <NavigationMenuItem className="px-4 py-2 text-[.85rem] text-zinc-700 rounded-md transition-colors hover:bg-zinc-100">
                                     <Link href="/private/history">History</Link>
                                 </NavigationMenuItem>
                                 <NavigationMenuItem className="px-4 py-2 text-[.85rem] text-zinc-700 rounded-md transition-colors hover:bg-zinc-100">
                                     <Link href="/private/statistics">
                                         Statistics
                                     </Link>
+                                </NavigationMenuItem> */}
+                                <NavigationMenuItem>
+                                    <NavigationMenuTrigger className="text-[.85rem] text-zinc-700">
+                                        Analytics
+                                    </NavigationMenuTrigger>
+                                    <NavigationMenuContent>
+                                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                                            <Link
+                                                href="/private/history"
+                                                className="hover:bg-zinc-100 px-3 py-2 rounded-md cursor-pointer">
+                                                <div className="flex gap-2 items-center">
+                                                    <VscHistory />
+                                                    <h1>History</h1>
+                                                </div>
+                                                <span className="leading-none text-[.85rem] text-zinc-400">
+                                                    Access your full trading
+                                                    history, make edits or
+                                                    deletions
+                                                </span>
+                                            </Link>
+                                            <Link
+                                                href="/private/strategies"
+                                                className="hover:bg-zinc-100 px-3 py-2 rounded-md cursor-pointer">
+                                                <div className="flex gap-2 items-center">
+                                                    <PiStrategyLight />
+                                                    <h1>Strategies</h1>
+                                                </div>
+                                                <span className="leading-none text-[.85rem] text-zinc-400">
+                                                    Create custom strategies to
+                                                    help you stay in control.
+                                                </span>
+                                            </Link>
+                                            <Link
+                                                href="/private/statistics"
+                                                className="hover:bg-zinc-100 px-3 py-2 rounded-md cursor-pointer">
+                                                <div className="flex gap-2 items-center">
+                                                    <LuChartSpline />
+                                                    <h1>Statistics</h1>
+                                                </div>
+                                                <span className="leading-none text-[.85rem] text-zinc-400">
+                                                    Detailed charts that show
+                                                    your performance
+                                                </span>
+                                            </Link>
+                                            <li className="hover:bg-zinc-100 px-3 py-2 rounded-md">
+                                                <div className="flex gap-4 items-center">
+                                                    <div className="flex gap-2 items-center">
+                                                        <BsJournalCheck />
+                                                        <h1>Journal</h1>
+                                                    </div>
+                                                    <span className="text-[.8rem] bg-gradient-to-r from-emerald-400 to-blue-300 text-transparent bg-clip-text">
+                                                        Coming soon...
+                                                    </span>
+                                                </div>
+                                                <span className="leading-none text-[.85rem] text-zinc-400">
+                                                    Journal your thoughts.
+                                                    Summarize your days, weeks,
+                                                    and months.
+                                                </span>
+                                            </li>
+                                        </ul>
+                                    </NavigationMenuContent>
                                 </NavigationMenuItem>
                                 <NavigationMenuItem>
                                     <NavigationMenuTrigger className="text-[.85rem] text-zinc-700">
@@ -145,7 +236,10 @@ export default function PrivateLayoutClient({
                                             </li>
                                             <li className="hover:bg-zinc-100 px-3 py-2 rounded-md cursor-pointer">
                                                 <Link href="/private/tradeAI">
-                                                    <h1>Trade AI</h1>
+                                                    <div className="flex gap-2 items-center">
+                                                        <SiClaude className="text-[#da7756]" />
+                                                        <h1>Trade AI</h1>
+                                                    </div>
                                                     <span className="leading-none text-[.85rem] text-zinc-400">
                                                         Generate an AI-powered
                                                         report.
@@ -154,16 +248,21 @@ export default function PrivateLayoutClient({
                                             </li>
                                             <li className="hover:bg-zinc-100 px-3 py-2 rounded-md cursor-pointer">
                                                 <Link href="/private/tokens">
-                                                    <h1>Tokens</h1>
+                                                    <div className="flex gap-2 items-center">
+                                                        <RiMoneyDollarCircleLine />
+                                                        <h1>Tokens</h1>
+                                                    </div>
                                                     <span className="leading-none text-[.85rem] text-zinc-400">
-                                                        Get more tokens to boost
-                                                        your results.
+                                                        Get more tokens.
                                                     </span>
                                                 </Link>
                                             </li>
                                             <li className="hover:bg-zinc-100 px-3 py-2 rounded-md cursor-pointer">
                                                 <Link href="/private/reports-history">
-                                                    <h1>Archive</h1>
+                                                    <div className="flex gap-2 items-center">
+                                                        <VscFolderLibrary />
+                                                        <h1>Archive</h1>
+                                                    </div>
                                                     <span className="leading-none text-[.85rem] text-zinc-400">
                                                         View the history of your
                                                         reports.
@@ -195,16 +294,10 @@ export default function PrivateLayoutClient({
                                             </Link>
                                             <li className="hover:bg-zinc-100 px-3 py-2 rounded-md">
                                                 <div className="flex gap-4 items-center">
-                                                    <h1>Championship</h1>
-                                                    <span className="text-[.8rem] bg-gradient-to-r from-emerald-400 to-blue-300 text-transparent bg-clip-text">
-                                                        Coming soon...
-                                                    </span>
+                                                    <h1>Feedback</h1>
                                                 </div>
                                                 <span className="leading-none text-[.85rem] text-zinc-400">
-                                                    You have a demo account and
-                                                    1 week to prove that
-                                                    you&apos;re the best trader
-                                                    in the competition.
+                                                    Help us improve the app.
                                                 </span>
                                             </li>
                                             <Link

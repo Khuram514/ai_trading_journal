@@ -1,3 +1,5 @@
+import { Rule } from "./dbSchema.types";
+
 export type Trades = {
     notes: string | undefined;
     id: string;
@@ -9,6 +11,11 @@ export type Trades = {
     closeTime: string;
     deposit: string;
     instrumentName: string;
+    rating: number | null;
+    strategyId?: string | null;
+    strategyName?: string;
+    appliedOpenRules?: Rule[] | null;
+    appliedCloseRules?: Rule[] | null;
 };
 
 export type SortByType =

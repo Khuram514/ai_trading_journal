@@ -143,7 +143,7 @@ export default function Page() {
                 totalPages > 1 ? "justify-between" : "justify-start"
             } gap-8 2xl:gap-20 py-6 2xl:py-16 px-4 md:px-16 2xl:px-36 2xl:mx-[64px] h-full`}>
             <div className="flex max-md:flex-col gap-4 md:gap-0 items-center justify-between">
-                <span className="text-zinc-500 text-[.9rem] px-4 py-2 border border-gray-200 rounded-lg">
+                <span className="text-zinc-500 text-[.9rem] px-4 py-2 border border-gray-200 rounded-lg ">
                     View the history of your saved reports. You can ask the AI
                     more questions by picking up where you left off.
                 </span>
@@ -186,20 +186,20 @@ export default function Page() {
                 {paginatedReports ? (
                     paginatedReports?.map((report) => (
                         <Link
-                            className="relative max-h-[170px] col-span-3 lg:col-span-1 row-span-1 border border-gray-200 md:hover:border-gray-400 duration-300 rounded-2xl py-4 px-6 flex flex-col gap-2 shadow-md overflow-hidden"
+                            className="relative max-h-[170px] col-span-3 lg:col-span-1 row-span-1 border border-gray-200 md:hover:border-gray-400 duration-300 rounded-lg py-4 px-6 flex flex-col gap-2 shadow-md overflow-hidden"
                             href={`/private/reports-history/${report.reportId}`}
                             key={report.reportId}>
                             <div className="pointer-events-none absolute -inset-px z-2 overflow-hidden">
-                                <div className="absolute right-[1rem] top-0 size-[7rem] -translate-y-[20%] translate-x-1/3 transform-gpu rounded-full bg-[radial-gradient(theme(colors.sky.300),transparent)] opacity-10 blur-lg"></div>
-                                <div className="absolute right-[15rem] top-0 size-[10rem] -translate-y-[50%] translate-x-1/3 transform-gpu rounded-full bg-[radial-gradient(theme(colors.emerald.300),transparent)] opacity-10 blur-lg"></div>
-                                <div className="absolute right-[10rem] top-0 size-[12rem] translate-y-[40%] translate-x-1/3 transform-gpu rounded-full bg-[radial-gradient(theme(colors.orange.400),transparent)] opacity-10 blur-lg"></div>
+                                <div className="absolute right-[1rem] top-0 size-[7rem] -translate-y-[20%] translate-x-1/3 transform-gpu rounded-full bg-[radial-gradient(theme(colors.sky.300),transparent)] opacity-5 blur-lg"></div>
+                                <div className="absolute right-[15rem] top-0 size-[10rem] -translate-y-[50%] translate-x-1/3 transform-gpu rounded-full bg-[radial-gradient(theme(colors.emerald.300),transparent)] opacity-5 blur-lg"></div>
+                                <div className="absolute right-[10rem] top-0 size-[12rem] translate-y-[40%] translate-x-1/3 transform-gpu rounded-full bg-[radial-gradient(theme(colors.orange.400),transparent)] opacity-5 blur-lg"></div>
                             </div>
                             <Image
                                 src="/logo-watermark.png"
                                 height={270}
                                 width={270}
                                 alt="logo"
-                                className="absolute opacity-10 right-0 top-0"
+                                className="absolute opacity-5 right-0 top-0"
                             />
                             <div className="flex justify-between items-center">
                                 <div className="flex gap-4 items-center">
@@ -264,8 +264,8 @@ export default function Page() {
                     </div>
                 )}
                 {paginatedReports?.length === 0 && (
-                    <div className="min-h-[400px] col-span-3 row-span-3 flex items-center justify-center md:text-[1.5rem] text-zinc-500">
-                        Your reports archive is empty
+                    <div className="min-h-[400px] col-span-3 row-span-3 flex items-center justify-center text-zinc-500">
+                        Your reports archive is empty. Save your first report!
                     </div>
                 )}
             </div>

@@ -9,12 +9,13 @@
     --claude: #da7756;
     --claudeBackground: rgba(218, 119, 86, 0.1);
     --buy: #76b562;
-    --buyOpacity: rgba(118, 181, 98, 0.3);
+    --buyOpacity: rgba(118, 181, 98, 0.5);
     --sell: #e96a5e;
-    --sellOpacity: rgba(233, 106, 94, 0.3);
+    --sellOpacity: rgba(233, 106, 94, 0.5);
     --customBlue: #9999ff;
     --customOrange: #e16540;
     --customYellow: #fac666;
+    --shadow-color: rgba(30, 45, 82, 0.06);
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -39,12 +40,10 @@ p {
 }
 
 .orange-background {
-    background: linear-gradient(
-        to right,
-        rgb(253, 90, 36),
-        rgb(253, 90, 36),
-        rgb(255, 183, 58)
-    );
+    background: linear-gradient(to right,
+            rgb(253, 90, 36),
+            rgb(253, 90, 36),
+            rgb(255, 183, 58));
     background-clip: text;
     color: transparent;
 }
@@ -53,12 +52,10 @@ mark {
     border-radius: 0.8em 0.3em;
     background: transparent;
     /* background-color: rgb(225, 103, 65, 0.8); */
-    background-image: linear-gradient(
-        to right,
-        rgb(253, 90, 36, 0.6),
-        rgb(253, 90, 36, 0.8),
-        rgb(255, 183, 58, 0.6)
-    );
+    background-image: linear-gradient(to right,
+            rgb(253, 90, 36, 0.6),
+            rgb(253, 90, 36, 0.8),
+            rgb(255, 183, 58, 0.6));
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;
     transform: translateY(120%);
@@ -83,11 +80,9 @@ mark::after {
 }
 
 .gradient {
-    background: linear-gradient(
-        180deg,
-        rgba(49, 45, 43, 0.9) 0%,
-        rgba(32, 30, 29, 0.9) 100%
-    );
+    background: linear-gradient(180deg,
+            rgba(49, 45, 43, 0.9) 0%,
+            rgba(32, 30, 29, 0.9) 100%);
     background-color: black;
 }
 
@@ -101,30 +96,29 @@ mark::after {
     height: 100%;
     pointer-events: none;
     z-index: 9999;
-    background: linear-gradient(
-        to right,
-        rgba(255, 255, 255, 1) 15%,
+    background: linear-gradient(to right,
+            rgba(255, 255, 255, 1) 15%,
 
-        rgba(255, 255, 255, 0.2) 25%,
-        rgba(255, 255, 255, 0) 50%,
-        rgba(255, 255, 255, 0.2) 75%,
+            rgba(255, 255, 255, 0.2) 25%,
+            rgba(255, 255, 255, 0) 50%,
+            rgba(255, 255, 255, 0.2) 75%,
 
-        rgba(255, 255, 255, 1) 85%
-    );
+            rgba(255, 255, 255, 1) 85%);
 }
 
 .animate-slide-right {
-    animation: slideRight 40s ease-in-out infinite alternate;
+    animation: slideRight 30s ease-in-out infinite alternate;
 }
 
 .animate-slide-left {
-    animation: slideLeft 40s ease-in-out infinite alternate;
+    animation: slideLeft 30s ease-in-out infinite alternate;
 }
 
 @keyframes slideRight {
     from {
         transform: translateX(-8rem);
     }
+
     to {
         transform: translateX(8rem);
     }
@@ -134,6 +128,7 @@ mark::after {
     from {
         transform: translateX(8rem);
     }
+
     to {
         transform: translateX(-8rem);
     }
@@ -146,11 +141,11 @@ mark::after {
 .button-shadow {
     cursor: pointer;
     background-color: rgb(58, 53, 50);
-    box-shadow: rgba(45, 32, 17, 0.12) 0px 1px 1px 0px,
-        rgba(45, 32, 17, 0.24) 0px 1.50259px 3px 0px,
-        rgba(45, 32, 17, 0.32) 0px 4px 8px 0px,
-        rgba(45, 32, 17, 0.4) 0px 12px 24px -6px,
-        rgb(0, 0, 0) 0px -0.456353px 0px 0px inset;
+    box-shadow: rgba(45, 32, 17, 0.12) 0px 0.5px 0.5px 0px,
+        rgba(45, 32, 17, 0.24) 0px 1px 2px 0px,
+        rgba(45, 32, 17, 0.32) 0px 2px 4px 0px,
+        rgba(45, 32, 17, 0.4) 0px 6px 12px -3px,
+        rgb(0, 0, 0) 0px -0.2px 0px 0px inset;
 }
 
 .button-shadow-white {
@@ -162,10 +157,11 @@ mark::after {
 
 @media (min-width: 768px) {
     .button-shadow:hover {
-        background-color: #413c3a;
-        box-shadow: 0 1px 1px #2d20111f, 0 1.50259px 3px #2d20113d,
-            0 4px 8px #2d201152, 0 12px 24px -6px #2d201166, 0 -2px #000 inset;
+        background-color: #4c4746;
+        box-shadow: 0 0.5px 0.5px #2d20111f, 0 1px 2px #2d20113d,
+            0 2px 4px #2d201152, 0 6px 12px -3px #2d201166, 0 -0.2px #000 inset;
     }
+
     .button-shadow-white:hover {
         cursor: pointer;
         background-color: var(--primary);
@@ -202,12 +198,10 @@ mark::after {
     transform: translate(8px);
     transition: transform 0.45s cubic-bezier(0.6, 0.6, 0, 1),
         opacity 0.45s cubic-bezier(0.6, 0.6, 0, 1);
-    background: linear-gradient(
-            270deg,
+    background: linear-gradient(270deg,
             #ebe7e0 0%,
             #ebe7e0 49.89%,
-            #fbfaf9 53.59%
-        ),
+            #fbfaf9 53.59%),
         #fbfaf9;
     box-shadow: -1px 1px 1px #ffffff52 inset;
 }
@@ -224,12 +218,10 @@ mark::after {
     transform: translate(0px);
     transition: transform 0.45s cubic-bezier(0.6, 0.6, 0, 1),
         opacity 0.45s cubic-bezier(0.6, 0.6, 0, 1);
-    background: linear-gradient(
-            90deg,
+    background: linear-gradient(90deg,
             #ebe7e0 0%,
             #ebe7e0 49.89%,
-            #fbfaf9 53.59%
-        ),
+            #fbfaf9 53.59%),
         #fbfaf9;
     box-shadow: -1px 1px 1px #ffffff52 inset;
 }
@@ -261,16 +253,25 @@ mark::after {
 }
 
 @keyframes bounce {
+
     0%,
     100% {
         transform: translateY(0);
     }
+
     50% {
         transform: translateY(-10px);
     }
 }
 
 /* End of Loading Section */
+
+/* Calendar Section */
+.calendar-banner-shadow {
+    box-shadow: var(--shadow-color) 0px 0px 0.4px 0.4px, rgba(30, 45, 82, 0.2) 0.4px 0.4px 0.4px 0px;
+}
+
+/* End of Calendar Section */
 
 /* Mobile navigation */
 
@@ -295,6 +296,10 @@ mark::after {
 
 .nav-link {
     @apply hover:bg-darkPrimary py-1 lg:py-3 px-2 lg:px-5 rounded-md cursor-pointer;
+}
+
+.custom-button {
+    @apply px-2 md:px-4 py-2 rounded-md border border-zinc-200 md:hover:bg-neutral-100 shadow-sm;
 }
 
 @layer base {

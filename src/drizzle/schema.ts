@@ -1,3 +1,5 @@
+import { Rule } from "@/types/dbSchema.types";
+import { relations } from "drizzle-orm";
 import {
     boolean,
     index,
@@ -30,14 +32,64 @@ export const TradeTable = pgTable(
         deposit: text("deposit").notNull(),
         result: text("result").notNull(),
         notes: text("notes"),
+        rating: integer("rating").default(0),
+        strategyId: uuid("strategy_id").references(() => StrategyTable.id, {
+            onDelete: "set null",
+            onUpdate: "cascade",
+        }),
+        appliedOpenRules: jsonb("applied_open_rules").$type<Rule[]>(),
+        appliedCloseRules: jsonb("applied_close_rules").$type<Rule[]>(),
     },
     (table) => ({
         userIdCloseDateIndex: index("userIdCloseDateIndex").on(
             table.userId,
             table.closeDate
         ),
+        tradeStrategyIdIndex: index("trade_strategy_id_idx").on(
+            table.strategyId
+        ),
     })
 );
+
+export const StrategyTable = pgTable(
+    "strategies",
+    {
+        id: uuid("id").primaryKey().notNull(),
+        userId: text("userId")
+            .notNull()
+            .references(() => UserTable.id),
+        strategyName: text("strategyName").notNull(),
+        openPositionRules: jsonb("open_position_rules")
+            .$type<Rule[]>()
+            .notNull()
+            .default([]),
+
+        closePositionRules: jsonb("close_position_rules")
+            .$type<Rule[]>()
+            .notNull()
+            .default([]),
+        createdAt: timestamp("created_at", { withTimezone: true })
+            .defaultNow()
+            .notNull(),
+        updatedAt: timestamp("updated_at", { withTimezone: true })
+            .defaultNow()
+            .notNull(),
+    },
+    (table) => ({
+        userIdIndex: index("strategy_user_id_idx").on(table.userId),
+    })
+);
+
+export const StrategyRelations = relations(StrategyTable, ({ many }) => ({
+    trades: many(TradeTable),
+}));
+
+export const TradeRelations = relations(TradeTable, ({ one }) => ({
+    strategy: one(StrategyTable, {
+        fields: [TradeTable.strategyId],
+        references: [StrategyTable.id],
+    }),
+}));
 
 export const ReportsTable = pgTable("reports", {
     id: uuid("id").primaryKey().defaultRandom(),

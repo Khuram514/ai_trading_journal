@@ -71,6 +71,27 @@
       "when": 1743200612877,
       "tag": "0009_fixed_big_bertha",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1747875527853,
+      "tag": "0010_chemical_shotgun",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1748035146345,
+      "tag": "0011_organic_celestials",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1748821535762,
+      "tag": "0012_tired_anita_blake",
+      "breakpoints": true
     }
   ]
 }
