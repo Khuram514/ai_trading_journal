@@ -66,7 +66,7 @@ export default function DeleteStrategyButton({
                         </DialogTitle>
                     </DialogHeader>
                     <p className="text-sm text-zinc-600">
-                        Do you want to delete the strategy "{strategy.strategyName}"?
+                        Do you want to delete the strategy &quot;{strategy.strategyName}&quot;?
                     </p>
                     <div className="flex gap-6 justify-end mt-6">
                         <DialogClose asChild>

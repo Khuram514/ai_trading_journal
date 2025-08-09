@@ -50,7 +50,7 @@ export const StrategyTab = ({
                 </Label>
                 {strategies.length === 0 ? (
                     <div className="rounded-md border border-dashed border-zinc-300 p-3 text-sm text-zinc-600">
-                        You don't have any strategies yet.
+                        You don&quot;t have any strategies yet.
                     </div>
                 ) : (
                     <Controller
