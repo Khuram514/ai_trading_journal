@@ -3,10 +3,12 @@ import { getMonth } from "@/features/calendar/getTime";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import dayjs from "dayjs";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card";
 
 import { setIsDialogOpen } from "@/redux/slices/calendarSlice";
 import { ArrowDown, ArrowUp, DollarSign } from "lucide-react";
 import { TradeDialog } from "../trade-dialog";
+import { LiaHandPointer } from "react-icons/lia";
 
 export default function MonthView() {
     const { month, year } = useAppSelector((state) => state.calendar.monthView);
@@ -18,6 +20,7 @@ export default function MonthView() {
     const tradeDetailsForEachDay = useAppSelector(
         (state) => state.tradeRecords.tradeDetailsForEachDay
     );
+    const allTrades = useAppSelector((state) => state.tradeRecords.listOfTrades) ?? [];
 
     const currentMonth = getMonth(month, year);
 
@@ -94,53 +97,52 @@ export default function MonthView() {
                                         {tradeDetailsForEachDay[
                                             day.format("DD-MM-YYYY")
                                         ] !== undefined && (
-                                                <div
-                                                    className={`absolute bottom-2 left-1/2 -translate-x-1/2 hidden md:flex gap-4 items-center justify-start py-1 px-3 2xl:px-6 rounded-full calendar-banner-shadow bg-white/70
-                                                `}>
-                                                    <div className="text-[.8rem] flex items-center gap-2">
-                                                        <DollarSign
-                                                            size={12}
-                                                            className="text-zinc-500"
-                                                        />
-                                                        {/* {
-                                                        tradeDetailsForEachDay[
-                                                            day.format(
-                                                                "DD-MM-YYYY"
-                                                            )
-                                                        ].result
-                                                    } */}
-                                                        {trades[day.format("DD-MM-YYYY")] !== undefined
-                                                            ? trades[day.format("DD-MM-YYYY")].toLocaleString("de-DE")
-                                                            : "0"
-                                                        }
-                                                    </div>
-                                                    <div className="text-[.8rem] flex items-center gap-2">
-                                                        <ArrowUp
-                                                            size={12}
-                                                            className="text-zinc-500"
-                                                        />
-                                                        {
-                                                            tradeDetailsForEachDay[
-                                                                day.format(
-                                                                    "DD-MM-YYYY"
-                                                                )
-                                                            ].win
-                                                        }
-                                                    </div>
-                                                    <div className="text-[.8rem] flex items-center gap-2">
-                                                        <ArrowDown
-                                                            size={12}
-                                                            className="text-zinc-500"
-                                                        />
-                                                        {
-                                                            tradeDetailsForEachDay[
-                                                                day.format(
-                                                                    "DD-MM-YYYY"
-                                                                )
-                                                            ].lost
-                                                        }
-                                                    </div>
-                                                </div>
+                                                <HoverCard>
+                                                    <HoverCardTrigger asChild>
+                                                        <div
+                                                            className={`absolute bottom-2 left-1/2 -translate-x-1/2 hidden md:flex gap-4 items-center justify-start py-1 px-3 2xl:px-6 rounded-full calendar-banner-shadow bg-white/70`}
+                                                        >
+                                                            <LiaHandPointer className="text-[.9rem]" />
+                                                            <div className="text-[.8rem] flex items-center gap-2">
+                                                                <DollarSign size={12} className="text-zinc-500" />
+                                                                {trades[day.format("DD-MM-YYYY")] !== undefined
+                                                                    ? trades[day.format("DD-MM-YYYY")].toLocaleString("de-DE")
+                                                                    : "0"}
+                                                            </div>
+                                                            <div className="text-[.8rem] flex items-center gap-2">
+                                                                <ArrowUp size={12} className="text-zinc-500" />
+                                                                {tradeDetailsForEachDay[day.format("DD-MM-YYYY")].win}
+                                                            </div>
+                                                            <div className="text-[.8rem] flex items-center gap-2">
+                                                                <ArrowDown size={12} className="text-zinc-500" />
+                                                                {tradeDetailsForEachDay[day.format("DD-MM-YYYY")].lost}
+                                                            </div>
+                                                        </div>
+                                                    </HoverCardTrigger>
+                                                    <HoverCardContent className="w-[420px]">
+                                                        <div className="mb-2 text-xs text-zinc-500">
+                                                            Trades on {day.format("ddd, DD MMM YYYY")}
+                                                        </div>
+                                                        <div className="space-y-2 max-h-60 overflow-y-auto">
+                                                            {allTrades.filter(t => dayjs(t.closeDate).format("DD-MM-YYYY") === day.format("DD-MM-YYYY")).map((t) => (
+                                                                <div key={t.id} className="flex items-center justify-between px-3 py-2 [&:not(:first-child)]:border-t border-zinc-200">
+                                                                    <div className="flex items-center gap-3">
+                                                                        <span className={`text-xs px-2 py-0.5 rounded-md text-white ${t.positionType === "sell" ? "bg-sell" : "bg-buy"}`}>{t.positionType}</span>
+                                                                        <span className="text-sm text-zinc-700">{t.instrumentName}</span>
+                                                                    </div>
+                                                                    <div className="text-sm">
+                                                                        <span className="text-zinc-500 text-xs mr-1">Deposit:</span>
+                                                                        {Number(t.deposit).toLocaleString("de-DE")}
+                                                                    </div>
+                                                                    <div className={`text-sm ${Number(t.result) >= 0 ? "text-buy" : "text-sell"}`}>
+                                                                        <span className="text-zinc-500 text-xs mr-1">Result:</span>
+                                                                        {Number(t.result).toLocaleString("de-DE")}
+                                                                    </div>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </HoverCardContent>
+                                                </HoverCard>
                                             )}
                                     </div>
                                 </DialogTrigger>

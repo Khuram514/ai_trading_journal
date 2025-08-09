@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdEdit } from "react-icons/md";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import { TradeDialog } from "../trade-dialog";
@@ -12,6 +12,13 @@ interface EditTradeProps {
 
 export default function EditTrade({ trade }: EditTradeProps) {
     const [isOpen, setIsOpen] = useState(false);
+
+    // Close dialog when TradeDialog requests it
+    useEffect(() => {
+        const onClose = () => setIsOpen(false);
+        document.addEventListener("trade-dialog:request-close", onClose);
+        return () => document.removeEventListener("trade-dialog:request-close", onClose);
+    }, []);
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -25,6 +32,7 @@ export default function EditTrade({ trade }: EditTradeProps) {
                     editMode={true}
                     existingTrade={trade}
                     day={undefined}
+                    onRequestClose={() => setIsOpen(false)}
                 />
             </DialogContent>
         </Dialog>

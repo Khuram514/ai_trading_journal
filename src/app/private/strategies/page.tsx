@@ -40,7 +40,9 @@ export default function StrategiesPage() {
     }, [userId]);
 
     if (!userId) return <div>Please sign in</div>;
-    if (!strategies) return <CustomLoading />
+    if (!strategies) return <div className="flex h-full items-center justify-center">
+        <CustomLoading />
+    </div>
 
     if (isGetStrategiesError(strategies)) {
         return <div>Error loading strategies: {strategies.error}</div>;

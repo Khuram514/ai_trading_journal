@@ -26,9 +26,10 @@ interface UseTradeFormProps {
     editMode?: boolean;
     existingTrade?: Trades;
     day?: dayjs.Dayjs | undefined;
+    onRequestClose?: () => void;
 }
 
-export const useTradeForm = ({ editMode = false, existingTrade, day }: UseTradeFormProps) => {
+export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestClose }: UseTradeFormProps) => {
     // State management
     const [openDate, setOpenDate] = useState<Date>();
     const [closeDate, setCloseDate] = useState<Date>();
@@ -223,9 +224,12 @@ export const useTradeForm = ({ editMode = false, existingTrade, day }: UseTradeF
                 toast.success("A new record has been created!");
             }
 
-            // Close dialog
+            // Close dialog: close calendar dialog via Redux, and optionally parent-controlled dialog via callback
             const dayKey = day !== undefined ? day.format("DD-MM-YYYY") : "any";
             dispatch(setIsDialogOpen({ key: dayKey, value: false }));
+            if (onRequestClose) {
+                onRequestClose();
+            }
         } catch {
             toast.error("An unexpected error occurred!");
         } finally {

@@ -67,8 +67,7 @@ export async function getAllStrategies(
             .where(eq(StrategyTable.userId, userId))
             .orderBy(desc(StrategyTable.createdAt));
 
-        if (!strategies.length) return null;
-
+        // Return success with an empty array when none exist
         return {
             success: true,
             strategies: strategies,

@@ -15,14 +15,21 @@ interface TradeDialogProps {
     editMode?: boolean;
     existingTrade?: Trades;
     day?: dayjs.Dayjs | undefined;
+    onRequestClose?: () => void;
 }
 
 export const TradeDialog = ({
     editMode = false,
     existingTrade,
     day,
+    onRequestClose,
 }: TradeDialogProps) => {
-    const tradeForm = useTradeForm({ editMode, existingTrade, day });
+    const tradeForm = useTradeForm({
+        editMode,
+        existingTrade,
+        day,
+        onRequestClose,
+    });
 
     return (
         <form
