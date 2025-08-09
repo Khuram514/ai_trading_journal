@@ -18,6 +18,7 @@ import {
     DialogContent,
     DialogHeader,
     DialogTitle,
+    DialogClose,
 } from "@/components/ui/dialog";
 import { sortTrades } from "@/features/history/sortTrades";
 import { useAppSelector } from "@/redux/store";
@@ -37,6 +38,7 @@ import { FollowedStrategyPie } from "@/components/history/FollowedStrategyPie";
 import EditTrade from "@/components/history/EditTrade";
 import { useDeleteTrade } from "@/hooks/useDeleteTrade";
 import { StrategyRules } from "@/components/trade-dialog/StrategyRules";
+import { CustomButton } from "@/components/CustomButton";
 
 export default function Page() {
     const [sortedTrades, setSortedTrades] = useState<Trades[]>([]);
@@ -44,6 +46,8 @@ export default function Page() {
     const [startCapital, setStartCapital] = useState<string | null>(null);
     const [strategyDialogOpen, setStrategyDialogOpen] = useState(false);
     const [selectedTrade, setSelectedTrade] = useState<Trades | null>(null);
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [tradeToDelete, setTradeToDelete] = useState<Trades | null>(null);
 
     const trades = useAppSelector((state) => state.tradeRecords.listOfTrades);
     const filteredTrades = useAppSelector(
@@ -306,13 +310,10 @@ export default function Page() {
                                 </TableCell>
                                 <TableCell className="w-[5%] ">
                                     <MdDelete
-                                        onClick={() =>
-                                            handleDeleteTradeRecord(
-                                                trade.id,
-                                                trade.result,
-                                                trade.closeDate
-                                            )
-                                        }
+                                        onClick={() => {
+                                            setTradeToDelete(trade);
+                                            setDeleteDialogOpen(true);
+                                        }}
                                         className="text-[1.2rem] text-sell cursor-pointer w-full"
                                     />
                                 </TableCell>
@@ -347,6 +348,45 @@ export default function Page() {
                             onCloseRuleToggle={() => { }} // Disabled for display-only
                         />
                     )}
+                </DialogContent>
+            </Dialog>
+
+            {/* Delete Trade Confirmation Dialog */}
+            <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+                <DialogContent className="max-w-sm">
+                    <div className="sm:max-w-[380px] flex flex-col justify-between min-h-[120px]">
+                        <DialogHeader className="mb-2">
+                            <DialogTitle className="text-lg">
+                                Delete Trade
+                            </DialogTitle>
+                        </DialogHeader>
+                        <p className="text-sm text-zinc-600">
+                            Do you want to delete this trade{tradeToDelete ? ` "${tradeToDelete.instrumentName}"` : ""}?
+                        </p>
+                        <div className="flex gap-6 justify-end mt-6">
+                            <DialogClose asChild>
+                                <CustomButton isBlack={false}>
+                                    Cancel
+                                </CustomButton>
+                            </DialogClose>
+                            <CustomButton
+                                isBlack
+                                onClick={async () => {
+                                    if (tradeToDelete) {
+                                        await handleDeleteTradeRecord(
+                                            tradeToDelete.id,
+                                            tradeToDelete.result,
+                                            tradeToDelete.closeDate
+                                        );
+                                    }
+                                    setDeleteDialogOpen(false);
+                                    setTradeToDelete(null);
+                                }}
+                            >
+                                Delete
+                            </CustomButton>
+                        </div>
+                    </div>
                 </DialogContent>
             </Dialog>
         </div>
