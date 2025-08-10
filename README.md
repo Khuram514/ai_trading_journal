@@ -1,20 +1,31 @@
 # 🔍 About
-The goal of this project is to help traders and investors improve their results by providing detailed AI reports based on their trading/investing history. Just simply log all your trades to the platform and you will be able to see:
 
-- Advanced algorithms for charts to visualize your results.
-- Latest Claude model to get AI reports, with detailed explanations of what you should fix and which areas you should focus on.
+**TradeJournal** is a free, AI-powered platform that helps traders and investors track and improve their performance. By logging your trades, you can access analytics and AI-generated reports that show strengths, weaknesses, and areas for improvement.
 
-# Table of Contents
+---
+
+## Why Use TradeJournal?
+
+- **Unbiased AI insights** — Get objective analysis of your trades without emotional bias.  
+- **Analytics that matter** — View your performance with clear, interactive charts.  
+- **Easy trade logging** — Add and review trades quickly.  
+- **All your history in one place** — Filter, sort, and analyze without spreadsheets.  
+- **Focused improvement** — Understand what works and what doesn’t.
+
+---
+
+## Table of Contents
 - [Tech Stack](#tech-stack)
 - [Pages](#pages)
   - [Calendar](#calendar)
   - [History](#history)
   - [Statistics](#statistics)
   - [Trade AI](#trade-ai)
-  - [Tokens](#tokens)
+  - [Strategies](#strategies)
   - [Archive](#archive)
 - [Technicals](#technicals)
 
+---
 
 ## Tech Stack
 
@@ -25,104 +36,95 @@ The goal of this project is to help traders and investors improve their results 
 - **MUI Charts** for charts and **Shadcn/Tailwind** for styling  
 - **Zod** and **React Hook Form** for form validation  
 - **Clerk** for authentication  
-- **GSAP** for animations
-- **Claude API** for AI reports generation.
-- **Stripe** for secure payments.
+- **GSAP** for animations  
+- **AI integration** for report generation
+
+---
 
 ## Disclaimer
 
 > [!WARNING]
->### No Financial Advice
->
->The content, tools, and features provided in this application do not constitute financial advice, investment advice, trading advice, or any other sort of advice. The >application merely serves as a tool for organizing, analyzing, and reflecting on trading activities for educational purposes.
->
->### User Responsibility
->
->By accessing and using this software, you agree to use it solely for learning purposes and accept full responsibility for your financial decisions. You also acknowledge >that trading and investing involve risk, and that you should only risk capital you can afford to lose.
+> **No Financial Advice**  
+> The content, tools, and features provided in this application do not constitute financial, investment, or trading advice. The platform is intended purely as an educational and analytical tool.  
+>   
+> **User Responsibility**  
+> By using this software, you agree to take full responsibility for your trading decisions. Trading and investing involve risks, and you should never risk more than you can afford to lose.
+
+---
 
 ## Pages
 
 ### Calendar
-The Calendar page is the heart of this website - it's where all the magic happens! Since my main goal is collecting your trading data to create those AI reports, I made this page super important. I kept it simple and easy to use, but still packed it with cool features like month/year views and your complete trading history. Adding new trades is a breeze - just click on any day to pop up the entry dialog, or quickly jump between months in the year view. No complicated stuff, just a straightforward way to log your trades!
+The Calendar page is where you log and review trades. Simple to use, but packed with features like month/year views and a complete history.  
+- Click on any date to add a trade  
+- Switch between months easily  
 
+https://github.com/user-attachments/assets/409f9971-c9b4-419e-9f5a-e1ccd4c88354  
 
-https://github.com/user-attachments/assets/409f9971-c9b4-419e-9f5a-e1ccd4c88354
-
+---
 
 ### History
-The History page gives you the complete picture of all your trading activity in one place. 
+The History page shows all your trades in one place.  
 
 **Features**
-- Combine filtering by instrument name, column, and time for precise results.
-- Date range picker to view trade history within a specific period. 
-- Delete trades. 
-- Editing functionality coming in a future update.
+- Filter by instrument, column, and time  
+- Date range selection  
+- Delete trades (editing coming soon)  
 
+https://github.com/user-attachments/assets/8af7b6cd-cc16-4bfe-b11f-9d2ba912876f  
 
-https://github.com/user-attachments/assets/8af7b6cd-cc16-4bfe-b11f-9d2ba912876f
-
+---
 
 ### Statistics
-The Stats page is your trading journey visualized! I built 10+ smart algorithms that transform your data into insightful charts. Same filtering options as the History page, so you can easily focus on specific instruments and discover what's actually working for you.
+The Statistics page turns your trade history into charts using 10+ algorithms.
 
+**Features**
+- Same filtering as the History page  
+- See what’s working and what’s not  
 
-https://github.com/user-attachments/assets/8b8b333a-0bfc-432c-ad23-d74de50edba3
+https://github.com/user-attachments/assets/8b8b333a-0bfc-432c-ad23-d74de50edba3  
 
+---
 
 ### Trade AI
-Let's face it – trading is all about making money, but emotions can seriously mess with how we see our own performance. That's why I've added the TradeAI feature! Just log your trades and let Claude's AI do the cold, rational analysis your emotional brain sometimes can't.
+Trade AI gives you an objective view of your performance.
 
 **Features**
-- AI reports powered by Claude API (currently supports give feedback about time management, money management and instruments)
-- Follow up with a question (you can keep asking Claude after it generate report)
-  
+- AI-generated reports on time management, risk, and instruments  
+- Follow-up questions for deeper analysis  
 
-https://github.com/user-attachments/assets/ff19b8b4-f324-4f2e-b63b-0a32a4376cbc
+https://github.com/user-attachments/assets/ff19b8b4-f324-4f2e-b63b-0a32a4376cbc  
 
+---
 
-### Tokens 
-- Implemented token system (Use tokens to get AI reports),
-- Integrated Stripe to manage payments and tokens purchase
+### Strategies
+The Strategies page helps you create and measure rule-based trading plans.
 
+**Features**
+- Build rule-based trading strategies and track how each trade performs over time.  
+- The "Add New Trade" dialog includes your custom strategy rules, so you can track how well you followed them.  
+- The History page shows ratings and a strategies indicator, displaying the percentage of followed rules.
 
-<img width="1710" alt="Screenshot 2025-05-06 at 13 45 38" src="https://github.com/user-attachments/assets/e58c3e34-498e-4c34-82b6-22b6d25d0ac9" />
-
+---
 
 ### Archive
-An Archive section where you can save your AI reports, revisit them later, or even pick up conversations with the AI right where you left off
+Save and revisit AI reports at any time.
 
 **Features**
-- Pagination for navigation through reports  
-- Sorting options (oldest ↔ newest)  
-- Mark reports as favorites for quick access
+- Pagination for browsing  
+- Sorting (oldest ↔ newest)  
+- Mark favorites  
 
+<img width="1710" alt="Screenshot 2025-05-06 at 13 49 52" src="https://github.com/user-attachments/assets/5855165d-c93d-402b-9d1d-9afc0edeef35" />  
 
-<img width="1710" alt="Screenshot 2025-05-06 at 13 49 52" src="https://github.com/user-attachments/assets/5855165d-c93d-402b-9d1d-9afc0edeef35" />
-
+---
 
 ## Technicals
 
-- **Redux global state**  
-  On initial page load, data is fetched on the server (via Next.js server components) and then saved to the Redux store once the page renders. All subsequent data manipulations happen in Redux, so changes made on one page immediately appear on others.
+- **Redux global state** — Data fetched on initial load is stored in Redux for instant updates across pages.  
+- **Optimistic updates** — Changes appear immediately; roll back automatically if there’s an error.  
+- **Database optimization** — Indexed queries for speed with large datasets.
 
-- **Optimistic updates**  
-  Creating or deleting a trade triggers an optimistic update, so you see the result right away (no loading spinner for a smoother UX). If the server request fails, the state rolls back to its previous value and an error toast is shown.
+---
 
-- **Database optimization**  
-  Because a large chunk of data is fetched at startup, database optimization is crucial. I’ve added appropriate indexes to speed up queries and improve response times.
-
-
-
-
-
-
-
-Please visit the website and try it out for yourself: [Visit](https://tradejournal.one).
-
-
-
-
-
-
-
-
+🚀 Try it now: [Visit TradeJournal](https://tradejournal.one)
