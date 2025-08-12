@@ -23,7 +23,7 @@ export default function FeedbackPage() {
             } else {
                 toast.error(res.message ?? "Could not submit feedback");
             }
-        } catch (e) {
+        } catch {
             toast.error("Unexpected error. Please try again.");
         } finally {
             setIsSubmitting(false);
