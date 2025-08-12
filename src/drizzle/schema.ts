@@ -105,3 +105,15 @@ export const TransactionsTable = pgTable("transactions", {
     createdAt: timestamp("created_at").defaultNow().notNull(),
     plan: text("plan").notNull(),
 });
+
+// New table for user-submitted feedback from the FeedbackCard
+export const FeedbackTable = pgTable("feedbacks", {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: text("user_id")
+        .notNull()
+        .references(() => UserTable.id),
+    message: text("message").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+        .defaultNow()
+        .notNull(),
+});

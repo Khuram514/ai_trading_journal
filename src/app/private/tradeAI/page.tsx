@@ -4,7 +4,7 @@ import AIReportControls from "@/components/tradeAI/AIReportControls";
 export default function Page() {
     return (
         <div className="flex flex-col items-center justify-between h-full">
-            <div className="h-[500px] overflow-hidden">
+            <div className="h-[500px] overflow-hidden w-full">
                 <video
                     autoPlay
                     loop

@@ -243,3 +243,41 @@ export const userReviews = [
         image: "/fake-user-images/fake-user-8.jpeg",
     },
 ];
+
+export const feedbacks = [
+    {
+        avatar: "/feedback/avatar-1.webp",
+        name: "Alex Johnson",
+        feedback: "Add documentation page",
+        color: "bg-pink-500/40",
+        position: "left-10 bottom-12 rotate-6"
+    },
+    {
+        avatar: "/feedback/avatar-2.webp",
+        name: "Mia Chen",
+        feedback: "Add journal page",
+        color: "bg-blue-500/40",
+        position: "right-[20%] -translate-x-[20%] bottom-14 rotate-12"
+    },
+    {
+        avatar: "/feedback/avatar-3.webp",
+        name: "Mo Sharma",
+        feedback: "Add support for different AI's",
+        color: "bg-green-500/40",
+        position: "left-[25%] -translate-x-[25%] bottom-14 -rotate-12"
+    },
+    {
+        avatar: "/feedback/avatar-4.webp",
+        name: "Liam O'Connor",
+        feedback: "Add strategies",
+        color: "bg-yellow-500/40",
+        position: "right-4 bottom-16 rotate-6"
+    },
+    {
+        avatar: "/feedback/avatar-5.webp",
+        name: "Juan Martinez",
+        feedback: "Add ratings to history",
+        color: "bg-purple-500/40",
+        position: "left-1/2 -translate-x-1/2 bottom-10 rotate-2"
+    },
+]

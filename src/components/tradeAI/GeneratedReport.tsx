@@ -177,6 +177,7 @@ export default function GeneratedReport({
                         onChange={(e) =>
                             setFollowUpQuestionInput(e.target.value)
                         }
+                        placeholder="Follow up with a question to Claude."
                     />
 
                     {selectCategory && followUpQuestionInput.length > 0 && (

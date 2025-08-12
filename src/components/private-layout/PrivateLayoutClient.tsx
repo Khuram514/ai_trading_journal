@@ -292,14 +292,17 @@ export default function PrivateLayoutClient({
                                                     investments
                                                 </span>
                                             </Link>
-                                            <li className="hover:bg-zinc-100 px-3 py-2 rounded-md">
-                                                <div className="flex gap-4 items-center">
+
+                                            <Link
+                                                href="/private/feedback"
+                                                className="hover:bg-zinc-100 px-3 py-2 rounded-md">
+                                                <div className="flex gap-2 items-center">
                                                     <h1>Feedback</h1>
                                                 </div>
                                                 <span className="leading-none text-[.85rem] text-zinc-400">
                                                     Help us improve the app.
                                                 </span>
-                                            </li>
+                                            </Link>
                                             <Link
                                                 href="https://github.com/Bilovodskyi/ai-trade-journal"
                                                 target="_blank"
