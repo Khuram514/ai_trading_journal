@@ -1,3 +1,5 @@
+## Important: Let’s make this journal better together! I want to create a product that works well for everyone. If there’s something you don’t like or a feature you’re missing, please share your thoughts in the Discussions section of this repository or in the Feedback section on tradejournal.one (after logging in, go to Ecosystem → Feedback).
+
 # 🔍 About
 
 **TradeJournal** is a free, AI-powered platform that helps traders and investors track and improve their performance. By logging your trades, you can access analytics and AI-generated reports that show strengths, weaknesses, and areas for improvement.
