@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/drizzle/db";
-import { StrategyTable } from "@/drizzle/schema";
+import { StrategyTable, UserTable } from "@/drizzle/schema";
 import { Rule } from "@/types/dbSchema.types";
 import {
     DeleteStrategyFromDBResult,
@@ -27,6 +27,18 @@ export async function saveStrategy({
     if (userIdFromAuth !== userId) return null;
 
     try {
+        // Check if user exists in UserTable (must complete profile first)
+        const user = await db.query.UserTable.findFirst({
+            where: eq(UserTable.id, userId),
+        });
+
+        if (!user) {
+            return {
+                success: false,
+                error: "Please complete your profile first. Go to Statistics page and add your starting capital before creating strategies.",
+            };
+        }
+
         await db.insert(StrategyTable).values({
             userId,
             id,
@@ -56,6 +68,18 @@ export async function getAllStrategies(
     if (userIdFromAuth !== userId) return null;
 
     try {
+        // Check if user exists in UserTable (must complete profile first)
+        const user = await db.query.UserTable.findFirst({
+            where: eq(UserTable.id, userId),
+        });
+
+        if (!user) {
+            return {
+                success: false,
+                error: "Please complete your profile first. Go to Statistics page and add your starting capital before accessing strategies.",
+            };
+        }
+
         const strategies = await db
             .select({
                 id: StrategyTable.id,
@@ -116,7 +140,20 @@ export async function editStrategy({
 }) {
     const { userId: userIdFromAuth } = await auth();
     if (userIdFromAuth !== userId) return null;
+
     try {
+        // Check if user exists in UserTable (must complete profile first)
+        const user = await db.query.UserTable.findFirst({
+            where: eq(UserTable.id, userId),
+        });
+
+        if (!user) {
+            return {
+                success: false,
+                error: "Please complete your profile first. Go to Statistics page and add your starting capital before editing strategies.",
+            };
+        }
+
         await db.update(StrategyTable).set({
             openPositionRules,
             closePositionRules,

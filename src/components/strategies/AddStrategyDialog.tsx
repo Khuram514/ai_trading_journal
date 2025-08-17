@@ -201,7 +201,7 @@ export default function AddStrategyDialog({
         } else {
             setSubmittingNewStrategy(true);
             try {
-                await saveStrategy({
+                const result = await saveStrategy({
                     openPositionRules,
                     closePositionRules,
                     userId: user?.id ?? "",
@@ -209,17 +209,21 @@ export default function AddStrategyDialog({
                     strategyName,
                 });
 
-                dispatch(
-                    addStrategyToTheState({
-                        openPositionRules,
-                        closePositionRules,
-                        id: newId,
-                        strategyName,
-                    })
-                );
+                if (result?.success) {
+                    dispatch(
+                        addStrategyToTheState({
+                            openPositionRules,
+                            closePositionRules,
+                            id: newId,
+                            strategyName,
+                        })
+                    );
 
-                toast.success("New strategy has been saved successfully!");
-                setIsDialogOpen(false);
+                    toast.success("New strategy has been saved successfully!");
+                    setIsDialogOpen(false);
+                } else {
+                    toast.error(result?.error || "Failed to save strategy");
+                }
             } catch (error) {
                 if (error instanceof Error) {
                     toast.error(error.message);
@@ -245,28 +249,33 @@ export default function AddStrategyDialog({
             openPositionRules.length === 0
         ) {
             toast.error("You must provide at least 1 rule");
-        }  else if (strategyName === strategyNameEditing && openPositionRules === openPositionRulesEditing && closePositionRules === closePositionRulesEditing) {
+        } else if (strategyName === strategyNameEditing && openPositionRules === openPositionRulesEditing && closePositionRules === closePositionRulesEditing) {
             toast.error("No changes made");
         } else {
             setSubmittingNewStrategy(true);
             try {
-                await editStrategy({
+                const result = await editStrategy({
                     openPositionRules,
                     closePositionRules,
                     userId: user?.id ?? "",
                     strategyName,
                     id: idEditing ?? "",
                 });
-                dispatch(
-                    editStrategyInTheState({
-                        openPositionRules,
-                        closePositionRules,
-                        id: idEditing ?? "",
-                        strategyName,
-                    })
-                );
-                toast.success("Strategy edited successfully!");
-                setIsDialogOpen(false);
+
+                if (result?.success) {
+                    dispatch(
+                        editStrategyInTheState({
+                            openPositionRules,
+                            closePositionRules,
+                            id: idEditing ?? "",
+                            strategyName,
+                        })
+                    );
+                    toast.success("Strategy edited successfully!");
+                    setIsDialogOpen(false);
+                } else {
+                    toast.error(result?.error || "Failed to edit strategy");
+                }
             } catch (error) {
                 if (error instanceof Error) {
                     toast.error(error.message);
@@ -288,15 +297,15 @@ export default function AddStrategyDialog({
                 <DialogTrigger>
                     {
                         strategyNameEditing ? (
-                        <div className="p-1 rounded-md md:hover:bg-neutral-200">
-                            <Pencil size={18} />
-                        </div>) : (
-                    <div className="flex gap-2 items-center text-sm border border-zinc-200 md:hover:text-zinc-900 md:hover:bg-zinc-100 px-3 py-2 rounded-md shadow-sm">
-                        <Plus size={16} />
-                        New Strategy
-                    </div>)
+                            <div className="p-1 rounded-md md:hover:bg-neutral-200">
+                                <Pencil size={18} />
+                            </div>) : (
+                            <div className="flex gap-2 items-center text-sm border border-zinc-200 md:hover:text-zinc-900 md:hover:bg-zinc-100 px-3 py-2 rounded-md shadow-sm">
+                                <Plus size={16} />
+                                New Strategy
+                            </div>)
                     }
-                    
+
                 </DialogTrigger>
                 <DialogContent>
                     <form className="sm:max-w-[460px] flex flex-col justify-between min-h-[312px] max-h-[calc(100vh-120px)]">

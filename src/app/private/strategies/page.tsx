@@ -14,6 +14,7 @@ import {
 } from "@/types/strategies.types";
 import { useAuth } from "@clerk/nextjs";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useState, useEffect } from "react";
 
 function isGetStrategiesSuccess(
@@ -45,6 +46,24 @@ export default function StrategiesPage() {
     </div>
 
     if (isGetStrategiesError(strategies)) {
+        // Check if it's the profile completion error
+        if (strategies.error.includes("complete your profile")) {
+            return (
+                <div className="flex flex-col h-full items-center justify-center space-y-4 px-8">
+                    <div className="text-center space-y-2">
+                        <h2 className="text-2xl font-semibold">Complete Your Profile First</h2>
+                        <p className="text-gray-600 max-w-md">
+                            To create and manage trading strategies, you need to complete your profile by adding your starting capital.
+                        </p>
+                    </div>
+                    <Link href="/private/statistics">
+                        <CustomButton isBlack={true}>
+                            Go to Statistics & Add Capital
+                        </CustomButton>
+                    </Link>
+                </div>
+            );
+        }
         return <div>Error loading strategies: {strategies.error}</div>;
     }
 
