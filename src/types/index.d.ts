@@ -11,6 +11,13 @@ export type Trades = {
     closeTime: string;
     deposit: string;
     instrumentName: string;
+    symbolName?: string;
+    entryPrice?: string;
+    totalCost?: string;
+    quantity?: string;
+    sellPrice?: string;
+    quantitySold?: string;
+    profitOrLoss?: string;
     rating: number | null;
     strategyId?: string | null;
     strategyName?: string;

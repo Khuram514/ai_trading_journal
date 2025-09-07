@@ -30,7 +30,6 @@ interface UseTradeFormProps {
 }
 
 export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestClose }: UseTradeFormProps) => {
-    // State management
     const [openDate, setOpenDate] = useState<Date>();
     const [closeDate, setCloseDate] = useState<Date>();
     const [instrumentLabels, setInstrumentLabels] = useState<string[]>([]);
@@ -39,12 +38,10 @@ export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestCl
     const [checkedOpenRules, setCheckedOpenRules] = useState<string[]>([]);
     const [checkedCloseRules, setCheckedCloseRules] = useState<string[]>([]);
 
-    // Redux
     const dispatch = useAppDispatch();
     const trades = useAppSelector((state) => state.tradeRecords.listOfTrades);
     const { strategies: localStrategies } = useAppSelector((state) => state.strategies);
 
-    // Form setup with dynamic default values
     const form = useForm<z.infer<typeof newTradeFormSchema>>({
         resolver: zodResolver(newTradeFormSchema),
         defaultValues: editMode && existingTrade ? {
@@ -55,6 +52,13 @@ export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestCl
             closeTime: existingTrade.closeTime || "12:30",
             deposit: existingTrade.deposit || "",
             instrumentName: existingTrade.instrumentName || "",
+            symbolName: existingTrade.symbolName || "",
+            entryPrice: existingTrade.entryPrice || "",
+            totalCost: existingTrade.totalCost || "",
+            quantity: existingTrade.quantity || "",
+            sellPrice: existingTrade.sellPrice || "",
+            quantitySold: existingTrade.quantitySold || "",
+            profitOrLoss: existingTrade.profitOrLoss || "",
             strategyName: existingTrade.strategyName || "",
             strategyId: existingTrade.strategyId || null,
             appliedOpenRules: existingTrade.appliedOpenRules || [],
@@ -70,6 +74,13 @@ export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestCl
             closeTime: "12:30",
             deposit: "",
             instrumentName: "",
+            symbolName: "",
+            entryPrice: "",
+            totalCost: "",
+            quantity: "",
+            sellPrice: "",
+            quantitySold: "",
+            profitOrLoss: "",
             strategyName: "",
             strategyId: null,
             appliedOpenRules: [],
@@ -80,7 +91,6 @@ export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestCl
         },
     });
 
-    // Helper functions for rule checkbox handling
     const handleOpenRuleToggle = (ruleId: string, rule: unknown) => {
         const updatedCheckedRules = checkedOpenRules.includes(ruleId)
             ? checkedOpenRules.filter(id => id !== ruleId)
@@ -241,7 +251,8 @@ export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestCl
     useEffect(() => {
         if (day && !editMode) {
             const convertedDate = day.toDate().toISOString();
-            form.setValue("closeDate", convertedDate);
+            form.setValue("openDate", convertedDate);
+            setOpenDate(day.toDate());
         }
         setInstrumentLabels([
             ...new Set(trades?.map((trade) => trade.instrumentName)),

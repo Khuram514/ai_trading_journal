@@ -27,6 +27,13 @@ export const newTradeFormSchema = z.object({
     instrumentName: z
         .string()
         .min(1, { message: "Instrument name is required." }),
+    symbolName: z.string().optional(),
+    entryPrice: z.string().optional(),
+    totalCost: z.string().optional(),
+    quantity: z.string().optional(),
+    sellPrice: z.string().optional(),
+    quantitySold: z.string().optional(),
+    profitOrLoss: z.string().optional(),
 
     strategyName: z.string().optional(),
     strategyId: z.string().optional().nullable(),

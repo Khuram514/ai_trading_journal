@@ -8,7 +8,8 @@ import { CustomButton } from "../CustomButton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 
 import { useTradeForm } from "./hooks/useTradeForm";
-import { TradeDetailsTab } from "./TradeDetailsTab";
+import { OpenDetailsTab } from "./OpenDetailsTab";
+import { CloseDetailsTab } from "./CloseDetailsTab";
 import { StrategyTab } from "./StrategyTab";
 
 interface TradeDialogProps {
@@ -42,14 +43,15 @@ export const TradeDialog = ({
                 </DialogTitle>
             </DialogHeader>
 
-            <Tabs defaultValue="details">
-                <TabsList className="grid w-full grid-cols-2 mb-6">
-                    <TabsTrigger value="details">Details</TabsTrigger>
+            <Tabs defaultValue="open-details">
+                <TabsList className="grid w-full grid-cols-3 mb-6">
+                    <TabsTrigger value="open-details">Open Details</TabsTrigger>
+                    <TabsTrigger value="close-details">Close Details</TabsTrigger>
                     <TabsTrigger value="strategy">Strategy</TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="details" className="flex flex-col gap-2">
-                    <TradeDetailsTab
+                <TabsContent value="open-details" className="flex flex-col gap-2">
+                    <OpenDetailsTab
                         form={tradeForm.form}
                         openDate={tradeForm.openDate}
                         setOpenDate={tradeForm.setOpenDate}
@@ -58,6 +60,28 @@ export const TradeDialog = ({
                         instrumentLabels={tradeForm.instrumentLabels}
                         day={day}
                         rating={tradeForm.rating}
+                    />
+
+                    <div className="flex gap-6 justify-end">
+                        <DialogClose asChild>
+                            <CustomButton isBlack={false}>Cancel</CustomButton>
+                        </DialogClose>
+                        <CustomButton
+                            isBlack
+                            type="submit"
+                            disabled={tradeForm.submittingTrade}>
+                            {editMode ? "Update Trade" : "Add Trade"}
+                        </CustomButton>
+                    </div>
+                </TabsContent>
+
+                <TabsContent value="close-details" className="flex flex-col gap-2">
+                    <CloseDetailsTab
+                        form={tradeForm.form}
+                        openDate={tradeForm.openDate}
+                        closeDate={tradeForm.closeDate}
+                        setCloseDate={tradeForm.setCloseDate}
+                        day={day}
                     />
 
                     <div className="flex gap-6 justify-end">
