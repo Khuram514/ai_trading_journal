@@ -36,6 +36,14 @@ const tradeRecordsSlice = createSlice({
                 state.listOfTrades = [];
             }
             const newRecord = action.payload;
+
+            // If this is an open trade (no closeDate), just push to the end
+            if (!newRecord.closeDate || newRecord.closeDate === "") {
+                state.listOfTrades.push(newRecord);
+                return;
+            }
+
+            // For closed trades, use binary search to maintain chronological order by closeDate
             const newRecordTime = new Date(newRecord.closeDate).getTime();
 
             let left = 0;
@@ -44,9 +52,16 @@ const tradeRecordsSlice = createSlice({
 
             while (left <= right) {
                 const mid = Math.floor((left + right) / 2);
-                const midTime = new Date(
-                    state.listOfTrades[mid].closeDate
-                ).getTime();
+                const midRecord = state.listOfTrades[mid];
+
+                // Skip open trades in binary search (they don't have closeDate for comparison)
+                if (!midRecord.closeDate || midRecord.closeDate === "") {
+                    // If we hit an open trade, just insert before it
+                    insertionIndex = mid;
+                    break;
+                }
+
+                const midTime = new Date(midRecord.closeDate).getTime();
 
                 if (midTime < newRecordTime) {
                     left = mid + 1;

@@ -9,10 +9,11 @@ const ruleSchema = z.object({
 
 export const newTradeFormSchema = z.object({
     positionType: z.string().min(1, { message: "Position Type is required." }),
-    openDate: z.string(),
+    openDate: z.string().min(1, { message: "Open date is required." }),
     openTime: z.string().min(1, { message: "Open time is required." }),
-    closeDate: z.string(),
-    closeTime: z.string().min(1, { message: "Close time is required." }),
+    closeDate: z.string().optional(),
+    closeTime: z.string().optional(),
+    isActiveTrade: z.boolean().default(true),
     deposit: z
         .string()
         .min(1, { message: "Deposit is required." })
@@ -20,20 +21,71 @@ export const newTradeFormSchema = z.object({
 
     result: z
         .string()
-        .min(1, { message: "Result is required." })
-        .regex(/^-?[0-9]+$/, {
+        .optional()
+        .refine((val) => {
+            if (!val || val === "") return true; // Allow empty for optional field
+            return /^-?[0-9]+$/.test(val);
+        }, {
             message: "Only numbers are allowed.",
         }),
     instrumentName: z
         .string()
         .min(1, { message: "Instrument name is required." }),
     symbolName: z.string().optional(),
-    entryPrice: z.string().optional(),
-    totalCost: z.string().optional(),
-    quantity: z.string().optional(),
-    sellPrice: z.string().optional(),
-    quantitySold: z.string().optional(),
-    profitOrLoss: z.string().optional(),
+    entryPrice: z
+        .string()
+        .optional()
+        .refine((val) => {
+            if (!val || val === "") return true;
+            return /^[0-9]+(\.[0-9]+)?$/.test(val);
+        }, {
+            message: "Only positive numbers are allowed.",
+        }),
+    totalCost: z
+        .string()
+        .optional()
+        .refine((val) => {
+            if (!val || val === "") return true;
+            return /^[0-9]+(\.[0-9]+)?$/.test(val);
+        }, {
+            message: "Only positive numbers are allowed.",
+        }),
+    quantity: z
+        .string()
+        .optional()
+        .refine((val) => {
+            if (!val || val === "") return true;
+            return /^[0-9]+(\.[0-9]+)?$/.test(val);
+        }, {
+            message: "Only positive numbers are allowed.",
+        }),
+    sellPrice: z
+        .string()
+        .optional()
+        .refine((val) => {
+            if (!val || val === "") return true;
+            return /^[0-9]+(\.[0-9]+)?$/.test(val);
+        }, {
+            message: "Only positive numbers are allowed.",
+        }),
+    quantitySold: z
+        .string()
+        .optional()
+        .refine((val) => {
+            if (!val || val === "") return true;
+            return /^[0-9]+(\.[0-9]+)?$/.test(val);
+        }, {
+            message: "Only positive numbers are allowed.",
+        }),
+    profitOrLoss: z
+        .string()
+        .optional()
+        .refine((val) => {
+            if (!val || val === "") return true;
+            return /^-?[0-9]+(\.[0-9]+)?$/.test(val);
+        }, {
+            message: "Only numbers are allowed.",
+        }),
 
     strategyName: z.string().optional(),
     strategyId: z.string().optional().nullable(),

@@ -18,7 +18,6 @@ interface CloseDetailsTabProps {
     openDate: Date | undefined;
     closeDate: Date | undefined;
     setCloseDate: (date: Date | undefined) => void;
-    day?: dayjs.Dayjs | undefined;
 }
 
 export const CloseDetailsTab = ({
@@ -26,7 +25,6 @@ export const CloseDetailsTab = ({
     openDate,
     closeDate,
     setCloseDate,
-    day,
 }: CloseDetailsTabProps) => {
     const { register, control, formState: { errors } } = form;
 

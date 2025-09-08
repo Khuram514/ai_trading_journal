@@ -48,8 +48,9 @@ export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestCl
             positionType: existingTrade.positionType || "buy",
             openDate: existingTrade.openDate,
             openTime: existingTrade.openTime || "12:30",
-            closeDate: existingTrade.closeDate,
-            closeTime: existingTrade.closeTime || "12:30",
+            closeDate: existingTrade.closeDate || "",
+            closeTime: existingTrade.closeTime || "",
+            isActiveTrade: existingTrade.isActiveTrade ?? true,
             deposit: existingTrade.deposit || "",
             instrumentName: existingTrade.instrumentName || "",
             symbolName: existingTrade.symbolName || "",
@@ -70,8 +71,9 @@ export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestCl
             positionType: "buy",
             openDate: undefined,
             openTime: "12:30",
-            closeDate: undefined,
-            closeTime: "12:30",
+            closeDate: "",
+            closeTime: "",
+            isActiveTrade: true,
             deposit: "",
             instrumentName: "",
             symbolName: "",
@@ -146,10 +148,16 @@ export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestCl
     const onSubmit = async (tradeData: z.infer<typeof newTradeFormSchema>) => {
         setSubmittingTrade(true);
 
+        // Auto-set isActiveTrade based on closeDate
+        const updatedTradeData = {
+            ...tradeData,
+            isActiveTrade: !tradeData.closeDate || tradeData.closeDate === ""
+        };
+
         try {
             let result;
             if (editMode && existingTrade) {
-                result = await updateTradeRecord(tradeData, existingTrade.id);
+                result = await updateTradeRecord(updatedTradeData, existingTrade.id);
 
                 if (result?.error) {
                     toast.error("There was an error updating your trade!");
@@ -158,77 +166,83 @@ export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestCl
 
                 // Calculate differences for Redux state updates
                 const oldResult = Number(existingTrade.result);
-                const newResult = Number(tradeData.result);
+                const newResult = Number(updatedTradeData.result);
                 const resultDifference = newResult - oldResult;
 
-                // Update Redux state with differences
-                const [stringDay, month, year] = new Date(tradeData.closeDate)
-                    .toLocaleDateString("en-GB")
-                    .split("/");
-                const numericMonth = parseInt(month, 10);
-                const convertedMonthView = `${stringDay}-${month}-${year}`;
-                const convertedYearView = `${numericMonth}-${year}`;
+                // Only update statistics if trade has a closeDate (is closed)
+                if (updatedTradeData.closeDate && updatedTradeData.closeDate !== "") {
+                    const [stringDay, month, year] = new Date(updatedTradeData.closeDate)
+                        .toLocaleDateString("en-GB")
+                        .split("/");
+                    const numericMonth = parseInt(month, 10);
+                    const convertedMonthView = `${stringDay}-${month}-${year}`;
+                    const convertedYearView = `${numericMonth}-${year}`;
 
-                // Only update summaries if result changed
-                if (resultDifference !== 0) {
-                    dispatch(setMonthViewSummary({
-                        month: convertedMonthView,
-                        value: resultDifference,
-                    }));
-                    dispatch(setYearViewSummary({
-                        year: convertedYearView,
-                        value: resultDifference,
-                    }));
-                    dispatch(setTotalOfParticularYearSummary({
-                        year: year,
-                        value: resultDifference,
-                    }));
+                    // Only update summaries if result changed
+                    if (resultDifference !== 0) {
+                        dispatch(setMonthViewSummary({
+                            month: convertedMonthView,
+                            value: resultDifference,
+                        }));
+                        dispatch(setYearViewSummary({
+                            year: convertedYearView,
+                            value: resultDifference,
+                        }));
+                        dispatch(setTotalOfParticularYearSummary({
+                            year: year,
+                            value: resultDifference,
+                        }));
+                    }
                 }
 
                 // Update the trade in the list
                 dispatch(updateTradeInList({
                     id: existingTrade.id,
-                    ...tradeData,
+                    ...updatedTradeData,
                 }));
 
                 toast.success("Trade updated successfully!");
             } else {
                 const customId = uuidv4();
-                result = await createNewTradeRecord(tradeData, customId);
+                result = await createNewTradeRecord(updatedTradeData, customId);
 
                 if (result?.error) {
                     toast.error("There was an error saving your trade!");
                     return;
                 }
 
-                // Update Redux state for new trades
-                const [stringDay, month, year] = new Date(tradeData.closeDate)
-                    .toLocaleDateString("en-GB")
-                    .split("/");
-                const numericMonth = parseInt(month, 10);
-                const convertedMonthView = `${stringDay}-${month}-${year}`;
-                const convertedYearView = `${numericMonth}-${year}`;
+                // Only update statistics if trade has a closeDate (is closed)
+                if (updatedTradeData.closeDate && updatedTradeData.closeDate !== "") {
+                    const [stringDay, month, year] = new Date(updatedTradeData.closeDate)
+                        .toLocaleDateString("en-GB")
+                        .split("/");
+                    const numericMonth = parseInt(month, 10);
+                    const convertedMonthView = `${stringDay}-${month}-${year}`;
+                    const convertedYearView = `${numericMonth}-${year}`;
 
-                dispatch(setMonthViewSummary({
-                    month: convertedMonthView,
-                    value: Number(tradeData.result),
-                }));
-                dispatch(setYearViewSummary({
-                    year: convertedYearView,
-                    value: Number(tradeData.result),
-                }));
-                dispatch(setTotalOfParticularYearSummary({
-                    year: year,
-                    value: Number(tradeData.result),
-                }));
+                    dispatch(setMonthViewSummary({
+                        month: convertedMonthView,
+                        value: Number(updatedTradeData.result),
+                    }));
+                    dispatch(setYearViewSummary({
+                        year: convertedYearView,
+                        value: Number(updatedTradeData.result),
+                    }));
+                    dispatch(setTotalOfParticularYearSummary({
+                        year: year,
+                        value: Number(updatedTradeData.result),
+                    }));
+                    dispatch(updateTradeDetailsForEachDay({
+                        date: convertedMonthView,
+                        result: Number(updatedTradeData.result),
+                        value: 1,
+                    }));
+                }
+
+                // Always update the trade list (for both open and closed trades)
                 dispatch(updateListOfTrades({
                     id: customId,
-                    ...tradeData,
-                }));
-                dispatch(updateTradeDetailsForEachDay({
-                    date: convertedMonthView,
-                    result: Number(tradeData.result),
-                    value: 1,
+                    ...updatedTradeData,
                 }));
 
                 toast.success("A new record has been created!");

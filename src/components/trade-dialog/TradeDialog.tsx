@@ -34,7 +34,9 @@ export const TradeDialog = ({
 
     return (
         <form
-            onSubmit={tradeForm.form.handleSubmit(tradeForm.onSubmit)}
+            onSubmit={tradeForm.form.handleSubmit(tradeForm.onSubmit, (errors) => {
+                console.log("Form validation errors:", errors);
+            })}
             className="sm:max-w-[460px] flex flex-col">
 
             <DialogHeader className="mb-6">
@@ -55,9 +57,7 @@ export const TradeDialog = ({
                         form={tradeForm.form}
                         openDate={tradeForm.openDate}
                         setOpenDate={tradeForm.setOpenDate}
-                        closeDate={tradeForm.closeDate}
-                        setCloseDate={tradeForm.setCloseDate}
-                        instrumentLabels={tradeForm.instrumentLabels}
+                        symbolLabels={tradeForm.instrumentLabels}
                         day={day}
                         rating={tradeForm.rating}
                     />
@@ -81,7 +81,6 @@ export const TradeDialog = ({
                         openDate={tradeForm.openDate}
                         closeDate={tradeForm.closeDate}
                         setCloseDate={tradeForm.setCloseDate}
-                        day={day}
                     />
 
                     <div className="flex gap-6 justify-end">

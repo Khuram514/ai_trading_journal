@@ -3,12 +3,13 @@ import { Rule } from "./dbSchema.types";
 export type Trades = {
     notes: string | undefined;
     id: string;
-    result: string;
+    result?: string;
     openDate: string;
-    closeDate: string;
+    closeDate?: string;
     positionType: string;
     openTime: string;
-    closeTime: string;
+    closeTime?: string;
+    isActiveTrade: boolean;
     deposit: string;
     instrumentName: string;
     symbolName?: string;

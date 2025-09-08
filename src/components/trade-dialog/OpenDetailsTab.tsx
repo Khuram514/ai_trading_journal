@@ -19,16 +19,17 @@ import {
     SelectGroup,
     SelectItem,
     SelectTrigger,
+    SelectValue,
 } from "../ui/select";
 import { StarRating } from "../calendar/StarRating";
+
+const instrumentLabels = ["Crypto", "Forex", "Stock", "Index", "Commodity", "Bond", "ETF", "Option", "Other"];
 
 interface OpenDetailsTabProps {
     form: UseFormReturn<z.infer<typeof newTradeFormSchema>>;
     openDate: Date | undefined;
     setOpenDate: (date: Date | undefined) => void;
-    closeDate: Date | undefined;
-    setCloseDate: (date: Date | undefined) => void;
-    instrumentLabels: string[];
+    symbolLabels: string[];
     day?: dayjs.Dayjs | undefined;
     rating: number;
 }
@@ -37,9 +38,7 @@ export const OpenDetailsTab = ({
     form,
     openDate,
     setOpenDate,
-    closeDate,
-    setCloseDate,
-    instrumentLabels,
+    symbolLabels,
     day,
     rating
 }: OpenDetailsTabProps) => {
@@ -119,123 +118,6 @@ export const OpenDetailsTab = ({
                 </div>
             </div>
 
-            {/* <div className="mb-2 flex gap-4">
-                <div className="flex flex-col flex-1 gap-1">
-                    <div className="flex items-center justify-between">
-                        <Label htmlFor="close-time" className="mb-1">
-                            Close date:
-                        </Label>
-                        {errors.closeDate && (
-                            <span className="mb-1 text-[.75rem] text-red-500">
-                                {errors.closeDate.message}
-                            </span>
-                        )}
-                    </div>
-                    <Controller
-                        name="closeDate"
-                        control={control}
-                        render={({ field }) => (
-                            <Popover>
-                                <PopoverTrigger asChild>
-                                    <Button
-                                        variant={"outline"}
-                                        className="justify-start text-left font-normal max-md:text-[.75rem]">
-                                        <CalendarIcon />
-                                        {closeDate ? (
-                                            format(closeDate, "dd MMM yyyy")
-                                        ) : (
-                                            <span>Pick a date</span>
-                                        )}
-                                    </Button>
-                                </PopoverTrigger>
-                                <PopoverContent>
-                                    <Calendar
-                                        mode="single"
-                                        selected={closeDate}
-                                        onSelect={(date) => {
-                                            setCloseDate(date);
-                                            field.onChange(date?.toISOString());
-                                        }}
-                                        disabled={
-                                            openDate &&
-                                            ((date) =>
-                                                date < new Date(openDate.toISOString()))
-                                        }
-                                    />
-                                </PopoverContent>
-                            </Popover>
-                        )}
-                    />
-                </div>
-                <div className="flex flex-col flex-1 gap-1">
-                    <div className="flex items-center justify-between">
-                        <Label htmlFor="close-time" className="mb-1">
-                            Close time:
-                        </Label>
-                        <span className="text-[.75rem] text-black/50">
-                            (default time)
-                        </span>
-                    </div>
-
-                    <Input
-                        type="time"
-                        id="close-time"
-                        className="w-full max-md:text-[.75rem]"
-                        {...register("closeTime")}
-                    />
-                </div>
-            </div> */}
-
-            {/* Instrument Name Section */}
-            <div className="mb-2 flex flex-col gap-1">
-                <div className="flex items-center justify-between">
-                    <Label htmlFor="instrumentName" className="mb-1">
-                        Instrument:
-                    </Label>
-
-                    {errors.instrumentName ? (
-                        <span className="mb-1 text-[.75rem] text-red-500">
-                            {errors.instrumentName.message}
-                        </span>
-                    ) : (
-                        <span className="mb-1 text-[.75rem] text-black/50">
-                            (e.g. Crypto or Forex)
-                        </span>
-                    )}
-                </div>
-                <Controller
-                    name="instrumentName"
-                    control={control}
-                    render={({ field }) => (
-                        <div className="flex gap-2">
-                            <Input
-                                value={field.value}
-                                onChange={field.onChange}
-                                placeholder="Type manually"
-                                type="text"
-                                className="w-2/3 max-md:text-[.75rem]"
-                            />
-                            <Select onValueChange={field.onChange}>
-                                <SelectTrigger className="w-1/3">
-                                    <div className="text-zinc-500">
-                                        Or select
-                                    </div>
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectGroup>
-                                        {instrumentLabels.map((label) => (
-                                            <SelectItem key={label} value={label}>
-                                                {label}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectGroup>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                    )}
-                />
-            </div>
-
             {/* Symbol Name Section */}
             <div className="mb-2 flex flex-col gap-1">
                 <div className="flex items-center justify-between">
@@ -273,7 +155,7 @@ export const OpenDetailsTab = ({
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectGroup>
-                                        {instrumentLabels.map((label) => (
+                                        {symbolLabels.map((label) => (
                                             <SelectItem key={label} value={label}>
                                                 {label}
                                             </SelectItem>
@@ -286,10 +168,48 @@ export const OpenDetailsTab = ({
                 />
             </div>
 
-            {/* Position Type Section */}
+            {/* Instrument Name Section */}
             <div className="flex gap-2">
 
+                <div className="mb-2 flex flex-col gap-1 flex-1">
+                    <div className="flex items-center justify-between">
+                        <Label htmlFor="instrumentName" className="mb-1">
+                            Instrument:
+                        </Label>
 
+                        {errors.instrumentName ? (
+                            <span className="mb-1 text-[.75rem] text-red-500">
+                                {errors.instrumentName.message}
+                            </span>
+                        ) : (
+                            <span className="mb-1 text-[.75rem] text-black/50">
+                                (e.g. Crypto or Forex)
+                            </span>
+                        )}
+                    </div>
+                    <Controller
+                        name="instrumentName"
+                        control={control}
+                        render={({ field }) => (
+                            <div>
+                                <Select onValueChange={field.onChange} value={field.value}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select instrument" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup>
+                                            {instrumentLabels.map((label) => (
+                                                <SelectItem key={label} value={label}>
+                                                    {label}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        )}
+                    />
+                </div>
                 <div className="mb-2 flex flex-col flex-1">
                     <div className="flex items-center justify-between">
                         <Label className="mb-1">Position type:</Label>
@@ -320,6 +240,34 @@ export const OpenDetailsTab = ({
                                 </p>
                             </div>
                         )}
+                    />
+                </div>
+            </div>
+
+            {/* Position Type Section */}
+            <div className="flex gap-2">
+
+
+                <div className="mb-2 flex flex-col flex-1 gap-1">
+                    <div className="flex items-center justify-between">
+                        <Label htmlFor="entryPrice" className="mb-1">
+                            Deposit:
+                        </Label>
+                        {errors.deposit ? (
+                            <span className="mb-1 text-[.75rem] text-red-500">
+                                {errors.deposit.message}
+                            </span>
+                        ) : (
+                            <span className="mb-1 text-[.75rem] text-black/50">
+                                (Only num.)
+                            </span>
+                        )}
+                    </div>
+                    <Input
+                        type="number"
+                        id="deposit"
+                        className="w-full max-md:text-[.75rem]"
+                        {...register("deposit")}
                     />
                 </div>
                 <div className="mb-2 flex flex-col flex-1 gap-1">
