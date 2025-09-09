@@ -32,7 +32,7 @@ interface UseTradeFormProps {
 export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestClose }: UseTradeFormProps) => {
     const [openDate, setOpenDate] = useState<Date>();
     const [closeDate, setCloseDate] = useState<Date>();
-    const [instrumentLabels, setInstrumentLabels] = useState<string[]>([]);
+    const [symbolLabels, setSymbolLabels] = useState<string[]>([]);
     const [submittingTrade, setSubmittingTrade] = useState(false);
     const [selectedStrategyId, setSelectedStrategyId] = useState<string>("");
     const [checkedOpenRules, setCheckedOpenRules] = useState<string[]>([]);
@@ -59,7 +59,6 @@ export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestCl
             quantity: existingTrade.quantity || "",
             sellPrice: existingTrade.sellPrice || "",
             quantitySold: existingTrade.quantitySold || "",
-            profitOrLoss: existingTrade.profitOrLoss || "",
             strategyName: existingTrade.strategyName || "",
             strategyId: existingTrade.strategyId || null,
             appliedOpenRules: existingTrade.appliedOpenRules || [],
@@ -82,7 +81,6 @@ export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestCl
             quantity: "",
             sellPrice: "",
             quantitySold: "",
-            profitOrLoss: "",
             strategyName: "",
             strategyId: null,
             appliedOpenRules: [],
@@ -148,10 +146,27 @@ export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestCl
     const onSubmit = async (tradeData: z.infer<typeof newTradeFormSchema>) => {
         setSubmittingTrade(true);
 
+        // Normalize close fields: if closeDate provided but closeTime missing, default to 12:30
+        const hasCloseDate = Boolean(tradeData.closeDate && tradeData.closeDate.trim() !== "");
+        const baseData = { ...tradeData };
+        if (hasCloseDate && (!baseData.closeTime || baseData.closeTime.trim() === "")) {
+            baseData.closeTime = "12:30";
+        }
+
+        // Require result if closeDate is provided
+        if (hasCloseDate) {
+            const res = baseData.result?.trim();
+            if (!res) {
+                toast.error("Please provide a result when setting a close date.");
+                setSubmittingTrade(false);
+                return;
+            }
+        }
+
         // Auto-set isActiveTrade based on closeDate
         const updatedTradeData = {
-            ...tradeData,
-            isActiveTrade: !tradeData.closeDate || tradeData.closeDate === ""
+            ...baseData,
+            isActiveTrade: !baseData.closeDate || baseData.closeDate === ""
         };
 
         try {
@@ -178,8 +193,8 @@ export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestCl
                     const convertedMonthView = `${stringDay}-${month}-${year}`;
                     const convertedYearView = `${numericMonth}-${year}`;
 
-                    // Only update summaries if result changed
-                    if (resultDifference !== 0) {
+                    // Only update summaries if result changed and is not undefined
+                    if (resultDifference !== 0 && updatedTradeData.result !== undefined) {
                         dispatch(setMonthViewSummary({
                             month: convertedMonthView,
                             value: resultDifference,
@@ -220,23 +235,27 @@ export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestCl
                     const convertedMonthView = `${stringDay}-${month}-${year}`;
                     const convertedYearView = `${numericMonth}-${year}`;
 
-                    dispatch(setMonthViewSummary({
-                        month: convertedMonthView,
-                        value: Number(updatedTradeData.result),
-                    }));
-                    dispatch(setYearViewSummary({
-                        year: convertedYearView,
-                        value: Number(updatedTradeData.result),
-                    }));
-                    dispatch(setTotalOfParticularYearSummary({
-                        year: year,
-                        value: Number(updatedTradeData.result),
-                    }));
-                    dispatch(updateTradeDetailsForEachDay({
-                        date: convertedMonthView,
-                        result: Number(updatedTradeData.result),
-                        value: 1,
-                    }));
+                    // Guard against undefined results before dispatching
+                    const resultValue = Number(updatedTradeData.result);
+                    if (!isNaN(resultValue)) {
+                        dispatch(setMonthViewSummary({
+                            month: convertedMonthView,
+                            value: resultValue,
+                        }));
+                        dispatch(setYearViewSummary({
+                            year: convertedYearView,
+                            value: resultValue,
+                        }));
+                        dispatch(setTotalOfParticularYearSummary({
+                            year: year,
+                            value: resultValue,
+                        }));
+                        dispatch(updateTradeDetailsForEachDay({
+                            date: convertedMonthView,
+                            result: resultValue,
+                            value: 1,
+                        }));
+                    }
                 }
 
                 // Always update the trade list (for both open and closed trades)
@@ -268,9 +287,15 @@ export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestCl
             form.setValue("openDate", convertedDate);
             setOpenDate(day.toDate());
         }
-        setInstrumentLabels([
-            ...new Set(trades?.map((trade) => trade.instrumentName)),
-        ]);
+        if (trades) {
+            setSymbolLabels([
+                ...new Set(
+                    trades
+                        .map(t => t.symbolName?.trim())
+                        .filter((s): s is string => typeof s === "string" && s.trim() !== "")
+                ),
+            ])
+        }
     }, [day, trades, editMode, form]);
 
     // Initialize edit mode data
@@ -311,7 +336,7 @@ export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestCl
         setCloseDate,
 
         // Instruments
-        instrumentLabels,
+        symbolLabels,
 
         // Strategy
         selectedStrategyId,

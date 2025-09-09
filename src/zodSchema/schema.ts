@@ -31,7 +31,7 @@ export const newTradeFormSchema = z.object({
     instrumentName: z
         .string()
         .min(1, { message: "Instrument name is required." }),
-    symbolName: z.string().optional(),
+    symbolName: z.string().min(1, { message: "Symbol name is required." }),
     entryPrice: z
         .string()
         .optional()
@@ -76,15 +76,6 @@ export const newTradeFormSchema = z.object({
             return /^[0-9]+(\.[0-9]+)?$/.test(val);
         }, {
             message: "Only positive numbers are allowed.",
-        }),
-    profitOrLoss: z
-        .string()
-        .optional()
-        .refine((val) => {
-            if (!val || val === "") return true;
-            return /^-?[0-9]+(\.[0-9]+)?$/.test(val);
-        }, {
-            message: "Only numbers are allowed.",
         }),
 
     strategyName: z.string().optional(),

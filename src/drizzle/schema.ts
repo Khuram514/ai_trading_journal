@@ -30,7 +30,7 @@ export const TradeTable = pgTable(
         closeTime: text("closeTime"),
         isActiveTrade: boolean("isActiveTrade").default(true).notNull(),
         instrumentName: text("instrumentName").notNull(),
-        symbolName: text("symbolName"),
+        symbolName: text("symbolName").notNull(),
         entryPrice: text("entryPrice"),
         deposit: text("deposit").notNull(),
         result: text("result"),
@@ -38,7 +38,6 @@ export const TradeTable = pgTable(
         quantity: text("quantity"),
         sellPrice: text("sellPrice"),
         quantitySold: text("quantitySold"),
-        profitOrLoss: text("profitOrLoss"),
         notes: text("notes"),
         rating: integer("rating").default(0),
         strategyId: uuid("strategy_id").references(() => StrategyTable.id, {

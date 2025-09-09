@@ -67,6 +67,19 @@ export const CloseDetailsTab = ({
                                         onSelect={(date) => {
                                             setCloseDate(date);
                                             field.onChange(date?.toISOString());
+                                            // If user picks a date but no closeTime set, default to 12:30
+                                            const currentCloseTime = form.getValues("closeTime");
+                                            if (!currentCloseTime || currentCloseTime.trim() === "") {
+                                                form.setValue("closeTime", "12:30");
+                                            }
+                                            // If user sets close date without result, set a field error
+                                            const currentResult = form.getValues("result");
+                                            if (!currentResult || currentResult.trim() === "") {
+                                                form.setError("result", {
+                                                    type: "manual",
+                                                    message: "Please provide a result when setting a close date.",
+                                                });
+                                            }
                                         }}
                                         disabled={
                                             openDate &&
@@ -149,12 +162,12 @@ export const CloseDetailsTab = ({
             {/* Profit or Loss Section */}
             <div className="mb-2 flex flex-col gap-1">
                 <div className="flex items-center justify-between">
-                    <Label htmlFor="profitOrLoss" className="mb-1">
+                    <Label htmlFor="result" className="mb-1">
                         Profit or Loss:
                     </Label>
-                    {errors.profitOrLoss ? (
+                    {errors.result ? (
                         <span className="mb-1 text-[.75rem] text-red-500">
-                            {errors.profitOrLoss.message}
+                            {errors.result.message}
                         </span>
                     ) : (
                         <span className="mb-1 text-[.75rem] text-black/50">
@@ -164,9 +177,9 @@ export const CloseDetailsTab = ({
                 </div>
                 <Input
                     type="number"
-                    id="profitOrLoss"
+                    id="result"
                     className="w-full max-md:text-[.75rem]"
-                    {...register("profitOrLoss")}
+                    {...register("result")}
                     placeholder="Enter profit (+) or loss (-)"
                 />
             </div>

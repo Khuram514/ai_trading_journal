@@ -17,6 +17,7 @@ interface TradeDialogProps {
     existingTrade?: Trades;
     day?: dayjs.Dayjs | undefined;
     onRequestClose?: () => void;
+    initialTab?: "open-details" | "close-details" | "strategy";
 }
 
 export const TradeDialog = ({
@@ -24,6 +25,7 @@ export const TradeDialog = ({
     existingTrade,
     day,
     onRequestClose,
+    initialTab = "open-details",
 }: TradeDialogProps) => {
     const tradeForm = useTradeForm({
         editMode,
@@ -45,7 +47,7 @@ export const TradeDialog = ({
                 </DialogTitle>
             </DialogHeader>
 
-            <Tabs defaultValue="open-details">
+            <Tabs defaultValue={initialTab}>
                 <TabsList className="grid w-full grid-cols-3 mb-6">
                     <TabsTrigger value="open-details">Open Details</TabsTrigger>
                     <TabsTrigger value="close-details">Close Details</TabsTrigger>
@@ -57,7 +59,7 @@ export const TradeDialog = ({
                         form={tradeForm.form}
                         openDate={tradeForm.openDate}
                         setOpenDate={tradeForm.setOpenDate}
-                        symbolLabels={tradeForm.instrumentLabels}
+                        symbolLabels={tradeForm.symbolLabels}
                         day={day}
                         rating={tradeForm.rating}
                     />

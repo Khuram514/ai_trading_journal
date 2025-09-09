@@ -29,7 +29,12 @@ const tradeRecordsSlice = createSlice({
     initialState,
     reducers: {
         setListOfTrades: (state, action) => {
-            state.listOfTrades = action.payload;
+            // Normalize incoming trades from server to avoid Number(undefined) -> NaN on frontend
+            state.listOfTrades = (action.payload ?? []).map((trade: Trades) => ({
+                ...trade,
+                // Ensure result is at least an empty string (Number("") -> 0), never undefined
+                result: trade.result === null ? 0 : trade.result,
+            }));
         },
         updateListOfTrades: (state, action) => {
             if (state.listOfTrades === null) {
@@ -94,6 +99,9 @@ const tradeRecordsSlice = createSlice({
         },
         setMonthViewSummary: (state, action) => {
             const { month, value } = action.payload;
+            // Guard against undefined/null values from optional result
+            if (value === undefined || value === null) return;
+
             if (state.monthViewSummary[month] !== undefined) {
                 state.monthViewSummary[month] += value;
             } else {
@@ -108,6 +116,9 @@ const tradeRecordsSlice = createSlice({
         },
         setYearViewSummary: (state, action) => {
             const { year, value } = action.payload;
+            // Guard against undefined/null values from optional result
+            if (value === undefined || value === null) return;
+
             if (
                 state.yearViewSummary[year] !== undefined &&
                 state.yearViewSummary[year] !== null
@@ -125,6 +136,9 @@ const tradeRecordsSlice = createSlice({
         },
         setTotalOfParticularYearSummary: (state, action) => {
             const { year, value } = action.payload;
+            // Guard against undefined/null values from optional result
+            if (value === undefined || value === null) return;
+
             if (
                 state.totalOfParticularYearSummary[year] !== undefined &&
                 state.totalOfParticularYearSummary[year] !== null
@@ -142,6 +156,8 @@ const tradeRecordsSlice = createSlice({
         },
         updateTradeDetailsForEachDay: (state, action) => {
             const { result, date, value } = action.payload;
+            // Guard against undefined/null values from optional result
+            if (result === undefined || result === null) return;
 
             if (state.tradeDetailsForEachDay[date]) {
                 state.tradeDetailsForEachDay[date] = {
