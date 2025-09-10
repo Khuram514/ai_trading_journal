@@ -12,6 +12,7 @@ import { Calendar } from "../ui/calendar";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
+import { StarRating } from "../calendar/StarRating";
 
 interface CloseDetailsTabProps {
     form: UseFormReturn<z.infer<typeof newTradeFormSchema>>;
@@ -26,7 +27,7 @@ export const CloseDetailsTab = ({
     closeDate,
     setCloseDate,
 }: CloseDetailsTabProps) => {
-    const { register, control, formState: { errors } } = form;
+    const { register, control, formState: { errors }, setValue } = form;
 
     return (
         <div className="flex flex-col gap-2">
@@ -182,6 +183,17 @@ export const CloseDetailsTab = ({
                     {...register("result")}
                     placeholder="Enter profit (+) or loss (-)"
                 />
+            </div>
+
+            {/* Rating Section moved here */}
+            <div className="mb-2 flex flex-col gap-2">
+                <Label htmlFor="rating" className="mb-1">
+                    Rate your trade: {" "}
+                    <span className="ml-2 text-[.75rem] text-black/50">
+                        (default 0)
+                    </span>
+                </Label>
+                <StarRating setValue={setValue} rating={form.watch("rating")} />
             </div>
         </div>
     );

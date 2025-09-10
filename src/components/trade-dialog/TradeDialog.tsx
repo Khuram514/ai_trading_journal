@@ -61,7 +61,6 @@ export const TradeDialog = ({
                         setOpenDate={tradeForm.setOpenDate}
                         symbolLabels={tradeForm.symbolLabels}
                         day={day}
-                        rating={tradeForm.rating}
                     />
 
                     <div className="flex gap-6 justify-end">

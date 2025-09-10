@@ -21,7 +21,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "../ui/select";
-import { StarRating } from "../calendar/StarRating";
+import { useAutoCalcOpenFields } from "./hooks/useAutoCalcOpenFields";
 
 const instrumentLabels = ["Crypto", "Forex", "Stock", "Index", "Commodity", "Bond", "ETF", "Option", "Other"];
 
@@ -31,7 +31,6 @@ interface OpenDetailsTabProps {
     setOpenDate: (date: Date | undefined) => void;
     symbolLabels: string[];
     day?: dayjs.Dayjs | undefined;
-    rating: number;
 }
 
 export const OpenDetailsTab = ({
@@ -39,10 +38,12 @@ export const OpenDetailsTab = ({
     openDate,
     setOpenDate,
     symbolLabels,
-    day,
-    rating
+    day
 }: OpenDetailsTabProps) => {
     const { register, control, setValue, formState: { errors } } = form;
+
+    // Auto-calculate the third field among entryPrice, quantity, totalCost
+    useAutoCalcOpenFields(form);
 
     return (
         <div className="flex flex-col gap-2">
@@ -340,17 +341,6 @@ export const OpenDetailsTab = ({
                         {...register("totalCost")}
                     />
                 </div>
-            </div>
-
-            {/* Rating Section */}
-            <div className="mb-2 flex flex-col gap-2">
-                <Label htmlFor="rating" className="mb-1">
-                    Rate your trade:{" "}
-                    <span className="ml-2 text-[.75rem] text-black/50">
-                        (default 0)
-                    </span>
-                </Label>
-                <StarRating setValue={setValue} rating={rating} />
             </div>
 
             {/* Notes Section */}

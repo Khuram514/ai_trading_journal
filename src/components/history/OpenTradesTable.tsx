@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { MdDelete, MdStar } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import { BookOpen, Moon, Sun } from "lucide-react";
 import { PiCalendarDotsThin } from "react-icons/pi";
 
@@ -15,11 +15,13 @@ import {
 import { CustomButton } from "../CustomButton";
 import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import { TradeDialog } from "../trade-dialog";
+import DeleteTradeDialog from "./DeleteTradeDialog";
+import { useState } from "react";
+import { useDeleteOpenTrade } from "@/hooks/useDeleteOpenTrade";
 
 type OpenTradesTableProps = {
     trades: Trades[];
     startCapital: string | null;
-    onDelete?: (trade: Trades) => void;
 };
 
 const INSTRUMENT_LABELS = [
@@ -41,7 +43,10 @@ const getInstrumentLabel = (instrument: string | undefined) => {
     )?.shortcut;
 };
 
-export const OpenTradesTable = ({ trades, startCapital, onDelete }: OpenTradesTableProps) => {
+export const OpenTradesTable = ({ trades, startCapital }: OpenTradesTableProps) => {
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [tradeToDelete, setTradeToDelete] = useState<Trades | null>(null);
+    const { handleDeleteOpenTrade } = useDeleteOpenTrade();
     if (!trades || trades.length === 0) {
         return (
             <div className="p-4 text-center text-zinc-500">No open trades</div>
@@ -187,7 +192,10 @@ export const OpenTradesTable = ({ trades, startCapital, onDelete }: OpenTradesTa
                     {/* Delete */}
                     <div className="col-span-1 max-md:col-span-1 text-center">
                         <MdDelete
-                            onClick={() => onDelete?.(trade)}
+                            onClick={() => {
+                                setTradeToDelete(trade);
+                                setDeleteDialogOpen(true);
+                            }}
                             className="text-lg text-sell cursor-pointer hover:text-red-600 transition-colors mx-auto"
                         />
                     </div>
@@ -209,6 +217,17 @@ export const OpenTradesTable = ({ trades, startCapital, onDelete }: OpenTradesTa
                             </DialogContent>
                         </Dialog>
                     </div>
+                    <DeleteTradeDialog
+                        isOpen={deleteDialogOpen}
+                        onOpenChange={setDeleteDialogOpen}
+                        message={`Do you want to delete this open trade${tradeToDelete ? ` "${tradeToDelete.symbolName}"` : ""}?`}
+                        onConfirm={async () => {
+                            if (!tradeToDelete) return;
+                            await handleDeleteOpenTrade(tradeToDelete.id);
+                            setDeleteDialogOpen(false);
+                            setTradeToDelete(null);
+                        }}
+                    />
                 </div>
             ))}
         </div>
