@@ -28,9 +28,7 @@ import { FollowedStrategyPie } from "@/components/history/FollowedStrategyPie";
 import EditTrade from "@/components/history/EditTrade";
 import { useDeleteTrade } from "@/hooks/useDeleteTrade";
 import { StrategyRules } from "@/components/trade-dialog/StrategyRules";
-import { CustomButton } from "@/components/CustomButton";
 import DeleteTradeDialog from "@/components/history/DeleteTradeDialog";
-import { useDeleteOpenTrade } from "@/hooks/useDeleteOpenTrade";
 import { OpenTradesTable } from "@/components/history/OpenTradesTable";
 
 const INSTRUMENT_LABELS = [{ name: "Crypto", shortcut: "CRY" }, { name: "Forex", shortcut: "FX" }, { name: "Stock", shortcut: "STO" }, { name: "Index", shortcut: "IDX" }, { name: "Commodity", shortcut: "CMD" }, { name: "Bond", shortcut: "BND" }, { name: "ETF", shortcut: "ETF" }, { name: "Option", shortcut: "OPT" }, { name: "Other", shortcut: "OTHER" }];

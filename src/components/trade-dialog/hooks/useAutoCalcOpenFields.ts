@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { UseFormReturn } from "react-hook-form";
+import { FieldPath, FieldPathValue, UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 import { newTradeFormSchema } from "@/zodSchema/schema";
 
@@ -44,8 +44,9 @@ export function useAutoCalcOpenFields(form: UseFormReturn<FormType>) {
             const d = toNum(deposit);
 
             // Helper to conditionally set a field only if empty and changed
-            const setIfEmptyAndChanged = (
-                name: keyof Pick<FormType, "entryPrice" | "quantity" | "deposit">,
+            type NumericStringFields = "entryPrice" | "quantity" | "deposit";
+            const setIfEmptyAndChanged = <K extends FieldPath<FormType> & NumericStringFields>(
+                name: K,
                 value: number,
                 decimals: number
             ) => {
@@ -53,7 +54,7 @@ export function useAutoCalcOpenFields(form: UseFormReturn<FormType>) {
                 if (current && current.trim() !== "") return; // user already entered something
                 const next = value.toFixed(decimals);
                 if (current !== next) {
-                    setValue(name as any, next, { shouldDirty: true, shouldValidate: true });
+                    setValue(name, next as FieldPathValue<FormType, K>, { shouldDirty: true, shouldValidate: true });
                     hasAssistedRef.current = true;
                 }
             };
