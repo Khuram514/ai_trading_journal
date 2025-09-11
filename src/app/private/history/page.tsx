@@ -1,5 +1,5 @@
 "use client";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { sortTrades } from "@/features/history/sortTrades";
 import { useAppSelector } from "@/redux/store";
 import { Trades } from "@/types";
@@ -10,7 +10,6 @@ import { Expand } from "lucide-react";
 import { OpenTradesTable } from "@/components/history/OpenTradesTable";
 import { CloseTradesTable } from "@/components/history/CloseTradesTable";
 
-const INSTRUMENT_LABELS = [{ name: "Crypto", shortcut: "CRY" }, { name: "Forex", shortcut: "FX" }, { name: "Stock", shortcut: "STO" }, { name: "Index", shortcut: "IDX" }, { name: "Commodity", shortcut: "CMD" }, { name: "Bond", shortcut: "BND" }, { name: "ETF", shortcut: "ETF" }, { name: "Option", shortcut: "OPT" }, { name: "Other", shortcut: "OTHER" }];
 
 export default function Page() {
     const [sortedTrades, setSortedTrades] = useState<Trades[]>([]);
@@ -25,9 +24,6 @@ export default function Page() {
 
     const sortBy = useAppSelector((state) => state.history.sortBy);
     const timeframe = useAppSelector((state) => state.history.timeframe);
-    const { strategies: localStrategies } = useAppSelector(
-        (state) => state.strategies
-    );
 
     const tradesToSort = filteredTrades || trades || [];
 
