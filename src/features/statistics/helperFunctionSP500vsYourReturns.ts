@@ -9,7 +9,9 @@ export function helperFunctionSP500vsYourReturns(
     }
     const initialCapital = parseFloat(capital) || 0;
 
-    const tradesWithDate = trades.map((t) => ({
+    const tradesWithDate = trades.filter((trade): trade is Trades & { closeDate: string } =>
+        Boolean(trade.closeDate)
+    ).map((t) => ({
         ...t,
         closeDt: new Date(t.closeDate),
     }));
@@ -43,7 +45,7 @@ export function helperFunctionSP500vsYourReturns(
         let cumulativePnL = 0;
         tradesWithDate.forEach((t) => {
             if (t.closeDt <= boundaryDate) {
-                const tradeResult = parseFloat(t.result) || 0;
+                const tradeResult = parseFloat(t.result || "0") || 0;
                 cumulativePnL += tradeResult;
             }
         });

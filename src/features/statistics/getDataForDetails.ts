@@ -27,12 +27,16 @@ export const getOtherDataForGridPageTwo = (
 
     const topTrades = getTopTrades(trades);
 
-    const topTenTrades = [...trades]
+    const closedTrades = trades.filter((trade): trade is Trades & { closeDate: string } =>
+        Boolean(trade.closeDate)
+    );
+
+    const topTenTrades = [...closedTrades]
         .sort((a, b) => Number(b.result) - Number(a.result))
         .slice(0, 11);
 
     const results = topTenTrades.map((trade) => Number(trade.result));
-    const dates = topTenTrades.map((trade) => trade.closeDate.split("T")[0]);
+    const dates = topTenTrades.filter((trade) => trade.closeDate).map((trade) => trade.closeDate.split("T")[0]);
 
     const convertedTopInstruments = topTrades
         .filter((trade) => trade.label !== "Other")
@@ -132,7 +136,9 @@ function getTopInstrumentsByDay(
         instrumentData[instrument] = Array(7).fill(0);
     });
 
-    trades.forEach((trade) => {
+    trades.filter((trade): trade is Trades & { closeDate: string } =>
+        Boolean(trade.closeDate)
+    ).forEach((trade) => {
         const date = new Date(trade.closeDate);
         const dayIndex = date.getDay();
 

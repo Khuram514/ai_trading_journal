@@ -14,7 +14,9 @@ export const sortTrades = ({
     let filtered: Trades[] = tradesToSort;
 
     if (timeframe !== "allHistory") {
-        filtered = tradesToSort.filter((trade) => {
+        filtered = tradesToSort.filter((trade): trade is Trades & { closeDate: string } =>
+            Boolean(trade.closeDate)
+        ).filter((trade) => {
             const closeDate = new Date(trade.closeDate);
 
             switch (timeframe) {
@@ -51,24 +53,32 @@ export const sortTrades = ({
 
             case "openDate":
             case "closeDate": {
-                // First compare the closeDate
+                // First compare the date
+                const aDate = sortBy === "openDate" ? a.openDate : a.closeDate;
+                const bDate = sortBy === "openDate" ? b.openDate : b.closeDate;
+
+                // Skip if date is missing
+                if (!aDate || !bDate) return 0;
+
                 const compareDates =
-                    new Date(b[sortBy]).getTime() -
-                    new Date(a[sortBy]).getTime();
+                    new Date(bDate).getTime() -
+                    new Date(aDate).getTime();
 
                 // If they differ, return the date comparison
                 if (compareDates !== 0) {
                     return compareDates;
                 }
 
-                // Otherwise, compare by closeTime
+                // Otherwise, compare by time
+                const aTime = sortBy === "openDate" ? a.openTime : a.closeTime;
+                const bTime = sortBy === "openDate" ? b.openTime : b.closeTime;
+
+                // Skip if time is missing
+                if (!aTime || !bTime) return 0;
+
                 return (
-                    timeStringToMinutes(
-                        b[sortBy === "openDate" ? "openTime" : "closeTime"]
-                    ) -
-                    timeStringToMinutes(
-                        a[sortBy === "openDate" ? "openTime" : "closeTime"]
-                    )
+                    timeStringToMinutes(bTime) -
+                    timeStringToMinutes(aTime)
                 );
             }
             case "result":
