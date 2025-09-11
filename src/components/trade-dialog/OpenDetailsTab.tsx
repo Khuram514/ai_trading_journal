@@ -289,6 +289,7 @@ export const OpenDetailsTab = ({
                     <Input
                         type="number"
                         id="entryPrice"
+                        step="any"
                         className="w-full max-md:text-[.75rem]"
                         {...register("entryPrice")}
                     />
@@ -315,6 +316,7 @@ export const OpenDetailsTab = ({
                     <Input
                         type="number"
                         id="quantity"
+                        step="any"
                         className="w-full max-md:text-[.75rem]"
                         {...register("quantity")}
                     />

@@ -1,8 +1,8 @@
 "use client";
 
+import { useEffect } from "react";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import dayjs from "dayjs";
 import { Controller, UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 
@@ -28,6 +28,21 @@ export const CloseDetailsTab = ({
     setCloseDate,
 }: CloseDetailsTabProps) => {
     const { register, control, formState: { errors }, setValue } = form;
+    // Live values while typing
+    const depositValue = form.watch("deposit");
+    const resultValue = form.watch("result");
+    const quantityValue = form.watch("quantity");
+    const depositNum = Number(depositValue);
+    const resultNum = Number(resultValue);
+    const hasValidNumbers = Number.isFinite(depositNum) && Number.isFinite(resultNum) && depositValue?.toString().trim() !== "" && resultValue?.toString().trim() !== "" && depositNum !== 0;
+    const percentStr = hasValidNumbers ? ((resultNum / depositNum) * 100).toFixed(2) : "0.0";
+
+    // Prefill and keep quantitySold in sync with quantity
+    useEffect(() => {
+        const nextVal = quantityValue ?? "";
+        setValue("quantitySold", nextVal, { shouldDirty: false, shouldValidate: true });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [quantityValue]);
 
     return (
         <div className="flex flex-col gap-2">
@@ -132,6 +147,7 @@ export const CloseDetailsTab = ({
                     <Input
                         type="number"
                         id="sellPrice"
+                        step="any"
                         className="w-full max-md:text-[.75rem]"
                         {...register("sellPrice")}
                     />
@@ -147,7 +163,7 @@ export const CloseDetailsTab = ({
                             </span>
                         ) : (
                             <span className="mb-1 text-[.75rem] text-black/50">
-                                (Only num.)
+                                (coming soon)
                             </span>
                         )}
                     </div>
@@ -155,6 +171,9 @@ export const CloseDetailsTab = ({
                         type="number"
                         id="quantitySold"
                         className="w-full max-md:text-[.75rem]"
+                        disabled
+                        readOnly
+                        value={quantityValue ?? ""}
                         {...register("quantitySold")}
                     />
                 </div>
@@ -179,10 +198,26 @@ export const CloseDetailsTab = ({
                 <Input
                     type="number"
                     id="result"
+                    step="any"
                     className="w-full max-md:text-[.75rem]"
                     {...register("result")}
                     placeholder="Enter profit (+) or loss (-)"
                 />
+            </div>
+
+            {/* Profit or Loss Percentage Section */}
+            <div className="mb-2 flex flex-col gap-1">
+                <div className="flex items-center justify-between">
+                    <Label htmlFor="result" className="mb-1">
+                        Profit or Loss Percentage:
+                    </Label>
+
+                </div>
+                <div>
+                    <span className="text-lg text-neutral-400">
+                        {percentStr}%
+                    </span>
+                </div>
             </div>
 
             {/* Rating Section moved here */}

@@ -54,10 +54,11 @@ export const newTradeFormSchema = z.object({
         .string()
         .optional()
         .refine((val) => {
-            if (!val || val === "") return true;
-            return /^[0-9]+(\.[0-9]+)?$/.test(val);
+            if (val == null || val === "") return true;
+            const num = Number(val);
+            return Number.isFinite(num);
         }, {
-            message: "Only positive numbers are allowed.",
+            message: "Enter a valid number.",
         }),
     sellPrice: z
         .string()
@@ -72,10 +73,11 @@ export const newTradeFormSchema = z.object({
         .string()
         .optional()
         .refine((val) => {
-            if (!val || val === "") return true;
-            return /^[0-9]+(\.[0-9]+)?$/.test(val);
+            if (val == null || val === "") return true;
+            const num = Number(val);
+            return Number.isFinite(num);
         }, {
-            message: "Only positive numbers are allowed.",
+            message: "Enter a valid number.",
         }),
 
     strategyName: z.string().optional(),

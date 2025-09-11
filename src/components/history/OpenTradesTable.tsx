@@ -22,6 +22,7 @@ import { useDeleteOpenTrade } from "@/hooks/useDeleteOpenTrade";
 type OpenTradesTableProps = {
     trades: Trades[];
     startCapital: string | null;
+    heightClass?: string;
 };
 
 const INSTRUMENT_LABELS = [
@@ -43,7 +44,7 @@ const getInstrumentLabel = (instrument: string | undefined) => {
     )?.shortcut;
 };
 
-export const OpenTradesTable = ({ trades, startCapital }: OpenTradesTableProps) => {
+export const OpenTradesTable = ({ trades, startCapital, heightClass }: OpenTradesTableProps) => {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [tradeToDelete, setTradeToDelete] = useState<Trades | null>(null);
     const { handleDeleteOpenTrade } = useDeleteOpenTrade();
@@ -54,9 +55,9 @@ export const OpenTradesTable = ({ trades, startCapital }: OpenTradesTableProps) 
     }
 
     return (
-        <div className="flex-1 overflow-auto">
+        <div className={`flex-1 ${heightClass ?? "max-h-[30vh]"} overflow-auto`}>
             {/* Grid Header */}
-            <div className="grid grid-cols-27 max-md:grid-cols-20 gap-1 p-2 items-center border-b bg-muted/50 font-medium text-sm">
+            <div className="grid grid-cols-27 max-md:grid-cols-20 gap-1 p-2 items-center border-b bg-muted/50 font-medium text-sm sticky top-0 bg-white">
                 <div className="col-span-2 text-left">Symbol</div>
                 <div className="col-span-2 max-md:hidden text-center">Instrument</div>
                 <div className="col-span-2 max-md:hidden text-center">Type</div>
@@ -158,7 +159,7 @@ export const OpenTradesTable = ({ trades, startCapital }: OpenTradesTableProps) 
                     </div>
 
                     {/* Cost */}
-                    <div className="col-span-2 max-md:col-span-3 text-center text-xs">
+                    <div className="col-span-2 max-md:col-span-3 text-center text-sm">
                         {trade.totalCost}
                     </div>
 

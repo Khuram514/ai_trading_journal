@@ -22,64 +22,64 @@ export function useAutoCalcOpenFields(form: UseFormReturn<FormType>) {
     const quantity = watch("quantity"); // string
     const deposit = watch("deposit"); // string
 
-    // Track previous values to know which field changed this tick
-    const prevEntryRef = useRef(entryPrice);
-    const prevQtyRef = useRef(quantity);
-    const prevDepRef = useRef(deposit);
+    // Debounce timer reference
+    const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    // One-time assist flag: after first auto-fill, disable further assists
+    const hasAssistedRef = useRef<boolean>(false);
 
     useEffect(() => {
-        const e = toNum(entryPrice);
-        const q = toNum(quantity);
-        const d = toNum(deposit);
+        if (debounceRef.current) {
+            clearTimeout(debounceRef.current);
+            debounceRef.current = null;
+        }
 
-        const prevE = prevEntryRef.current;
-        const prevQ = prevQtyRef.current;
-        const prevD = prevDepRef.current;
+        // If we already assisted once, do nothing further
+        if (hasAssistedRef.current) {
+            return;
+        }
 
-        const changedE = entryPrice !== prevE;
-        const changedQ = quantity !== prevQ;
-        const changedD = deposit !== prevD;
+        debounceRef.current = setTimeout(() => {
+            const e = toNum(entryPrice);
+            const q = toNum(quantity);
+            const d = toNum(deposit);
 
-        // Helper to conditionally set a field only if empty and changed
-        const setIfEmptyAndChanged = (
-            name: keyof Pick<FormType, "entryPrice" | "quantity" | "deposit">,
-            value: number,
-            decimals: number
-        ) => {
-            const current = watch(name);
-            if (current && current.trim() !== "") return; // user already entered something
-            const next = value.toFixed(decimals);
-            if (current !== next) {
-                setValue(name as any, next, { shouldDirty: true, shouldValidate: true });
+            // Helper to conditionally set a field only if empty and changed
+            const setIfEmptyAndChanged = (
+                name: keyof Pick<FormType, "entryPrice" | "quantity" | "deposit">,
+                value: number,
+                decimals: number
+            ) => {
+                const current = watch(name);
+                if (current && current.trim() !== "") return; // user already entered something
+                const next = value.toFixed(decimals);
+                if (current !== next) {
+                    setValue(name as any, next, { shouldDirty: true, shouldValidate: true });
+                    hasAssistedRef.current = true;
+                }
+            };
+
+            // Compute missing third value when exactly two are present
+            if (e != null && q != null && (deposit == null || deposit.trim() === "")) {
+                setIfEmptyAndChanged("deposit", e * q, 2);
+                return;
+            }
+
+            if (d != null && q != null && (entryPrice == null || entryPrice.trim() === "")) {
+                if (q !== 0) setIfEmptyAndChanged("entryPrice", d / q, 2);
+                return;
+            }
+
+            if (d != null && e != null && (quantity == null || quantity.trim() === "")) {
+                if (e !== 0) setIfEmptyAndChanged("quantity", d / e, 6);
+                return;
+            }
+        }, 1000);
+
+        return () => {
+            if (debounceRef.current) {
+                clearTimeout(debounceRef.current);
             }
         };
-
-        // Compute missing third value when exactly two are present.
-        // Only suggest when one of the source fields changed (not when user just cleared the target).
-        if (e != null && q != null && (deposit == null || deposit.trim() === "")) {
-            if (!(changedD && (deposit == null || deposit.trim() === "")) && (changedE || changedQ)) {
-                setIfEmptyAndChanged("deposit", e * q, 2);
-            }
-            return;
-        }
-
-        if (d != null && q != null && (entryPrice == null || entryPrice.trim() === "")) {
-            if (!(changedE && (entryPrice == null || entryPrice.trim() === "")) && (changedD || changedQ)) {
-                if (q !== 0) setIfEmptyAndChanged("entryPrice", d / q, 2);
-            }
-            return;
-        }
-
-        if (d != null && e != null && (quantity == null || quantity.trim() === "")) {
-            if (!(changedQ && (quantity == null || quantity.trim() === "")) && (changedD || changedE)) {
-                if (e !== 0) setIfEmptyAndChanged("quantity", d / e, 6);
-            }
-            return;
-        }
-        // Update previous refs at the end of processing
-        prevEntryRef.current = entryPrice;
-        prevQtyRef.current = quantity;
-        prevDepRef.current = deposit;
     }, [entryPrice, quantity, deposit, setValue, watch]);
 }
 
