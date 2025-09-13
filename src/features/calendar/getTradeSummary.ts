@@ -5,6 +5,11 @@ export function getTradeSummary(
     data: Trades[]
 ): { [key: string]: number } {
     return data.reduce((acc: { [key: string]: number }, trade) => {
+        // Skip trades without a valid closeDate or result
+        if (!trade.closeDate) return acc;
+        const numericResult = Number(trade.result);
+        if (!Number.isFinite(numericResult)) return acc;
+
         const closeDate = new Date(trade.closeDate);
         let dateKey: string;
         if (groupBy === "year") {
@@ -22,12 +27,10 @@ export function getTradeSummary(
             dateKey = "total";
         }
 
-        const result = parseFloat(trade.result);
-
         if (acc[dateKey]) {
-            acc[dateKey] += result;
+            acc[dateKey] += numericResult;
         } else {
-            acc[dateKey] = result;
+            acc[dateKey] = numericResult;
         }
 
         return acc;

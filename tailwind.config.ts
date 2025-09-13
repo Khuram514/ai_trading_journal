@@ -52,6 +52,11 @@ export default {
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out'
+			},
+			gridTemplateColumns: {
+				'40': 'repeat(40, minmax(0, 1fr))',
+				'27': 'repeat(27, minmax(0, 1fr))',
+				'20': 'repeat(20, minmax(0, 1fr))'
 			}
 		}
 	},

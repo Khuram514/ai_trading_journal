@@ -31,6 +31,7 @@ export default function MonthView() {
     };
 
     console.log(trades);
+
     return (
         <div
             className={`grid grid-cols-7 grid-rows-${currentMonth.length} h-full w-full`}>
@@ -128,7 +129,7 @@ export default function MonthView() {
                                                                 <div key={t.id} className="flex items-center justify-between px-3 py-2 [&:not(:first-child)]:border-t border-zinc-200">
                                                                     <div className="flex items-center gap-3">
                                                                         <span className={`text-xs px-2 py-0.5 rounded-md text-white ${t.positionType === "sell" ? "bg-sell" : "bg-buy"}`}>{t.positionType}</span>
-                                                                        <span className="text-sm text-zinc-700">{t.instrumentName}</span>
+                                                                        <span className="text-sm text-zinc-700">{t.symbolName}</span>
                                                                     </div>
                                                                     <div className="text-sm">
                                                                         <span className="text-zinc-500 text-xs mr-1">Deposit:</span>
@@ -136,7 +137,7 @@ export default function MonthView() {
                                                                     </div>
                                                                     <div className={`text-sm ${Number(t.result) >= 0 ? "text-buy" : "text-sell"}`}>
                                                                         <span className="text-zinc-500 text-xs mr-1">Result:</span>
-                                                                        {Number(t.result).toLocaleString("de-DE")}
+                                                                        {Number(t.result ?? 0).toLocaleString("de-DE")}
                                                                     </div>
                                                                 </div>
                                                             ))}

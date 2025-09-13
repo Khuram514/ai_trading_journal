@@ -30,31 +30,35 @@ interface UseTradeFormProps {
 }
 
 export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestClose }: UseTradeFormProps) => {
-    // State management
     const [openDate, setOpenDate] = useState<Date>();
     const [closeDate, setCloseDate] = useState<Date>();
-    const [instrumentLabels, setInstrumentLabels] = useState<string[]>([]);
+    const [symbolLabels, setSymbolLabels] = useState<string[]>([]);
     const [submittingTrade, setSubmittingTrade] = useState(false);
     const [selectedStrategyId, setSelectedStrategyId] = useState<string>("");
     const [checkedOpenRules, setCheckedOpenRules] = useState<string[]>([]);
     const [checkedCloseRules, setCheckedCloseRules] = useState<string[]>([]);
 
-    // Redux
     const dispatch = useAppDispatch();
     const trades = useAppSelector((state) => state.tradeRecords.listOfTrades);
     const { strategies: localStrategies } = useAppSelector((state) => state.strategies);
 
-    // Form setup with dynamic default values
     const form = useForm<z.infer<typeof newTradeFormSchema>>({
         resolver: zodResolver(newTradeFormSchema),
         defaultValues: editMode && existingTrade ? {
             positionType: existingTrade.positionType || "buy",
             openDate: existingTrade.openDate,
             openTime: existingTrade.openTime || "12:30",
-            closeDate: existingTrade.closeDate,
-            closeTime: existingTrade.closeTime || "12:30",
+            closeDate: existingTrade.closeDate || "",
+            closeTime: existingTrade.closeTime || "",
+            isActiveTrade: existingTrade.isActiveTrade ?? true,
             deposit: existingTrade.deposit || "",
             instrumentName: existingTrade.instrumentName || "",
+            symbolName: existingTrade.symbolName || "",
+            entryPrice: existingTrade.entryPrice || "",
+            totalCost: existingTrade.totalCost || "",
+            quantity: existingTrade.quantity || "",
+            sellPrice: existingTrade.sellPrice || "",
+            quantitySold: existingTrade.quantitySold || "",
             strategyName: existingTrade.strategyName || "",
             strategyId: existingTrade.strategyId || null,
             appliedOpenRules: existingTrade.appliedOpenRules || [],
@@ -66,10 +70,17 @@ export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestCl
             positionType: "buy",
             openDate: undefined,
             openTime: "12:30",
-            closeDate: undefined,
-            closeTime: "12:30",
+            closeDate: "",
+            closeTime: "",
+            isActiveTrade: true,
             deposit: "",
             instrumentName: "",
+            symbolName: "",
+            entryPrice: "",
+            totalCost: "",
+            quantity: "",
+            sellPrice: "",
+            quantitySold: "",
             strategyName: "",
             strategyId: null,
             appliedOpenRules: [],
@@ -80,7 +91,6 @@ export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestCl
         },
     });
 
-    // Helper functions for rule checkbox handling
     const handleOpenRuleToggle = (ruleId: string, rule: unknown) => {
         const updatedCheckedRules = checkedOpenRules.includes(ruleId)
             ? checkedOpenRules.filter(id => id !== ruleId)
@@ -136,10 +146,33 @@ export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestCl
     const onSubmit = async (tradeData: z.infer<typeof newTradeFormSchema>) => {
         setSubmittingTrade(true);
 
+        // Normalize close fields: if closeDate provided but closeTime missing, default to 12:30
+        const hasCloseDate = Boolean(tradeData.closeDate && tradeData.closeDate.trim() !== "");
+        const baseData = { ...tradeData };
+        if (hasCloseDate && (!baseData.closeTime || baseData.closeTime.trim() === "")) {
+            baseData.closeTime = "12:30";
+        }
+
+        // Require result if closeDate is provided
+        if (hasCloseDate) {
+            const res = baseData.result?.trim();
+            if (!res) {
+                toast.error("Please provide a result when setting a close date.");
+                setSubmittingTrade(false);
+                return;
+            }
+        }
+
+        // Auto-set isActiveTrade based on closeDate
+        const updatedTradeData = {
+            ...baseData,
+            isActiveTrade: !baseData.closeDate || baseData.closeDate === ""
+        };
+
         try {
             let result;
             if (editMode && existingTrade) {
-                result = await updateTradeRecord(tradeData, existingTrade.id);
+                result = await updateTradeRecord(updatedTradeData, existingTrade.id);
 
                 if (result?.error) {
                     toast.error("There was an error updating your trade!");
@@ -148,77 +181,87 @@ export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestCl
 
                 // Calculate differences for Redux state updates
                 const oldResult = Number(existingTrade.result);
-                const newResult = Number(tradeData.result);
+                const newResult = Number(updatedTradeData.result);
                 const resultDifference = newResult - oldResult;
 
-                // Update Redux state with differences
-                const [stringDay, month, year] = new Date(tradeData.closeDate)
-                    .toLocaleDateString("en-GB")
-                    .split("/");
-                const numericMonth = parseInt(month, 10);
-                const convertedMonthView = `${stringDay}-${month}-${year}`;
-                const convertedYearView = `${numericMonth}-${year}`;
+                // Only update statistics if trade has a closeDate (is closed)
+                if (updatedTradeData.closeDate && updatedTradeData.closeDate !== "") {
+                    const [stringDay, month, year] = new Date(updatedTradeData.closeDate)
+                        .toLocaleDateString("en-GB")
+                        .split("/");
+                    const numericMonth = parseInt(month, 10);
+                    const convertedMonthView = `${stringDay}-${month}-${year}`;
+                    const convertedYearView = `${numericMonth}-${year}`;
 
-                // Only update summaries if result changed
-                if (resultDifference !== 0) {
-                    dispatch(setMonthViewSummary({
-                        month: convertedMonthView,
-                        value: resultDifference,
-                    }));
-                    dispatch(setYearViewSummary({
-                        year: convertedYearView,
-                        value: resultDifference,
-                    }));
-                    dispatch(setTotalOfParticularYearSummary({
-                        year: year,
-                        value: resultDifference,
-                    }));
+                    // Only update summaries if result changed and is not undefined
+                    if (resultDifference !== 0 && updatedTradeData.result !== undefined) {
+                        dispatch(setMonthViewSummary({
+                            month: convertedMonthView,
+                            value: resultDifference,
+                        }));
+                        dispatch(setYearViewSummary({
+                            year: convertedYearView,
+                            value: resultDifference,
+                        }));
+                        dispatch(setTotalOfParticularYearSummary({
+                            year: year,
+                            value: resultDifference,
+                        }));
+                    }
                 }
 
                 // Update the trade in the list
                 dispatch(updateTradeInList({
                     id: existingTrade.id,
-                    ...tradeData,
+                    ...updatedTradeData,
                 }));
 
                 toast.success("Trade updated successfully!");
             } else {
                 const customId = uuidv4();
-                result = await createNewTradeRecord(tradeData, customId);
+                result = await createNewTradeRecord(updatedTradeData, customId);
 
                 if (result?.error) {
                     toast.error("There was an error saving your trade!");
                     return;
                 }
 
-                // Update Redux state for new trades
-                const [stringDay, month, year] = new Date(tradeData.closeDate)
-                    .toLocaleDateString("en-GB")
-                    .split("/");
-                const numericMonth = parseInt(month, 10);
-                const convertedMonthView = `${stringDay}-${month}-${year}`;
-                const convertedYearView = `${numericMonth}-${year}`;
+                // Only update statistics if trade has a closeDate (is closed)
+                if (updatedTradeData.closeDate && updatedTradeData.closeDate !== "") {
+                    const [stringDay, month, year] = new Date(updatedTradeData.closeDate)
+                        .toLocaleDateString("en-GB")
+                        .split("/");
+                    const numericMonth = parseInt(month, 10);
+                    const convertedMonthView = `${stringDay}-${month}-${year}`;
+                    const convertedYearView = `${numericMonth}-${year}`;
 
-                dispatch(setMonthViewSummary({
-                    month: convertedMonthView,
-                    value: Number(tradeData.result),
-                }));
-                dispatch(setYearViewSummary({
-                    year: convertedYearView,
-                    value: Number(tradeData.result),
-                }));
-                dispatch(setTotalOfParticularYearSummary({
-                    year: year,
-                    value: Number(tradeData.result),
-                }));
+                    // Guard against undefined results before dispatching
+                    const resultValue = Number(updatedTradeData.result);
+                    if (!isNaN(resultValue)) {
+                        dispatch(setMonthViewSummary({
+                            month: convertedMonthView,
+                            value: resultValue,
+                        }));
+                        dispatch(setYearViewSummary({
+                            year: convertedYearView,
+                            value: resultValue,
+                        }));
+                        dispatch(setTotalOfParticularYearSummary({
+                            year: year,
+                            value: resultValue,
+                        }));
+                        dispatch(updateTradeDetailsForEachDay({
+                            date: convertedMonthView,
+                            result: resultValue,
+                            value: 1,
+                        }));
+                    }
+                }
+
+                // Always update the trade list (for both open and closed trades)
                 dispatch(updateListOfTrades({
                     id: customId,
-                    ...tradeData,
-                }));
-                dispatch(updateTradeDetailsForEachDay({
-                    date: convertedMonthView,
-                    result: Number(tradeData.result),
-                    value: 1,
+                    ...updatedTradeData,
                 }));
 
                 toast.success("A new record has been created!");
@@ -241,11 +284,18 @@ export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestCl
     useEffect(() => {
         if (day && !editMode) {
             const convertedDate = day.toDate().toISOString();
-            form.setValue("closeDate", convertedDate);
+            form.setValue("openDate", convertedDate);
+            setOpenDate(day.toDate());
         }
-        setInstrumentLabels([
-            ...new Set(trades?.map((trade) => trade.instrumentName)),
-        ]);
+        if (trades) {
+            setSymbolLabels([
+                ...new Set(
+                    trades
+                        .map(t => t.symbolName?.trim())
+                        .filter((s): s is string => typeof s === "string" && s.trim() !== "")
+                ),
+            ])
+        }
     }, [day, trades, editMode, form]);
 
     // Initialize edit mode data
@@ -286,7 +336,7 @@ export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestCl
         setCloseDate,
 
         // Instruments
-        instrumentLabels,
+        symbolLabels,
 
         // Strategy
         selectedStrategyId,

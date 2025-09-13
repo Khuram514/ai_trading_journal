@@ -36,9 +36,15 @@ export default function Filtering({
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        setInstrumentLabels([
-            ...new Set(trades?.map((trade) => trade.instrumentName)),
-        ]);
+        if (trades) {
+            setInstrumentLabels([
+                ...new Set(
+                    trades
+                        .map(t => t.symbolName?.trim())
+                        .filter((s): s is string => typeof s === "string" && s.trim() !== "")
+                ),
+            ])
+        }
         dispatch(setFilteredTrades(trades));
     }, [trades]);
 
@@ -46,16 +52,22 @@ export default function Filtering({
         if (!trades || trades.length === 0) return;
 
         if (dateRange === null) {
-            setInstrumentLabels([
-                ...new Set(trades?.map((trade) => trade.instrumentName)),
-            ]);
+            if (trades) {
+                setInstrumentLabels([
+                    ...new Set(
+                        trades
+                            .map(t => t.symbolName?.trim())
+                            .filter((s): s is string => typeof s === "string" && s.trim() !== "")
+                    ),
+                ])
+            }
             setRemovedItems([]);
             dispatch(setFilteredTrades(trades));
             return;
         }
 
         const filteredTrades = trades.filter((trade) => {
-            if (dateRange?.from === undefined || dateRange?.to === undefined)
+            if (dateRange?.from === undefined || dateRange?.to === undefined || trade.closeDate === undefined)
                 return;
             const closeDate = new Date(trade.closeDate);
 
@@ -66,7 +78,7 @@ export default function Filtering({
         });
 
         const newLabels = [
-            ...new Set(filteredTrades.map((t) => t.instrumentName)),
+            ...new Set(filteredTrades.map((t) => t.symbolName).filter((s): s is string => typeof s === "string" && s.trim() !== "")),
         ];
 
         setInstrumentLabels(newLabels);
@@ -81,10 +93,11 @@ export default function Filtering({
         setInstrumentLabels(updatedLabels);
         setRemovedItems((prev) => [...prev, instrument]);
 
-        const filtered = trades?.filter((trade) => {
-            if (!updatedLabels.includes(trade.instrumentName)) return false;
+        const filtered = (trades ?? []).filter((trade) => {
+            const sym = trade.symbolName?.trim();
+            if (!sym || !updatedLabels.includes(sym)) return false;
 
-            if (!dateRange?.from || !dateRange.to) return true;
+            if (!dateRange?.from || !dateRange.to || !trade.closeDate) return true;
 
             const closeDate = new Date(trade.closeDate).getTime();
             return (
@@ -100,9 +113,10 @@ export default function Filtering({
         setInstrumentLabels(updatedLabels);
         setRemovedItems((prev) => prev.filter((item) => item !== instrument));
         const filtered = trades?.filter((trade) => {
-            if (!updatedLabels.includes(trade.instrumentName)) return false;
+            const sym = trade.symbolName?.trim();
+            if (!sym || !updatedLabels.includes(sym)) return false;
 
-            if (!dateRange?.from || !dateRange.to) return true;
+            if (!dateRange?.from || !dateRange.to || trade.closeDate === undefined) return true;
 
             const closeDate = new Date(trade.closeDate).getTime();
             return (
@@ -115,9 +129,8 @@ export default function Filtering({
     return (
         <div className="px-3 md:px-6 flex max-md:flex-col max-md:gap-3 items-center justify-between py-3 md:py-1 2xlpy-2 border-b border-zinc-200 max-md:overflow-hidden">
             <div
-                className={`flex gap-2 w-full ${
-                    isStatisticsPage ? "w-full" : "md:w-1/2"
-                } md:flex-wrap overflow-auto p-1`}>
+                className={`flex gap-2 w-full ${isStatisticsPage ? "w-full" : "md:w-1/2"
+                    } md:flex-wrap overflow-auto p-1`}>
                 {removedItems.length > 0 && (
                     <Select
                         onValueChange={(value) =>
@@ -166,7 +179,7 @@ export default function Filtering({
                             <SelectContent>
                                 <SelectGroup>
                                     <SelectItem value="instrumentName">
-                                        Instrument
+                                        Symbol
                                     </SelectItem>
                                     <SelectItem value="positionType">
                                         Position type

@@ -1,53 +1,21 @@
 "use client";
-import {
-    HoverCard,
-    HoverCardContent,
-    HoverCardTrigger,
-} from "@/components/ui/hover-card";
-import {
-    Table,
-    TableHeader,
-    TableRow,
-    TableHead,
-    TableBody,
-    TableCell,
-    TableFooter,
-} from "@/components/ui/table";
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogClose,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { sortTrades } from "@/features/history/sortTrades";
 import { useAppSelector } from "@/redux/store";
 import { Trades } from "@/types";
 import { useEffect, useState } from "react";
 
-import { MdDelete, MdStar } from "react-icons/md";
-import { FaArrowTrendDown, FaArrowTrendUp } from "react-icons/fa6";
-import { LiaHandPointer } from "react-icons/lia";
-import { PiCalendarDotsThin } from "react-icons/pi";
-
 import { getCapital } from "@/server/actions/user";
-import { Moon, Sun } from "lucide-react";
-import { isInMorningRange } from "@/features/history/isInMorningRange";
-import Image from "next/image";
-import { FollowedStrategyPie } from "@/components/history/FollowedStrategyPie";
-import EditTrade from "@/components/history/EditTrade";
-import { useDeleteTrade } from "@/hooks/useDeleteTrade";
-import { StrategyRules } from "@/components/trade-dialog/StrategyRules";
-import { CustomButton } from "@/components/CustomButton";
+import { Expand } from "lucide-react";
+import { OpenTradesTable } from "@/components/history/OpenTradesTable";
+import { CloseTradesTable } from "@/components/history/CloseTradesTable";
+
 
 export default function Page() {
     const [sortedTrades, setSortedTrades] = useState<Trades[]>([]);
     const [total, setTotal] = useState<number>(0);
     const [startCapital, setStartCapital] = useState<string | null>(null);
-    const [strategyDialogOpen, setStrategyDialogOpen] = useState(false);
-    const [selectedTrade, setSelectedTrade] = useState<Trades | null>(null);
-    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-    const [tradeToDelete, setTradeToDelete] = useState<Trades | null>(null);
+    const [openTradesDialogOpen, setOpenTradesDialogOpen] = useState(false);
 
     const trades = useAppSelector((state) => state.tradeRecords.listOfTrades);
     const filteredTrades = useAppSelector(
@@ -56,11 +24,6 @@ export default function Page() {
 
     const sortBy = useAppSelector((state) => state.history.sortBy);
     const timeframe = useAppSelector((state) => state.history.timeframe);
-    const { strategies: localStrategies } = useAppSelector(
-        (state) => state.strategies
-    );
-
-    const { handleDeleteTradeRecord } = useDeleteTrade();
 
     const tradesToSort = filteredTrades || trades || [];
 
@@ -81,8 +44,10 @@ export default function Page() {
             timeframe,
             tradesToSort,
         });
-        const reducedTotal = result.reduce(
-            (acc, cur) => acc + Number(cur.result),
+        // Only calculate total for closed trades (with closeDate)
+        const closedTrades = result.filter((trade) => trade.closeDate && trade.closeDate !== "");
+        const reducedTotal = closedTrades.reduce(
+            (acc, cur) => acc + Number(cur.result || 0),
             0
         );
         setSortedTrades(result);
@@ -91,304 +56,60 @@ export default function Page() {
 
 
 
-    const handleCountPercentage = (trade: Trades) => {
-        const appliedCloseRules = trade.appliedCloseRules || [];
-        const appliedOpenRules = trade.appliedOpenRules || [];
-        const strategy = localStrategies.find(s => s.id === trade.strategyId);
-        const totalCloseRulesOverall = strategy?.closePositionRules.length || 0;
-        const totalOpenRulesOverall = strategy?.openPositionRules.length || 0;
-        const totalRulesOverall = totalCloseRulesOverall + totalOpenRulesOverall;
-        const totalRulesFollowed = appliedCloseRules.length + appliedOpenRules.length;
-        const percentage = (totalRulesFollowed / totalRulesOverall) * 100;
-        return percentage;
-    };
+    const closedTrades = sortedTrades.filter((trade): trade is Trades & { closeDate: string; closeTime: string; result: string } =>
+        Boolean(trade.closeDate && trade.closeDate !== "" &&
+            trade.closeTime && trade.closeTime !== "" &&
+            trade.result && trade.result !== "")
+    );
 
-    const handleStrategyClick = (trade: Trades) => {
-        setSelectedTrade(trade);
-        setStrategyDialogOpen(true);
-    };
+    const openTrades = sortedTrades.filter((trade) =>
+        Boolean(!trade.closeDate || trade.closeDate === "")
+    );
 
-    if (sortedTrades.length === 0) {
+    if (closedTrades.length === 0 && openTrades.length === 0) {
         return (
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-zinc-500">
-                No trades found - create one to get started
+                No trades found - complete some trades to see history
             </div>
         );
     }
+    console.log("sortedTrades", sortedTrades);
+    console.log("closedTrades", closedTrades);
+    console.log("openTrades", openTrades);
 
     return (
-        <div className="flex flex-col md:h-full">
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead className="w-[10%]">Instrument</TableHead>
-                        <TableHead className="w-[5%] max-md:hidden">
-                            Type
-                        </TableHead>
-                        <TableHead className="w-[10%]">Open date</TableHead>
-                        <TableHead className="w-[7.5%] max-md:hidden">
-                            Open time
-                        </TableHead>
-                        <TableHead className="w-[10%]">Close date</TableHead>
-                        <TableHead className="w-[7.5%] max-md:hidden">
-                            Close time
-                        </TableHead>
-                        <TableHead className="w-[10%] max-md:hidden">
-                            Deposit{" "}
-                            <p className="text-[.75rem]">(% of capital)</p>
-                        </TableHead>
-                        <TableHead className="w-[10%]">Result</TableHead>
-                        <TableHead className="w-[5%] max-md:hidden">
-                            Note
-                        </TableHead>
-                        <TableHead className="text-center w-[5%]">
-                            Strategy
-                        </TableHead>
-                        <TableHead className="text-center w-[10%]">
-                            Rating
-                        </TableHead>
-                        <TableHead className="text-center w-[5%]">
-                            Edit
-                        </TableHead>
-                        <TableHead className="text-center w-[5%]">
-                            Delete
-                        </TableHead>
-                    </TableRow>
-                </TableHeader>
-            </Table>
-            <div className="flex-1 overflow-auto">
-                <Table>
-                    <TableBody>
-                        {sortedTrades.map((trade) => (
-                            <TableRow key={trade.id}>
-                                <TableCell className="font-medium w-[10%]">
-                                    {trade.instrumentName}
-                                </TableCell>
-                                <TableCell className="w-[5%] max-md:hidden">
-                                    <p
-                                        className={`bg-${trade.positionType === "sell"
-                                            ? "sell"
-                                            : "buy"
-                                            } w-fit px-2 rounded-md text-white text-[.8rem]`}>
-                                        {trade.positionType}
-                                    </p>
-                                </TableCell>
-                                <TableCell className="w-[10%] text-neutral-500">
-                                    <div className="flex gap-2 items-center">
-                                        <PiCalendarDotsThin className="max-md:hidden" />
-                                        {new Intl.DateTimeFormat("en-GB", {
-                                            day: "2-digit",
-                                            month: "short",
-                                            year: "numeric",
-                                        }).format(new Date(trade.openDate))}
-                                    </div>
-                                </TableCell>
-                                <TableCell className="w-[7.5%] max-md:hidden text-neutral-500">
-                                    <div className="flex gap-2 items-center">
-                                        {isInMorningRange(trade.openTime) ? (
-                                            <Sun className="h-3" />
-                                        ) : (
-                                            <Moon className="h-3" />
-                                        )}
-                                        {trade.openTime}
-                                    </div>
-                                </TableCell>
-                                <TableCell className="w-[10%] text-neutral-500">
-                                    <div className="flex gap-2 items-center">
-                                        <PiCalendarDotsThin className="max-md:hidden" />
-                                        {new Intl.DateTimeFormat("en-GB", {
-                                            day: "2-digit",
-                                            month: "short",
-                                            year: "numeric",
-                                        }).format(new Date(trade.closeDate))}
-                                    </div>
-                                </TableCell>
-                                <TableCell className="w-[7.5%] max-md:hidden text-neutral-500">
-                                    <div className="flex gap-2 items-center">
-                                        {isInMorningRange(trade.closeTime) ? (
-                                            <Sun className="h-3" />
-                                        ) : (
-                                            <Moon className="h-3" />
-                                        )}
-                                        {trade.closeTime}
-                                    </div>
-                                </TableCell>
-                                <TableCell className="w-[10%] max-md:hidden">
-                                    <div className="flex gap-2 items-center">
-                                        {Number(trade.deposit).toLocaleString(
-                                            "de-DE"
-                                        )}
-                                        <div className="text-xs text-neutral-400">
-                                            (
-                                            {startCapital && +startCapital !== 0
-                                                ? `${Math.round(
-                                                    (Number(trade.deposit) /
-                                                        Number(
-                                                            startCapital
-                                                        )) *
-                                                    100
-                                                )}%`
-                                                : "no capital"}
-                                            )
-                                        </div>
-                                    </div>
-                                </TableCell>
-                                <TableCell
-                                    className={`w-[10%] max-md:text-end pr-8 md:pr-0 ${Number(trade.result) >= 0
-                                        ? "text-buy"
-                                        : "text-sell"
-                                        }`}>
-                                    <div className="flex gap-2 items-center">
-                                        {Number(trade.result) >= 0 ? (
-                                            <FaArrowTrendUp className="text-[1rem]" />
-                                        ) : (
-                                            <FaArrowTrendDown />
-                                        )}
-                                        {Number(trade.result).toLocaleString(
-                                            "de-DE"
-                                        )}
-                                    </div>
-                                </TableCell>
-                                <TableCell className="w-[5%] max-md:hidden">
-                                    {trade.notes && (
-                                        <HoverCard>
-                                            <HoverCardTrigger>
-                                                <div className="w-fit flex gap-1 items-center bg-blue-400 cursor-pointer rounded-full p-2 text-[0.75rem] text-white">
-                                                    <LiaHandPointer className="text-[1rem]" />
-                                                </div>
-                                            </HoverCardTrigger>
-                                            <HoverCardContent>
-                                                <div className="flex flex-col gap-2">
-                                                    <div className="flex items-center gap-2">
-                                                        <Image
-                                                            src="/logo.svg"
-                                                            height={20}
-                                                            width={20}
-                                                            alt="logo"
-                                                        />
-                                                        <h1 className="text-neutral-400">
-                                                            @tradejournal.one
-                                                        </h1>
-                                                    </div>
-                                                    <div className="py-2">
-                                                        {trade.notes}
-                                                    </div>
-                                                </div>
-                                            </HoverCardContent>
-                                        </HoverCard>
-                                    )}
-                                </TableCell>
-                                <TableCell className="w-[5%]">
-                                    {(startCapital &&
-                                        (trade.appliedCloseRules &&
-                                            trade.appliedCloseRules.length >
-                                            0 ||
-                                            (trade.appliedOpenRules &&
-                                                trade.appliedOpenRules
-                                                    .length > 0))) && (
-                                            <div onClick={() => handleStrategyClick(trade)}>
-                                                <FollowedStrategyPie percentage={handleCountPercentage(trade)} />
-                                            </div>
-                                        )}
-                                </TableCell>
-                                <TableCell className="w-[10%]">
+        <>
+            <div>
 
-                                    <div className="w-full flex-center">
-                                        {[...Array(5)].map((_, i) => (
-                                            <MdStar
-                                                key={i}
-                                                className={`${trade.rating && trade.rating > i
-                                                    ? "text-yellow-500"
-                                                    : "text-neutral-400"
-                                                    }`}
-                                            />
-                                        ))}
-                                    </div>
-                                </TableCell>
-                                <TableCell className="w-[5%] text-center">
-                                    <EditTrade trade={trade} />
-                                </TableCell>
-                                <TableCell className="w-[5%] ">
-                                    <MdDelete
-                                        onClick={() => {
-                                            setTradeToDelete(trade);
-                                            setDeleteDialogOpen(true);
-                                        }}
-                                        className="text-[1.2rem] text-sell cursor-pointer w-full"
-                                    />
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
+                {openTrades.length > 0 && (
+                    <>
+                        <div className="flex flex-col items-center justify-center relative">
+
+                            <h1 className="text-xl font-medium text-neutral-500 text-center my-4">Open Trades</h1>
+                            <Expand onClick={() => setOpenTradesDialogOpen(true)} className="absolute right-4 top-4 text-neutral-400 cursor-pointer hover:text-neutral-600 transition-colors" />
+                        </div>
+                        <OpenTradesTable trades={openTrades} startCapital={startCapital} />
+                    </>
+                )}
+                {closedTrades.length > 0 && (
+                    <>
+                        <h1 className="text-xl font-medium text-neutral-500 text-center my-4">Closed Trades</h1>
+                        <CloseTradesTable trades={closedTrades} startCapital={startCapital} total={total} />
+                    </>)}
             </div>
-            <Table>
-                <TableFooter className="sticky bottom-0 right-0 left-0 bg-white w-full text-[1rem] px-2 py-1 mt-auto">
-                    <TableRow className="flex justify-between">
-                        <TableCell>Total</TableCell>
-                        <TableCell>{total.toLocaleString("de-DE")}</TableCell>
-                    </TableRow>
-                </TableFooter>
-            </Table>
 
-            {/* Strategy Rules Dialog */}
-            <Dialog open={strategyDialogOpen} onOpenChange={setStrategyDialogOpen}>
-                <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
-                    <DialogHeader>
-                        <DialogTitle>
-                            Applied Strategy Rules - {selectedTrade && localStrategies.find(s => s.id === selectedTrade.strategyId)?.strategyName}
-                        </DialogTitle>
-                    </DialogHeader>
-                    {selectedTrade && selectedTrade.strategyId && (
-                        <StrategyRules
-                            strategy={localStrategies.find(s => s.id === selectedTrade.strategyId)!}
-                            checkedOpenRules={selectedTrade.appliedOpenRules?.map(rule => rule.id) || []}
-                            checkedCloseRules={selectedTrade.appliedCloseRules?.map(rule => rule.id) || []}
-                            onOpenRuleToggle={() => { }} // Disabled for display-only
-                            onCloseRuleToggle={() => { }} // Disabled for display-only
-                        />
-                    )}
-                </DialogContent>
-            </Dialog>
-
-            {/* Delete Trade Confirmation Dialog */}
-            <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-                <DialogContent className="max-w-sm">
-                    <div className="sm:max-w-[380px] flex flex-col justify-between min-h-[120px]">
-                        <DialogHeader className="mb-2">
-                            <DialogTitle className="text-lg">
-                                Delete Trade
-                            </DialogTitle>
-                        </DialogHeader>
-                        <p className="text-sm text-zinc-600">
-                            Do you want to delete this trade{tradeToDelete ? ` "${tradeToDelete.instrumentName}"` : ""}?
-                        </p>
-                        <div className="flex gap-6 justify-end mt-6">
-                            <DialogClose asChild>
-                                <CustomButton isBlack={false}>
-                                    Cancel
-                                </CustomButton>
-                            </DialogClose>
-                            <CustomButton
-                                isBlack
-                                onClick={async () => {
-                                    if (tradeToDelete) {
-                                        await handleDeleteTradeRecord(
-                                            tradeToDelete.id,
-                                            tradeToDelete.result,
-                                            tradeToDelete.closeDate
-                                        );
-                                    }
-                                    setDeleteDialogOpen(false);
-                                    setTradeToDelete(null);
-                                }}
-                            >
-                                Delete
-                            </CustomButton>
+            {/* Full-screen Open Trades Dialog */}
+            <Dialog open={openTradesDialogOpen} onOpenChange={setOpenTradesDialogOpen}>
+                <DialogTitle className="text-center hidden">Open Trades</DialogTitle>
+                <DialogContent className="w-[90%] max-w-none p-0 md:border-0 md:rounded-md py-4 px-8">
+                    <div className="flex flex-col h-full">
+                        <div className="flex-1">
+                            <OpenTradesTable trades={openTrades} startCapital={startCapital} heightClass="h-full" />
                         </div>
                     </div>
                 </DialogContent>
             </Dialog>
-        </div>
+
+        </>
     );
 }

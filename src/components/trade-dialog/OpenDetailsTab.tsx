@@ -19,31 +19,31 @@ import {
     SelectGroup,
     SelectItem,
     SelectTrigger,
+    SelectValue,
 } from "../ui/select";
-import { StarRating } from "../calendar/StarRating";
+import { useAutoCalcOpenFields } from "./hooks/useAutoCalcOpenFields";
 
-interface TradeDetailsTabProps {
+const instrumentLabels = ["Crypto", "Forex", "Stock", "Index", "Commodity", "Bond", "ETF", "Option", "Other"];
+
+interface OpenDetailsTabProps {
     form: UseFormReturn<z.infer<typeof newTradeFormSchema>>;
     openDate: Date | undefined;
     setOpenDate: (date: Date | undefined) => void;
-    closeDate: Date | undefined;
-    setCloseDate: (date: Date | undefined) => void;
-    instrumentLabels: string[];
+    symbolLabels: string[];
     day?: dayjs.Dayjs | undefined;
-    rating: number;
 }
 
-export const TradeDetailsTab = ({
+export const OpenDetailsTab = ({
     form,
     openDate,
     setOpenDate,
-    closeDate,
-    setCloseDate,
-    instrumentLabels,
-    day,
-    rating
-}: TradeDetailsTabProps) => {
+    symbolLabels,
+    day
+}: OpenDetailsTabProps) => {
     const { register, control, setValue, formState: { errors } } = form;
+
+    // Auto-calculate the third field among entryPrice, quantity, totalCost
+    useAutoCalcOpenFields(form);
 
     return (
         <div className="flex flex-col gap-2">
@@ -61,46 +61,45 @@ export const TradeDetailsTab = ({
                         )}
                     </div>
 
-                    <Controller
-                        name="openDate"
-                        control={control}
-                        render={({ field }) => (
-                            <Popover>
-                                <PopoverTrigger asChild>
-                                    <Button
-                                        variant={"outline"}
-                                        className="justify-start text-left font-normal max-md:text-[.75rem]">
-                                        <CalendarIcon />
-                                        {openDate ? (
-                                            format(openDate, "dd MMM yyyy")
-                                        ) : (
-                                            <span>Pick a date</span>
-                                        )}
-                                    </Button>
-                                </PopoverTrigger>
-                                <PopoverContent>
-                                    <Calendar
-                                        mode="single"
-                                        selected={openDate}
-                                        onSelect={(date) => {
-                                            setOpenDate(date);
-                                            field.onChange(date?.toISOString());
-                                        }}
-                                        disabled={
-                                            day &&
-                                            ((date) =>
-                                                date > new Date(day.toISOString()))
-                                        }
-                                        defaultMonth={
-                                            day
-                                                ? new Date(day?.year(), day?.month())
-                                                : new Date()
-                                        }
-                                    />
-                                </PopoverContent>
-                            </Popover>
-                        )}
-                    />
+                    {day == undefined ? (
+                        <Controller
+                            name="openDate"
+                            control={control}
+                            render={({ field }) => (
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <Button
+                                            variant={"outline"}
+                                            className="justify-start text-left font-normal max-md:text-[.75rem]">
+                                            <CalendarIcon />
+                                            {openDate ? (
+                                                format(openDate, "dd MMM yyyy")
+                                            ) : (
+                                                <span>Pick a date</span>
+                                            )}
+                                        </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent>
+                                        <Calendar
+                                            mode="single"
+                                            selected={openDate}
+                                            onSelect={(date) => {
+                                                setOpenDate(date);
+                                                field.onChange(date?.toISOString());
+                                            }}
+                                            defaultMonth={new Date()}
+                                        />
+                                    </PopoverContent>
+                                </Popover>
+                            )}
+                        />
+                    ) : (
+                        <Input
+                            disabled
+                            className="max-md:text-[.75rem]"
+                            placeholder={`${day.date()} ${months[day.month()].slice(0, 3)} ${day.year()}`}
+                        />
+                    )}
                 </div>
                 <div className="flex flex-col flex-1 gap-1">
                     <div className="flex items-center justify-between">
@@ -120,86 +119,16 @@ export const TradeDetailsTab = ({
                 </div>
             </div>
 
-            <div className="mb-2 flex gap-4">
-                <div className="flex flex-col flex-1 gap-1">
-                    <div className="flex items-center justify-between">
-                        <Label htmlFor="close-time" className="mb-1">
-                            Close date:
-                        </Label>
-                        {errors.closeDate && (
-                            <span className="mb-1 text-[.75rem] text-red-500">
-                                {errors.closeDate.message}
-                            </span>
-                        )}
-                    </div>
-                    {day == undefined ? (
-                        <Controller
-                            name="closeDate"
-                            control={control}
-                            render={({ field }) => (
-                                <Popover>
-                                    <PopoverTrigger asChild>
-                                        <Button
-                                            variant={"outline"}
-                                            className="justify-start text-left font-normal max-md:text-[.75rem]">
-                                            <CalendarIcon />
-                                            {closeDate ? (
-                                                format(closeDate, "dd MMM yyyy")
-                                            ) : (
-                                                <span>Pick a date</span>
-                                            )}
-                                        </Button>
-                                    </PopoverTrigger>
-                                    <PopoverContent>
-                                        <Calendar
-                                            mode="single"
-                                            selected={closeDate}
-                                            onSelect={(date) => {
-                                                setCloseDate(date);
-                                                field.onChange(date?.toISOString());
-                                            }}
-                                        />
-                                    </PopoverContent>
-                                </Popover>
-                            )}
-                        />
-                    ) : (
-                        <Input
-                            disabled
-                            className="max-md:text-[.75rem]"
-                            placeholder={`${day.date()} ${months[day.month()].slice(0, 3)} ${day.year()}`}
-                        />
-                    )}
-                </div>
-                <div className="flex flex-col flex-1 gap-1">
-                    <div className="flex items-center justify-between">
-                        <Label htmlFor="close-time" className="mb-1">
-                            Close time:
-                        </Label>
-                        <span className="text-[.75rem] text-black/50">
-                            (default time)
-                        </span>
-                    </div>
-
-                    <Input
-                        type="time"
-                        id="close-time"
-                        className="w-full max-md:text-[.75rem]"
-                        {...register("closeTime")}
-                    />
-                </div>
-            </div>
-
-            {/* Instrument Name Section */}
+            {/* Symbol Name Section */}
             <div className="mb-2 flex flex-col gap-1">
                 <div className="flex items-center justify-between">
-                    <Label htmlFor="instrumentName" className="mb-1">
-                        Instrument name or Symbol/Ticker:
+                    <Label htmlFor="symbolName" className="mb-1">
+                        Symbol:
                     </Label>
 
-                    {errors.instrumentName ? (
+                    {errors.symbolName ? (
                         <span className="mb-1 text-[.75rem] text-red-500">
-                            {errors.instrumentName.message}
+                            {errors.symbolName.message}
                         </span>
                     ) : (
                         <span className="mb-1 text-[.75rem] text-black/50">
@@ -208,7 +137,7 @@ export const TradeDetailsTab = ({
                     )}
                 </div>
                 <Controller
-                    name="instrumentName"
+                    name="symbolName"
                     control={control}
                     render={({ field }) => (
                         <div className="flex gap-2">
@@ -227,7 +156,7 @@ export const TradeDetailsTab = ({
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectGroup>
-                                        {instrumentLabels.map((label) => (
+                                        {symbolLabels.map((label) => (
                                             <SelectItem key={label} value={label}>
                                                 {label}
                                             </SelectItem>
@@ -240,45 +169,89 @@ export const TradeDetailsTab = ({
                 />
             </div>
 
-            {/* Position Type Section */}
-            <div className="mb-2 flex flex-col gap-1">
-                <div className="flex items-center justify-between">
-                    <Label className="mb-1">Position type:</Label>
-                    {errors.positionType ? (
-                        <span className="mb-1 text-[.75rem] text-red-500">
-                            {errors.positionType.message}
-                        </span>
-                    ) : (
-                        <span className="mb-1 text-[.75rem] text-black/50">
-                            (Click to change)
-                        </span>
-                    )}
+            {/* Instrument Name Section */}
+            <div className="flex gap-2">
+
+                <div className="mb-2 flex flex-col gap-1 flex-1">
+                    <div className="flex items-center justify-between">
+                        <Label htmlFor="instrumentName" className="mb-1">
+                            Instrument:
+                        </Label>
+
+                        {errors.instrumentName ? (
+                            <span className="mb-1 text-[.75rem] text-red-500">
+                                {errors.instrumentName.message}
+                            </span>
+                        ) : (
+                            <span className="mb-1 text-[.75rem] text-black/50">
+                                (e.g. Crypto or Forex)
+                            </span>
+                        )}
+                    </div>
+                    <Controller
+                        name="instrumentName"
+                        control={control}
+                        render={({ field }) => (
+                            <div>
+                                <Select onValueChange={field.onChange} value={field.value}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select instrument" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup>
+                                            {instrumentLabels.map((label) => (
+                                                <SelectItem key={label} value={label}>
+                                                    {label}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        )}
+                    />
                 </div>
-                <Controller
-                    name="positionType"
-                    control={control}
-                    render={({ field }) => (
-                        <div
-                            className={`h-[40px] ${field.value === "buy" ? "bg-buy" : "bg-sell"
-                                } rounded-md cursor-pointer flex-center`}
-                            onClick={() =>
-                                field.value === "buy"
-                                    ? setValue("positionType", "sell")
-                                    : setValue("positionType", "buy")
-                            }>
-                            <p className="text-white">
-                                {field.value === "buy" ? "Buy" : "Sell"}
-                            </p>
-                        </div>
-                    )}
-                />
+                <div className="mb-2 flex flex-col flex-1">
+                    <div className="flex items-center justify-between">
+                        <Label className="mb-1">Position type:</Label>
+                        {errors.positionType ? (
+                            <span className="mb-1 text-[.75rem] text-red-500">
+                                {errors.positionType.message}
+                            </span>
+                        ) : (
+                            <span className="mb-1 text-[.75rem] text-black/50">
+                                (Click to change)
+                            </span>
+                        )}
+                    </div>
+                    <Controller
+                        name="positionType"
+                        control={control}
+                        render={({ field }) => (
+                            <div
+                                className={`h-[40px] ${field.value === "buy" ? "bg-buy" : "bg-sell"
+                                    } rounded-md cursor-pointer flex-center`}
+                                onClick={() =>
+                                    field.value === "buy"
+                                        ? setValue("positionType", "sell")
+                                        : setValue("positionType", "buy")
+                                }>
+                                <p className="text-white">
+                                    {field.value === "buy" ? "Buy" : "Sell"}
+                                </p>
+                            </div>
+                        )}
+                    />
+                </div>
             </div>
 
-            {/* Deposit and Result Section */}
+            {/* Position Type Section */}
             <div className="flex gap-2">
+
+
                 <div className="mb-2 flex flex-col flex-1 gap-1">
                     <div className="flex items-center justify-between">
-                        <Label htmlFor="deposit" className="mb-1">
+                        <Label htmlFor="entryPrice" className="mb-1">
                             Deposit:
                         </Label>
                         {errors.deposit ? (
@@ -300,12 +273,12 @@ export const TradeDetailsTab = ({
                 </div>
                 <div className="mb-2 flex flex-col flex-1 gap-1">
                     <div className="flex items-center justify-between">
-                        <Label htmlFor="result" className="mb-1">
-                            Result:
+                        <Label htmlFor="entryPrice" className="mb-1">
+                            Entry price:
                         </Label>
-                        {errors.result ? (
+                        {errors.entryPrice ? (
                             <span className="mb-1 text-[.75rem] text-red-500">
-                                {errors.result.message}
+                                {errors.entryPrice.message}
                             </span>
                         ) : (
                             <span className="mb-1 text-[.75rem] text-black/50">
@@ -315,22 +288,61 @@ export const TradeDetailsTab = ({
                     </div>
                     <Input
                         type="number"
-                        id="result"
+                        id="entryPrice"
+                        step="any"
                         className="w-full max-md:text-[.75rem]"
-                        {...register("result")}
+                        {...register("entryPrice")}
                     />
                 </div>
             </div>
 
-            {/* Rating Section */}
-            <div className="mb-2 flex flex-col gap-2">
-                <Label htmlFor="rating" className="mb-1">
-                    Rate your trade:{" "}
-                    <span className="ml-2 text-[.75rem] text-black/50">
-                        (default 0)
-                    </span>
-                </Label>
-                <StarRating setValue={setValue} rating={rating} />
+            {/* Quantity and Total cost Section */}
+            <div className="flex gap-2">
+                <div className="mb-2 flex flex-col flex-1 gap-1">
+                    <div className="flex items-center justify-between">
+                        <Label htmlFor="quantity" className="mb-1">
+                            Quantity:
+                        </Label>
+                        {errors.quantity ? (
+                            <span className="mb-1 text-[.75rem] text-red-500">
+                                {errors.quantity.message}
+                            </span>
+                        ) : (
+                            <span className="mb-1 text-[.75rem] text-black/50">
+                                (Only num.)
+                            </span>
+                        )}
+                    </div>
+                    <Input
+                        type="number"
+                        id="quantity"
+                        step="any"
+                        className="w-full max-md:text-[.75rem]"
+                        {...register("quantity")}
+                    />
+                </div>
+                <div className="mb-2 flex flex-col flex-1 gap-1">
+                    <div className="flex items-center justify-between">
+                        <Label htmlFor="totalCost" className="mb-1">
+                            Total cost:
+                        </Label>
+                        {errors.totalCost ? (
+                            <span className="mb-1 text-[.75rem] text-red-500">
+                                {errors.totalCost.message}
+                            </span>
+                        ) : (
+                            <span className="mb-1 text-[.75rem] text-black/50">
+                                (Only num.)
+                            </span>
+                        )}
+                    </div>
+                    <Input
+                        type="number"
+                        id="totalCost"
+                        className="w-full max-md:text-[.75rem]"
+                        {...register("totalCost")}
+                    />
+                </div>
             </div>
 
             {/* Notes Section */}

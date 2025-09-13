@@ -34,6 +34,17 @@ export async function getAllTradeRecords(): Promise<Trades[]> {
     const processedData = data.map(({ userId, ...tradeWithoutUserId }) => ({
         ...tradeWithoutUserId,
         notes: tradeWithoutUserId.notes ?? undefined,
+        result: tradeWithoutUserId.result ?? undefined,
+        closeDate: tradeWithoutUserId.closeDate ?? undefined,
+        closeTime: tradeWithoutUserId.closeTime ?? undefined,
+        entryPrice: tradeWithoutUserId.entryPrice ?? undefined,
+        totalCost: tradeWithoutUserId.totalCost ?? undefined,
+        quantity: tradeWithoutUserId.quantity ?? undefined,
+        sellPrice: tradeWithoutUserId.sellPrice ?? undefined,
+        quantitySold: tradeWithoutUserId.quantitySold ?? undefined,
+        strategyId: tradeWithoutUserId.strategyId ?? undefined,
+        appliedOpenRules: tradeWithoutUserId.appliedOpenRules ?? undefined,
+        appliedCloseRules: tradeWithoutUserId.appliedCloseRules ?? undefined,
     }));
 
     return [...processedData].reverse();
