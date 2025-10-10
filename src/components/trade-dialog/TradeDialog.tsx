@@ -39,7 +39,7 @@ export const TradeDialog = ({
             onSubmit={tradeForm.form.handleSubmit(tradeForm.onSubmit, (errors) => {
                 console.log("Form validation errors:", errors);
             })}
-            className="sm:max-w-[460px] flex flex-col">
+            className="sm:max-w-[460px] flex flex-col ">
 
             <DialogHeader className="mb-6">
                 <DialogTitle className="text-center text-[1.4rem]">
@@ -63,7 +63,7 @@ export const TradeDialog = ({
                         day={day}
                     />
 
-                    <div className="flex gap-6 justify-end">
+                    <div className="flex gap-6 justify-end absolute bottom-8 right-8">
                         <DialogClose asChild>
                             <CustomButton isBlack={false}>Cancel</CustomButton>
                         </DialogClose>
@@ -84,7 +84,7 @@ export const TradeDialog = ({
                         setCloseDate={tradeForm.setCloseDate}
                     />
 
-                    <div className="flex gap-6 justify-end">
+                    <div className="flex gap-6 justify-end absolute bottom-8 right-8">
                         <DialogClose asChild>
                             <CustomButton isBlack={false}>Cancel</CustomButton>
                         </DialogClose>
@@ -109,7 +109,7 @@ export const TradeDialog = ({
                         onCloseRuleToggle={tradeForm.handleCloseRuleToggle}
                     />
 
-                    <div className="flex gap-6 justify-end">
+                    <div className="flex gap-6 justify-end absolute bottom-8 right-8">
                         <DialogClose asChild>
                             <CustomButton isBlack={false}>Cancel</CustomButton>
                         </DialogClose>

@@ -46,7 +46,7 @@ export const OpenDetailsTab = ({
     useAutoCalcOpenFields(form);
 
     return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4">
             {/* Date and Time Section */}
             <div className="mb-2 flex gap-4">
                 <div className="flex flex-col flex-1 gap-1">
