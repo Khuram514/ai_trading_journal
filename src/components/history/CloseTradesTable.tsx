@@ -78,7 +78,7 @@ export const CloseTradesTable = ({ trades, startCapital, total }: CloseTradesTab
     }
 
     return (
-        <div className="flex flex-col md:h-full">
+        <div className="flex flex-col md:h-full mt-2">
             {/* Grid Header */}
             <div className="grid grid-cols-40 max-md:grid-cols-20 gap-1 p-2 items-center border-b bg-muted/50 font-medium text-sm sticky top-0 bg-white">
                 <div className="col-span-2 text-left">Symbol</div>

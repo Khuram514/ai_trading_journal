@@ -13,9 +13,11 @@ import {
 
 export const UserTable = pgTable("user", {
     id: text("id").notNull().unique(),
-    capital: text("capital").notNull(),
+    name: text("name").notNull().default(""),
+    email: text("email").notNull().default(""),
+    capital: text("capital"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
-    tokens: integer("tokens"),
+    tokens: integer("tokens").default(5),
 });
 
 export const TradeTable = pgTable(

@@ -63,7 +63,7 @@ export const CloseDetailsTab = ({
                         name="closeDate"
                         control={control}
                         render={({ field }) => (
-                            <Popover>
+                            <Popover modal={true}>
                                 <PopoverTrigger asChild>
                                     <Button
                                         variant={"outline"}

@@ -2,13 +2,10 @@
 import { getMonth } from "@/features/calendar/getTime";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import dayjs from "dayjs";
-import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "../ui/hover-card";
 
 import { setIsDialogOpen } from "@/redux/slices/calendarSlice";
-import { ArrowDown, ArrowUp, DollarSign } from "lucide-react";
 import { TradeDialog } from "../trade-dialog";
-import { LiaHandPointer } from "react-icons/lia";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { getPlural } from "@/lib/utils";
 
@@ -64,9 +61,9 @@ export default function MonthView() {
                                             tradeDetailsForEachDay[day.format("DD-MM-YYYY")] !== undefined
                                                 ? trades[day.format("DD-MM-YYYY")] !== undefined
                                                     ? trades[day.format("DD-MM-YYYY")] > 0
-                                                        ? "bg-buyWithOpacity"
+                                                        ? "bg-buyLight"
                                                         : trades[day.format("DD-MM-YYYY")] < 0
-                                                            ? "bg-sellWithOpacity"
+                                                            ? "bg-sellLight"
                                                             : "bg-neutral-100"
                                                     : "bg-neutral-100" // trades sum to 0 but trades exist
                                                 : "" // no trades at all
@@ -76,7 +73,7 @@ export default function MonthView() {
                                         <p
                                             className={`${day.format("DD-MM-YY") ===
                                                 dayjs().format("DD-MM-YY")
-                                                ? "w-8 h-8 flex-center rounded-full bg-[var(--customBlue)]"
+                                                ? "w-8 h-8 flex-center rounded-full bg-purple-300"
                                                 : "pt-[4px]"
                                                 }`}>
                                             {day.date() === 1
@@ -104,46 +101,69 @@ export default function MonthView() {
                                         {tradeDetailsForEachDay[
                                             day.format("DD-MM-YYYY")
                                         ] === undefined && openTradesCount > 0 && (
-                                                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 shrink-0 px-3 py-1 text-[.7rem] flex-center rounded-full calendar-banner-shadow bg-white/70 no-wrap bg-blue-100">
-                                                    Open {getPlural(openTradesCount, "trade", "trades")} :{openTradesCount}
-                                                </div>
+                                                <HoverCard>
+                                                    <HoverCardTrigger asChild>
+                                                        <div className="absolute bottom-2 shrink-0 px-3 py-1 text-[.7rem] flex-center rounded-full calendar-banner-shadow bg-blue-200 no-wrap bg-blue-100">
+                                                            Open {getPlural(openTradesCount, "trade", "trades")} :{openTradesCount}
+                                                        </div>
+                                                    </HoverCardTrigger>
+                                                    <HoverCardContent className="w-[420px]">
+                                                        {allTrades.filter(t => (!t.closeDate || t.closeDate === "") && dayjs(t.openDate).format("DD-MM-YYYY") === day.format("DD-MM-YYYY")).length > 0 && <div className="mb-1 flex items-center border-b border-zinc-200 pb-2">
+                                                            <p className="text-sm font-bold text-zinc-500">Open {getPlural(allTrades.filter(t => (!t.closeDate || t.closeDate === "") && dayjs(t.openDate).format("DD-MM-YYYY") === day.format("DD-MM-YYYY")).length, "trade", "trades")}:</p>
+
+                                                        </div>}
+                                                        <div className="space-y-2 max-h-60 overflow-y-auto">
+                                                            {allTrades.filter(t => (!t.closeDate || t.closeDate === "") && dayjs(t.openDate).format("DD-MM-YYYY") === day.format("DD-MM-YYYY")).map((t) => (
+                                                                <div key={t.id} className="flex items-center justify-between px-3 py-2 [&:not(:first-child)]:border-t border-zinc-200">
+                                                                    <div className="flex items-center gap-3">
+                                                                        <span className={`text-xs px-2 py-0.5 rounded-md text-white ${t.positionType === "sell" ? "bg-sell" : "bg-buy"}`}>{t.positionType}</span>
+                                                                        <span className="text-sm text-zinc-700">{t.symbolName}</span>
+                                                                    </div>
+                                                                    <div className={`text-sm ${Number(t.result) >= 0 ? "text-buy" : "text-sell"}`}>
+                                                                        <span className="text-zinc-500 text-xs mr-1">Open price:</span>
+                                                                        {Number(t.entryPrice ?? 0).toLocaleString("de-DE")}
+                                                                    </div>
+                                                                    <div className="text-sm">
+                                                                        <span className="text-zinc-500 text-xs mr-1">Deposit:</span>
+                                                                        {Number(t.deposit).toLocaleString("de-DE")}
+                                                                    </div>
+
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </HoverCardContent>
+                                                </HoverCard>
                                             )}
                                         {tradeDetailsForEachDay[
                                             day.format("DD-MM-YYYY")
                                         ] !== undefined && (
                                                 <HoverCard>
                                                     <HoverCardTrigger asChild>
-                                                        <div className="flex items-center gap-1 absolute bottom-2 left-1/2 -translate-x-1/2">
+                                                        <div className="flex gap-2 gap-1 absolute bottom-2">
                                                             {openTradesCount > 0 && (
-                                                                <div className="shrink-0 h-6 w-6 text-[.7rem] flex-center rounded-full calendar-banner-shadow bg-blue-100">
-                                                                    {openTradesCount}
+                                                                <div className="shrink-0 px-3 py-1 text-[.7rem] flex-center rounded-full calendar-banner-shadow bg-blue-200 no-wrap bg-blue-100">
+                                                                    Open {getPlural(openTradesCount, "trade", "trades")} :{openTradesCount}
                                                                 </div>
                                                             )}
                                                             <div
-                                                                className={`hidden md:flex gap-2 2xl:gap-4 items-center justify-start py-1 px-3 2xl:px-6 rounded-full calendar-banner-shadow bg-white/70`}
+                                                                className={`hidden md:flex shrink-0 px-3 py-1 text-[.7rem] flex-center rounded-full calendar-banner-shadow bg-blue-200 no-wrap ${trades[day.format("DD-MM-YYYY")] !== undefined && trades[day.format("DD-MM-YYYY")] > 0 ? "bg-buyWithOpacity" : "bg-sellWithOpacity"}`}
                                                             >
 
-                                                                <LiaHandPointer className="text-[.9rem]" />
-                                                                <div className="text-[.8rem] flex items-center gap-2">
-                                                                    <DollarSign size={12} className="text-zinc-500" />
+
+                                                                <div className="text-[.7rem] flex items-center gap-2">
+                                                                    Total:
                                                                     {trades[day.format("DD-MM-YYYY")] !== undefined
                                                                         ? trades[day.format("DD-MM-YYYY")].toLocaleString("de-DE")
                                                                         : "0"}
                                                                 </div>
-                                                                <div className="text-[.8rem] flex items-center gap-2">
-                                                                    <ArrowUp size={12} className="text-zinc-500" />
-                                                                    {tradeDetailsForEachDay[day.format("DD-MM-YYYY")].win}
-                                                                </div>
-                                                                <div className="text-[.8rem] flex items-center gap-2">
-                                                                    <ArrowDown size={12} className="text-zinc-500" />
-                                                                    {tradeDetailsForEachDay[day.format("DD-MM-YYYY")].lost}
-                                                                </div>
+
                                                             </div>
                                                         </div>
                                                     </HoverCardTrigger>
                                                     <HoverCardContent className="w-[420px]">
-                                                        <div className="mb-2 text-xs text-zinc-500">
-                                                            Trades on {day.format("ddd, DD MMM YYYY")}
+                                                        <div className="mb-1 flex items-center border-b border-zinc-200 pb-2">
+                                                            <p className="text-sm font-bold text-zinc-500">Closed {getPlural(allTrades.filter(t => dayjs(t.closeDate).format("DD-MM-YYYY") === day.format("DD-MM-YYYY")).length, "trade", "trades")}:</p>
+
                                                         </div>
                                                         <div className="space-y-2 max-h-60 overflow-y-auto">
                                                             {allTrades.filter(t => dayjs(t.closeDate).format("DD-MM-YYYY") === day.format("DD-MM-YYYY")).map((t) => (
@@ -160,6 +180,29 @@ export default function MonthView() {
                                                                         <span className="text-zinc-500 text-xs mr-1">Result:</span>
                                                                         {Number(t.result ?? 0).toLocaleString("de-DE")}
                                                                     </div>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                        {allTrades.filter(t => (!t.closeDate || t.closeDate === "") && dayjs(t.openDate).format("DD-MM-YYYY") === day.format("DD-MM-YYYY")).length > 0 && <div className="mb-1 mt-3 flex items-center border-b border-zinc-200 pb-2">
+                                                            <p className="text-sm font-bold text-zinc-500">Open {getPlural(allTrades.filter(t => (!t.closeDate || t.closeDate === "") && dayjs(t.openDate).format("DD-MM-YYYY") === day.format("DD-MM-YYYY")).length, "trade", "trades")}:</p>
+
+                                                        </div>}
+                                                        <div className="space-y-2 max-h-60 overflow-y-auto">
+                                                            {allTrades.filter(t => (!t.closeDate || t.closeDate === "") && dayjs(t.openDate).format("DD-MM-YYYY") === day.format("DD-MM-YYYY")).map((t) => (
+                                                                <div key={t.id} className="flex items-center justify-between px-3 py-2 [&:not(:first-child)]:border-t border-zinc-200">
+                                                                    <div className="flex items-center gap-3">
+                                                                        <span className={`text-xs px-2 py-0.5 rounded-md text-white ${t.positionType === "sell" ? "bg-sell" : "bg-buy"}`}>{t.positionType}</span>
+                                                                        <span className="text-sm text-zinc-700">{t.symbolName}</span>
+                                                                    </div>
+                                                                    <div className={`text-sm ${Number(t.result) >= 0 ? "text-buy" : "text-sell"}`}>
+                                                                        <span className="text-zinc-500 text-xs mr-1">Open price:</span>
+                                                                        {Number(t.entryPrice ?? 0).toLocaleString("de-DE")}
+                                                                    </div>
+                                                                    <div className="text-sm">
+                                                                        <span className="text-zinc-500 text-xs mr-1">Deposit:</span>
+                                                                        {Number(t.deposit).toLocaleString("de-DE")}
+                                                                    </div>
+
                                                                 </div>
                                                             ))}
                                                         </div>

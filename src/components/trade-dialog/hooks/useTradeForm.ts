@@ -7,6 +7,7 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
 
 import { newTradeFormSchema } from "@/zodSchema/schema";
 import { createNewTradeRecord, updateTradeRecord } from "@/server/actions/trades";
@@ -38,6 +39,7 @@ export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestCl
     const [checkedOpenRules, setCheckedOpenRules] = useState<string[]>([]);
     const [checkedCloseRules, setCheckedCloseRules] = useState<string[]>([]);
 
+    const router = useRouter();
     const dispatch = useAppDispatch();
     const trades = useAppSelector((state) => state.tradeRecords.listOfTrades);
     const { strategies: localStrategies } = useAppSelector((state) => state.strategies);
@@ -216,6 +218,9 @@ export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestCl
                     ...updatedTradeData,
                 }));
 
+                // Refresh server data to sync across all pages
+                router.refresh();
+
                 toast.success("Trade updated successfully!");
             } else {
                 const customId = uuidv4();
@@ -263,6 +268,9 @@ export const useTradeForm = ({ editMode = false, existingTrade, day, onRequestCl
                     id: customId,
                     ...updatedTradeData,
                 }));
+
+                // Refresh server data to sync across all pages
+                router.refresh();
 
                 toast.success("A new record has been created!");
             }

@@ -55,7 +55,7 @@ export const OpenTradesTable = ({ trades, startCapital, heightClass }: OpenTrade
     }
 
     return (
-        <div className={`flex-1 ${heightClass ?? "max-h-[30vh]"} overflow-auto`}>
+        <div className={`flex-1 ${heightClass ?? "max-h-[30vh]"} overflow-auto mt-2`}>
             {/* Grid Header */}
             <div className="grid grid-cols-27 max-md:grid-cols-20 gap-1 p-2 items-center border-b bg-muted/50 font-medium text-sm sticky top-0 bg-white">
                 <div className="col-span-2 text-left">Symbol</div>
@@ -205,7 +205,7 @@ export const OpenTradesTable = ({ trades, startCapital, heightClass }: OpenTrade
                     <div className="col-span-2 max-md:col-span-1 flex justify-center">
                         <Dialog>
                             <DialogTrigger asChild>
-                                <CustomButton isBlack>
+                                <CustomButton isBlack={false}>
                                     Close
                                 </CustomButton>
                             </DialogTrigger>

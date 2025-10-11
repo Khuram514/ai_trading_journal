@@ -66,7 +66,7 @@ export const OpenDetailsTab = ({
                             name="openDate"
                             control={control}
                             render={({ field }) => (
-                                <Popover>
+                                <Popover modal={true}>
                                     <PopoverTrigger asChild>
                                         <Button
                                             variant={"outline"}

@@ -14,10 +14,12 @@ import {
     setFilteredTrades,
     setSortBy,
     setTimeframe,
+    setActiveTab,
 } from "@/redux/slices/historyPageSlice";
 import { CustomButton } from "./CustomButton";
 import { DatePickerWithRange } from "./history/DatePicker";
 import { DateRange } from "react-day-picker";
+import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
 
 export default function Filtering({
     isStatisticsPage,
@@ -32,6 +34,7 @@ export default function Filtering({
     const trades = useAppSelector((state) => state.tradeRecords.listOfTrades);
     const sortBy = useAppSelector((state) => state.history.sortBy);
     const timeframe = useAppSelector((state) => state.history.timeframe);
+    const activeTab = useAppSelector((state) => state.history.activeTab);
 
     const dispatch = useAppDispatch();
 
@@ -164,6 +167,18 @@ export default function Filtering({
 
             {!isStatisticsPage && (
                 <div className="flex max-md:flex-col gap-2 md:gap-4 max-md:w-full">
+                    <div className="flex items-center">
+                        <Tabs
+                            value={activeTab === "openTrades" ? "open-trades" : "close-trades"}
+                            onValueChange={(value) =>
+                                dispatch(setActiveTab(value === "open-trades" ? "openTrades" : "closedTrades"))
+                            }>
+                            <TabsList className="grid w-full grid-cols-2">
+                                <TabsTrigger value="open-trades">Open</TabsTrigger>
+                                <TabsTrigger value="close-trades">Close</TabsTrigger>
+                            </TabsList>
+                        </Tabs>
+                    </div>
                     <DatePickerWithRange
                         setDateRangeForFiltering={setDateRange}
                     />
@@ -173,7 +188,7 @@ export default function Filtering({
                             onValueChange={(value) =>
                                 dispatch(setSortBy(value))
                             }>
-                            <SelectTrigger className="max-md:flex-1 md:w-[140px]">
+                            <SelectTrigger className="max-md:flex-1 md:w-[120px]">
                                 <SelectValue placeholder="Sort by" />
                             </SelectTrigger>
                             <SelectContent>
@@ -182,7 +197,7 @@ export default function Filtering({
                                         Symbol
                                     </SelectItem>
                                     <SelectItem value="positionType">
-                                        Position type
+                                        Type
                                     </SelectItem>
                                     <SelectItem value="closeDate">
                                         Close date
@@ -201,7 +216,7 @@ export default function Filtering({
                             onValueChange={(value) =>
                                 dispatch(setTimeframe(value))
                             }>
-                            <SelectTrigger className="max-md:flex-1 md:w-[140px]">
+                            <SelectTrigger className="max-md:flex-1 md:w-[120px]">
                                 <SelectValue placeholder="All history" />
                             </SelectTrigger>
                             <SelectContent>
