@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/drizzle/db";
-import { TradeTable, UserTable } from "@/drizzle/schema";
+import { UserTable } from "@/drizzle/schema";
 import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 
