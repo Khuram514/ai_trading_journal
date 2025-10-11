@@ -46,10 +46,11 @@ export async function getCapital(): Promise<
 
     try {
         const data = await db.query.UserTable.findFirst({
-            where: eq(TradeTable.id, userId),
+            where: eq(UserTable.id, userId),
         });
 
-        return data?.capital;
+        // Coerce potential null from DB to undefined to satisfy the return type
+        return data?.capital ?? undefined;
     } catch (err) {
         console.log(err);
         return { error: true };
