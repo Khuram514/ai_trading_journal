@@ -66,7 +66,7 @@ export const TradeDialog = ({
                         day={day}
                     />
 
-                    <div className="flex gap-6 justify-end absolute bottom-8 right-8">
+                    <div className="flex gap-6 justify-end md:absolute md:bottom-8 md:right-8 mt-4">
                         <DialogClose asChild>
                             <CustomButton isBlack={false}>Cancel</CustomButton>
                         </DialogClose>
@@ -87,7 +87,7 @@ export const TradeDialog = ({
                         setCloseDate={tradeForm.setCloseDate}
                     />
 
-                    <div className="flex gap-6 justify-end absolute bottom-8 right-8">
+                    <div className="flex gap-6 justify-end md:absolute md:bottom-8 md:right-8 mt-4">
                         <DialogClose asChild>
                             <CustomButton isBlack={false}>Cancel</CustomButton>
                         </DialogClose>
@@ -112,7 +112,7 @@ export const TradeDialog = ({
                         onCloseRuleToggle={tradeForm.handleCloseRuleToggle}
                     />
 
-                    <div className="flex gap-6 justify-end absolute bottom-8 right-8">
+                    <div className="flex gap-6 justify-end md:absolute md:bottom-8 md:right-8 mt-4">
                         <DialogClose asChild>
                             <CustomButton isBlack={false}>Cancel</CustomButton>
                         </DialogClose>

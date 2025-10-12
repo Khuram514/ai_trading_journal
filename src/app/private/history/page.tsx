@@ -75,16 +75,29 @@ export default function Page() {
     }
 
     return (
-        <>
-            <div>
-                {activeTab === "openTrades" && openTrades.length > 0 && (
-                    <OpenTradesTable trades={openTrades} startCapital={startCapital} />
-                )}
-                {activeTab === "closedTrades" && closedTrades.length > 0 && (
-                    <CloseTradesTable trades={closedTrades} startCapital={startCapital} total={total} />
-                )}
-            </div>
 
-        </>
+        <div>
+            {activeTab === "openTrades" && (
+                openTrades.length > 0 ? (
+                    <OpenTradesTable trades={openTrades} startCapital={startCapital} />
+                ) : (
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-zinc-500">
+                        No open trades found - complete some trades to see history
+                    </div>
+                )
+            )}
+
+            {activeTab === "closedTrades" && (
+                closedTrades.length > 0 ? (
+                    <CloseTradesTable trades={closedTrades} startCapital={startCapital} total={total} />
+                ) : (
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-zinc-500">
+                        No closed trades found - complete some trades to see history
+                    </div>
+                )
+            )}
+        </div>
+
+
     );
 }

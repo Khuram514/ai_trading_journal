@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { MdEdit } from "react-icons/md";
-import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import { TradeDialog } from "../trade-dialog";
 import { Trades } from "@/types";
+import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 
 interface EditTradeProps {
     trade: Trades;
@@ -21,20 +21,20 @@ export default function EditTrade({ trade }: EditTradeProps) {
     }, []);
 
     return (
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogTrigger asChild>
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+            <SheetTrigger asChild>
                 <button className="p-2 md:hover:text-zinc-900 md:hover:bg-zinc-200 rounded-md transition-colors">
                     <MdEdit className="w-4 h-4 text-gray-600 hover:text-gray-800" />
                 </button>
-            </DialogTrigger>
-            <DialogContent className="max-md:h-full">
+            </SheetTrigger>
+            <SheetContent className="">
                 <TradeDialog
                     editMode={true}
                     existingTrade={trade}
                     day={undefined}
                     onRequestClose={() => setIsOpen(false)}
                 />
-            </DialogContent>
-        </Dialog>
+            </SheetContent>
+        </Sheet>
     );
 }

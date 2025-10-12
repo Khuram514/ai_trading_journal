@@ -103,7 +103,7 @@ export default function MonthView() {
                                         ] === undefined && openTradesCount > 0 && (
                                                 <HoverCard>
                                                     <HoverCardTrigger asChild>
-                                                        <div className="absolute bottom-2 shrink-0 px-3 py-1 text-[.7rem] flex-center rounded-full calendar-banner-shadow bg-blue-200 no-wrap bg-blue-100">
+                                                        <div className="absolute bottom-2 shrink-0 px-3 py-1 text-[.7rem] hidden md:flex justify-center items-center rounded-full calendar-banner-shadow bg-blue-200 no-wrap bg-blue-100">
                                                             Open {getPlural(openTradesCount, "trade", "trades")} :{openTradesCount}
                                                         </div>
                                                     </HoverCardTrigger>
@@ -139,7 +139,7 @@ export default function MonthView() {
                                         ] !== undefined && (
                                                 <HoverCard>
                                                     <HoverCardTrigger asChild>
-                                                        <div className="flex gap-2 gap-1 absolute bottom-2">
+                                                        <div className="hidden md:flex gap-2 gap-1 absolute bottom-2">
                                                             {openTradesCount > 0 && (
                                                                 <div className="shrink-0 px-3 py-1 text-[.7rem] flex-center rounded-full calendar-banner-shadow bg-blue-200 no-wrap bg-blue-100">
                                                                     Open {getPlural(openTradesCount, "trade", "trades")} :{openTradesCount}
@@ -211,7 +211,7 @@ export default function MonthView() {
                                             )}
                                     </div>
                                 </SheetTrigger>
-                                <SheetContent className="max-md:h-full">
+                                <SheetContent className="">
                                     <TradeDialog day={day} />
                                 </SheetContent>
                             </Sheet>

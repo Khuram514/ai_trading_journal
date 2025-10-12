@@ -43,7 +43,7 @@ export const StrategyTab = ({
 
     return (
         <div className="relative">
-            <div className="max-h-[70vh] 2xl:max-h-[100vh] overflow-y-auto pb-24 pr-1">
+            <div className="max-h-[70vh] 2xl:max-h-[100vh] md:overflow-y-auto pb-24 pr-1">
                 {/* Strategy Selection */}
                 <div className="mb-4 flex flex-col gap-1">
                     <Label htmlFor="strategyName" className="mb-1">

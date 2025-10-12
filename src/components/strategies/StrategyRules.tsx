@@ -21,7 +21,7 @@ interface StrategyRulesProps {
 
 export default function StrategyRules({ strategy }: StrategyRulesProps) {
     return (
-        <>
+        <div className="flex flex-col md:flex-row w-full px-2">
             <div className="flex-1">
                 <h1 className="py-4 text-neutral-500">
                     Open position rules:
@@ -40,10 +40,10 @@ export default function StrategyRules({ strategy }: StrategyRulesProps) {
                                 <TableCell className="w-[5%]">
                                     <Checkbox disabled />
                                 </TableCell>
-                                <TableCell className="w-[70%]">
+                                <TableCell className="w-[60%] md:w-[70%]">
                                     {rule.rule}
                                 </TableCell>
-                                <TableCell className="w-[25%]">
+                                <TableCell className="w-[30%] md:w-[25%]">
                                     <div
                                         className={`${priorityColors[
                                             rule.priority
@@ -75,15 +75,15 @@ export default function StrategyRules({ strategy }: StrategyRulesProps) {
                                 <TableCell className="w-[5%]">
                                     <Checkbox disabled />
                                 </TableCell>
-                                <TableCell className="w-[70%]">
+                                <TableCell className="w-[60%] md:w-[70%]">
                                     {rule.rule}
                                 </TableCell>
-                                <TableCell className="w-[25%]">
+                                <TableCell className="w-[30%] md:w-[25%]">
                                     <div
                                         className={`${priorityColors[
                                             rule.priority
                                         ]
-                                            } px-3 p-1 rounded-lg w-fit flex-center`}>
+                                            } px-3 p-1 rounded-lg w-fit flex-center nowrap`}>
                                         &bull; {rule.priority}
                                     </div>
                                 </TableCell>
@@ -92,6 +92,6 @@ export default function StrategyRules({ strategy }: StrategyRulesProps) {
                     </TableBody>
                 </Table>
             </div>
-        </>
+        </div>
     );
 }

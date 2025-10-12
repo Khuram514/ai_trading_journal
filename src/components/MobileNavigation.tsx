@@ -16,9 +16,8 @@ export default function MobileNavigation() {
                 <span className="w-[25px] h-[2px] block my-[6px] bg-black"></span>
             </div>
             <div
-                className={`${
-                    !isOpen ? "hidden" : ""
-                } absolute top-0 left-0 right-0 bg-white w-full z-50 h-full`}>
+                className={`${!isOpen ? "hidden" : ""
+                    } absolute top-0 left-0 right-0 bg-white w-full z-50 h-full`}>
                 <div className="flex justify-between p-[18px] items-center">
                     <div className="flex items-center gap-2">
                         <Image
@@ -55,6 +54,13 @@ export default function MobileNavigation() {
                     onClick={() => setIsOpen(false)}>
                     <Link href="/private/statistics" className="w-full py-4">
                         <p className="leading-none text-[1.5rem]">Statistics</p>
+                    </Link>
+                </div>
+                <div
+                    className="flex gap-1 mobile-nav-link items-center"
+                    onClick={() => setIsOpen(false)}>
+                    <Link href="/private/strategies" className="w-full py-4">
+                        <p className="leading-none text-[1.5rem]">Strategies</p>
                     </Link>
                 </div>
                 <div

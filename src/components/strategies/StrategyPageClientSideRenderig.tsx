@@ -28,7 +28,7 @@ export default function StrategyPageClientSideRenderig({
         dispatch(setStrategyState(strategies));
     }, [dispatch, strategies]);
     return (
-        <div className="px-8 py-4 space-y-4 overflow-scroll flex-1 min-h-0">
+        <div className="px-2 md:px-8 py-2 md:py-4 space-y-4 overflow-scroll flex-1 min-h-0">
             {filteredStrategies.length > 0 ? (
                 filteredStrategies.map((strategy) => (
                     <StrategyCard key={strategy.id} strategy={strategy} hideAll={hideAll} />

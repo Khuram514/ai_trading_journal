@@ -80,27 +80,27 @@ export const CloseTradesTable = ({ trades, startCapital, total }: CloseTradesTab
     return (
         <div className="flex flex-col md:h-full mt-2">
             {/* Grid Header */}
-            <div className="grid grid-cols-40 max-md:grid-cols-20 gap-1 p-2 items-center border-b bg-muted/50 font-medium text-sm sticky top-0 bg-white">
-                <div className="col-span-2 text-left">Symbol</div>
-                <div className="col-span-2 max-md:hidden text-center">Instrument</div>
-                <div className="col-span-2 max-md:hidden text-center">Type</div>
-                <div className="col-span-4 max-md:col-span-5 text-center">Open date</div>
-                <div className="col-span-2 max-md:hidden text-center">Open time</div>
-                <div className="col-span-4 max-md:col-span-5 text-center">Close date</div>
-                <div className="col-span-2 max-md:hidden text-center">Close time</div>
-                <div className="col-span-4 max-md:hidden text-center">Open/Close price</div>
-                <div className="col-span-2 max-md:hidden text-center">Quantity</div>
-                <div className="col-span-3 max-md:hidden text-center">
+            <div className="grid grid-cols-5 md:grid-cols-40 gap-1 p-2 items-center border-b bg-muted/50 font-medium text-sm sticky top-0 bg-white z-20">
+                <div className="col-span-1 md:col-span-2 text-left">Symbol</div>
+                <div className="hidden md:block md:col-span-2 text-center">Instrument</div>
+                <div className="hidden md:block md:col-span-2 text-center">Type</div>
+                <div className="hidden md:block md:col-span-4 text-center">Open date</div>
+                <div className="hidden md:block md:col-span-2 text-center">Open time</div>
+                <div className="col-span-1 md:col-span-4 text-center">Close date</div>
+                <div className="hidden md:block md:col-span-2 text-center">Close time</div>
+                <div className="hidden md:block md:col-span-4 text-center">Open/Close price</div>
+                <div className="hidden md:block md:col-span-2 text-center">Quantity</div>
+                <div className="hidden md:block md:col-span-3 text-center">
                     Deposit{" "}
                     <p className="text-[.75rem]">(% of capital)</p>
                 </div>
-                <div className="col-span-2 max-md:col-span-3 text-center">Result</div>
-                <div className="col-span-2 max-md:col-span-3 text-center">Cost</div>
-                <div className="col-span-2 max-md:col-span-2 text-center">Strategy</div>
-                <div className="col-span-4 max-md:col-span-4 text-center">Rating</div>
-                <div className="col-span-1 max-md:hidden text-center">Note</div>
-                <div className="col-span-1 max-md:col-span-1 text-center">Edit</div>
-                <div className="col-span-1 max-md:col-span-1 text-center">Delete</div>
+                <div className="col-span-1 md:col-span-2 text-center">Result</div>
+                <div className="hidden md:block md:col-span-2 text-center">Cost</div>
+                <div className="hidden md:block md:col-span-2 text-center">Strategy</div>
+                <div className="hidden md:block md:col-span-4 text-center">Rating</div>
+                <div className="hidden md:block md:col-span-1 text-center">Note</div>
+                <div className="col-span-1 md:col-span-1 text-center">Edit</div>
+                <div className="col-span-1 md:col-span-1 text-center">Delete</div>
             </div>
 
             {/* Grid Body */}
@@ -108,20 +108,20 @@ export const CloseTradesTable = ({ trades, startCapital, total }: CloseTradesTab
                 {trades.map((trade) => (
                     <div
                         key={trade.id}
-                        className="grid grid-cols-40 max-md:grid-cols-20 gap-1 p-2 border-b hover:bg-muted/30 transition-colors items-center"
+                        className="grid grid-cols-5 md:grid-cols-40 gap-1 p-2 border-b hover:bg-muted/30 transition-colors items-center"
                     >
                         {/* Symbol */}
-                        <div className="col-span-2 truncate">{trade.symbolName}</div>
+                        <div className="col-span-1 md:col-span-2 truncate">{trade.symbolName}</div>
 
                         {/* Instrument */}
-                        <div className="col-span-2 max-md:hidden text-center">
+                        <div className="hidden md:block md:col-span-2 text-center">
                             <div className="border border-zinc-300 rounded-md px-2 py-1 text-xs inline-block">
                                 {getInstrumentLabel(trade.instrumentName)}
                             </div>
                         </div>
 
                         {/* Type */}
-                        <div className="col-span-2 max-md:hidden text-center">
+                        <div className="hidden md:block md:col-span-2 text-center">
                             <p
                                 className={`bg-${trade.positionType === "sell" ? "sell" : "buy"} 
                                          w-fit px-2 py-1 rounded-md text-white text-xs mx-auto`}
@@ -131,7 +131,7 @@ export const CloseTradesTable = ({ trades, startCapital, total }: CloseTradesTab
                         </div>
 
                         {/* Open Date */}
-                        <div className="col-span-4 max-md:col-span-5 text-center text-neutral-500">
+                        <div className="hidden md:block md:col-span-4 text-center text-neutral-500">
                             <div className="flex gap-1 items-center justify-center">
                                 <PiCalendarDotsThin className="max-md:hidden" />
                                 <span className="text-sm">
@@ -145,7 +145,7 @@ export const CloseTradesTable = ({ trades, startCapital, total }: CloseTradesTab
                         </div>
 
                         {/* Open Time */}
-                        <div className="col-span-2 max-md:hidden text-center text-neutral-500">
+                        <div className="hidden md:block md:col-span-2 text-center text-neutral-500">
                             <div className="flex gap-1 items-center justify-center">
                                 {isInMorningRange(trade.openTime) ? (
                                     <Sun className="h-3 w-3" />
@@ -157,7 +157,7 @@ export const CloseTradesTable = ({ trades, startCapital, total }: CloseTradesTab
                         </div>
 
                         {/* Close Date */}
-                        <div className="col-span-4 max-md:col-span-5 text-center text-neutral-500">
+                        <div className="col-span-1 md:col-span-4 text-center text-neutral-500">
                             <div className="flex gap-1 items-center justify-center">
                                 <PiCalendarDotsThin className="max-md:hidden" />
                                 <span className="text-sm">
@@ -171,7 +171,7 @@ export const CloseTradesTable = ({ trades, startCapital, total }: CloseTradesTab
                         </div>
 
                         {/* Close Time */}
-                        <div className="col-span-2 max-md:hidden text-center text-neutral-500">
+                        <div className="hidden md:block md:col-span-2 text-center text-neutral-500">
                             <div className="flex gap-1 items-center justify-center">
                                 {isInMorningRange(trade.closeTime) ? (
                                     <Sun className="h-3 w-3" />
@@ -183,18 +183,18 @@ export const CloseTradesTable = ({ trades, startCapital, total }: CloseTradesTab
                         </div>
 
                         {/* Price */}
-                        <div className="col-span-4 max-md:hidden text-center text-sm flex flex-col gap-1">
+                        <div className="hidden md:block md:col-span-4 text-center text-sm flex flex-col gap-1">
                             <span className="text-neutral-500">{trade.entryPrice}</span>
                             <span className="">→ {trade.sellPrice}</span>
                         </div>
 
                         {/* Quantity */}
-                        <div className="col-span-2 max-md:hidden text-center text-sm truncate">
+                        <div className="hidden md:block md:col-span-2 text-center text-sm truncate">
                             {trade.quantity}
                         </div>
 
                         {/* Deposit */}
-                        <div className="col-span-3 max-md:hidden">
+                        <div className="hidden md:block md:col-span-3">
                             <div className="flex flex-col gap-1 text-center">
                                 <span className="text-sm font-medium">
                                     {Number(trade.deposit).toLocaleString("de-DE")}
@@ -208,7 +208,7 @@ export const CloseTradesTable = ({ trades, startCapital, total }: CloseTradesTab
                         </div>
 
                         {/* Result */}
-                        <div className={`col-span-2 max-md:col-span-3 text-center ${Number(trade.result) >= 0 ? "text-buy" : "text-sell"}`}>
+                        <div className={`col-span-1 md:col-span-2 text-center ${Number(trade.result) >= 0 ? "text-buy" : "text-sell"}`}>
                             <div className="flex gap-1 items-center justify-center">
                                 {Number(trade.result) >= 0 ? (
                                     <FaArrowTrendUp className="text-sm" />
@@ -222,12 +222,12 @@ export const CloseTradesTable = ({ trades, startCapital, total }: CloseTradesTab
                         </div>
 
                         {/* Cost */}
-                        <div className="col-span-2 max-md:col-span-3 text-center text-xs">
+                        <div className="hidden md:block md:col-span-2 text-center text-xs">
                             {trade.totalCost}
                         </div>
 
                         {/* Strategy */}
-                        <div className="col-span-2 max-md:col-span-2 text-center">
+                        <div className="hidden md:block md:col-span-2 text-center z-10">
                             {startCapital &&
                                 ((trade.appliedCloseRules && trade.appliedCloseRules.length > 0) ||
                                     (trade.appliedOpenRules && trade.appliedOpenRules.length > 0)) && (
@@ -238,7 +238,7 @@ export const CloseTradesTable = ({ trades, startCapital, total }: CloseTradesTab
                         </div>
 
                         {/* Rating */}
-                        <div className="col-span-4 max-md:col-span-4 text-center">
+                        <div className="hidden md:block md:col-span-4 text-center">
                             <div className="flex items-center justify-center gap-0.5">
                                 {[...Array(5)].map((_, i) => (
                                     <MdStar
@@ -250,7 +250,7 @@ export const CloseTradesTable = ({ trades, startCapital, total }: CloseTradesTab
                         </div>
 
                         {/* Note */}
-                        <div className="col-span-1 max-md:hidden text-center">
+                        <div className="hidden md:block md:col-span-1 text-center">
                             {trade.notes && (
                                 <HoverCard>
                                     <HoverCardTrigger className="flex items-center justify-center">
@@ -270,12 +270,12 @@ export const CloseTradesTable = ({ trades, startCapital, total }: CloseTradesTab
                         </div>
 
                         {/* Edit */}
-                        <div className="col-span-1 max-md:col-span-1 text-center">
+                        <div className="col-span-1 text-center">
                             <EditTrade trade={trade} />
                         </div>
 
                         {/* Delete */}
-                        <div className="col-span-1 max-md:col-span-1 text-center">
+                        <div className="col-span-1 text-center">
                             <MdDelete
                                 onClick={() => {
                                     setTradeToDelete(trade);
@@ -298,7 +298,7 @@ export const CloseTradesTable = ({ trades, startCapital, total }: CloseTradesTab
 
             {/* Strategy Rules Dialog */}
             <Dialog open={strategyDialogOpen} onOpenChange={setStrategyDialogOpen}>
-                <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+                <DialogContent className="max-w-xl max-h-[80vh] overflow-y-auto">
                     <DialogHeader>
                         <DialogTitle>
                             Applied Strategy Rules - {selectedTrade && localStrategies.find((s) => s.id === selectedTrade.strategyId)?.strategyName}
