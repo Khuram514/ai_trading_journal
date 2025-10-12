@@ -25,7 +25,7 @@ import {
 } from "@/redux/slices/calendarSlice";
 import dayjs from "dayjs";
 import { months } from "@/data/data";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { TradeDialog } from "@/components/trade-dialog";
 
 export default function CalendarLayout({ children }: { children: ReactNode }) {
@@ -141,7 +141,7 @@ export default function CalendarLayout({ children }: { children: ReactNode }) {
                     <div
                         className={`flex gap-3 ${calendarView === "Year" ? "max-md:hidden" : ""
                             }`}>
-                        <Dialog
+                        <Sheet
                             open={!!isDialogOpen["any"]}
                             onOpenChange={(open) =>
                                 dispatch(
@@ -151,13 +151,13 @@ export default function CalendarLayout({ children }: { children: ReactNode }) {
                                     })
                                 )
                             }>
-                            <DialogTrigger asChild>
+                            <SheetTrigger asChild>
                                 <CustomButton isBlack>New</CustomButton>
-                            </DialogTrigger>
-                            <DialogContent>
+                            </SheetTrigger>
+                            <SheetContent>
                                 <TradeDialog day={undefined} />
-                            </DialogContent>
-                        </Dialog>
+                            </SheetContent>
+                        </Sheet>
                         <CustomButton
                             onClick={handleReturnToToday}
                             isBlack={false}>

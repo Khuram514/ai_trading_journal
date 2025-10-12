@@ -72,23 +72,23 @@ export default function StrategiesPage() {
     }
     return (
         <div className="flex flex-col h-full">
-            <div className="px-8 pt-6 pb-0 border-b border-neutral-200 space-y-4 2xl:space-y-8">
+            <div className="px-2 md:px-8 pt-6 pb-0 border-b border-neutral-200 md:space-y-4 2xl:space-y-8">
                 <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-1 md:gap-3">
                         <Image
                             src="/main-logo.png"
                             width={60}
                             height={60}
                             alt="Logo"
                         />
-                        <h1 className="text-4xl">Your Strategies</h1>
+                        <h1 className="text-xl md:text-4xl">Your Strategies</h1>
                     </div>
                     <AddStrategyDialog />
                 </div>
-                <div className="flex justify-between">
+                <div className="flex flex-col md:flex-row gap-4 md:gap-0 justify-between">
                     <SlidingTabs />
 
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-4 mb-2 md:mb-0">
                         <SearchStrategy />
                         <CustomButton isBlack={false} onClick={() => setHideAll(!hideAll)}>
                             {hideAll ? "Show all" : "Hide all"}

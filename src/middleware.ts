@@ -7,6 +7,7 @@ const isPublicRoute = createRouteMatcher([
     "/tradeAi-video.mov",
     "/ai-video.mp4",
     "/api/webhooks/stripe",
+    "/api/webhooks/clerk(.*)",
 ]);
 
 export default clerkMiddleware(async (auth, req) => {

@@ -67,5 +67,4 @@ const SlidingTabs: React.FC = () => {
         </div>
     );
 };
-
 export default SlidingTabs;

@@ -3,7 +3,7 @@
 import dayjs from "dayjs";
 
 import { Trades } from "@/types";
-import { DialogClose, DialogTitle, DialogHeader } from "../ui/dialog";
+import { DialogClose, DialogTitle, DialogHeader, DialogDescription } from "../ui/dialog";
 import { CustomButton } from "../CustomButton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 
@@ -39,12 +39,15 @@ export const TradeDialog = ({
             onSubmit={tradeForm.form.handleSubmit(tradeForm.onSubmit, (errors) => {
                 console.log("Form validation errors:", errors);
             })}
-            className="sm:max-w-[460px] flex flex-col">
+            className="sm:max-w-[460px] flex flex-col ">
 
             <DialogHeader className="mb-6">
                 <DialogTitle className="text-center text-[1.4rem]">
                     {editMode ? "Edit Trade" : "Add a New Trade"}
                 </DialogTitle>
+                <DialogDescription className="text-center text-[.9rem] text-tertiary">
+                    `If you fill in only the “Open Details” section and save, your trade will be marked as OPEN. It will appear on the calendar (in a blue oval) and on the history page, where you’ll have the option to close it later.`
+                </DialogDescription>
             </DialogHeader>
 
             <Tabs defaultValue={initialTab}>
@@ -63,7 +66,7 @@ export const TradeDialog = ({
                         day={day}
                     />
 
-                    <div className="flex gap-6 justify-end">
+                    <div className="flex gap-6 justify-end md:absolute md:bottom-8 md:right-8 mt-4">
                         <DialogClose asChild>
                             <CustomButton isBlack={false}>Cancel</CustomButton>
                         </DialogClose>
@@ -84,7 +87,7 @@ export const TradeDialog = ({
                         setCloseDate={tradeForm.setCloseDate}
                     />
 
-                    <div className="flex gap-6 justify-end">
+                    <div className="flex gap-6 justify-end md:absolute md:bottom-8 md:right-8 mt-4">
                         <DialogClose asChild>
                             <CustomButton isBlack={false}>Cancel</CustomButton>
                         </DialogClose>
@@ -109,7 +112,7 @@ export const TradeDialog = ({
                         onCloseRuleToggle={tradeForm.handleCloseRuleToggle}
                     />
 
-                    <div className="flex gap-6 justify-end">
+                    <div className="flex gap-6 justify-end md:absolute md:bottom-8 md:right-8 mt-4">
                         <DialogClose asChild>
                             <CustomButton isBlack={false}>Cancel</CustomButton>
                         </DialogClose>

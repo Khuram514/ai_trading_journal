@@ -5,12 +5,14 @@ type documentState = {
     filteredTrades: Trades[] | undefined;
     sortBy: SortByType | undefined;
     timeframe: TimeframeType | undefined;
+    activeTab: "openTrades" | "closedTrades";
 };
 
 const initialState: documentState = {
     filteredTrades: undefined,
     sortBy: undefined,
     timeframe: undefined,
+    activeTab: "openTrades",
 };
 
 const historyPageSlice = createSlice({
@@ -26,10 +28,13 @@ const historyPageSlice = createSlice({
         setTimeframe: (state, action) => {
             state.timeframe = action.payload;
         },
+        setActiveTab: (state, action) => {
+            state.activeTab = action.payload;
+        },
     },
 });
 
-export const { setFilteredTrades, setSortBy, setTimeframe } =
+export const { setFilteredTrades, setSortBy, setTimeframe, setActiveTab } =
     historyPageSlice.actions;
 
 export default historyPageSlice.reducer;
