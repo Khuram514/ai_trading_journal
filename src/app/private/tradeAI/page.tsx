@@ -11,7 +11,7 @@ export default function Page() {
                     muted
                     playsInline
                     className="h-full w-full object-cover object-bottom">
-                    <source src="/ai-video.webm" type="video/mp4" />
+                    <source src="/ai-video.webm" type="video/webm" />
                     Your browser does not support the video tag.
                 </video>
             </div>
