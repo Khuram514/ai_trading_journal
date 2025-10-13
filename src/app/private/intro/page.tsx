@@ -8,8 +8,6 @@ import { Handshake, MessageCircle, Star } from "lucide-react";
 import { completeOnboarding } from "@/server/actions/user";
 import { redirect } from "next/navigation";
 
-type IntroClientProps = { redirectTo: string };
-
 const STEPS = [
     {
         title: "Welcome to TradeJournal",
@@ -52,7 +50,7 @@ const STEPS = [
     },
 ];
 
-export default function IntroClient({ redirectTo }: IntroClientProps) {
+export default function Page() {
     const [step, setStep] = useState(0);
     const total = STEPS.length;
     const isFirst = step === 0;
@@ -117,7 +115,7 @@ export default function IntroClient({ redirectTo }: IntroClientProps) {
                         <Button onClick={() => setStep((s) => Math.min(total - 1, s + 1))}>Next</Button>
                     ) : (
                         <form action={async () => { await completeOnboarding(); redirect("/private/calendar") }}>
-                            <input type="hidden" name="redirectTo" value={redirectTo} />
+                            <input type="hidden" name="redirectTo" />
                             <StartButton />
                         </form>
                     )}
