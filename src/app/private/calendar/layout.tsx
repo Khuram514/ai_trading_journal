@@ -193,7 +193,7 @@ export default function CalendarLayout({ children }: { children: ReactNode }) {
                     </div>
                 </div>
                 <div className="flex max-md:justify-between max-md:w-full md:gap-5 items-center">
-                    <div className="md:ml-2 md:px-4 py-2">
+                    <div className="md:ml-2 md:px-3 py-1 border border-zinc-200 rounded-full bg-zinc-100">
                         {calendarView === "Month"
                             ? monthViewTotal && (
                                 <p>Total capital change: {monthViewTotal}</p>

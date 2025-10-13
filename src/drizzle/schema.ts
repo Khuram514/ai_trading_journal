@@ -18,13 +18,16 @@ export const UserTable = pgTable("user", {
     capital: text("capital"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     tokens: integer("tokens").default(5),
+    onboardingCompleted: boolean("onboarding_completed")
+        .notNull()
+        .default(false),
 });
 
 export const TradeTable = pgTable(
     "trades",
     {
         id: text("id").primaryKey().notNull(),
-        userId: text("userId").notNull(),
+        userId: text("userId").notNull().references(() => UserTable.id),
         positionType: text("positionType").notNull(),
         openDate: text("openDate").notNull(),
         openTime: text("openTime").notNull(),
