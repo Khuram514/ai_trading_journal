@@ -140,3 +140,12 @@ export async function updateCredits({
         };
     }
 }
+
+
+export async function completeOnboarding() {
+    const { userId } = await auth();
+    if (!userId) {
+        throw new Error("Unauthorized");
+    }
+    await db.update(UserTable).set({ onboardingCompleted: true }).where(eq(UserTable.id, userId));
+}

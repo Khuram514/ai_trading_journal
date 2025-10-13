@@ -5,7 +5,7 @@ const isPublicRoute = createRouteMatcher([
     "/sign-in(.*)",
     "/sign-up(.*)",
     "/tradeAi-video.mov",
-    "/ai-video.mp4",
+    "/ai-video.webm",
     "/api/webhooks/stripe",
     "/api/webhooks/clerk(.*)",
 ]);

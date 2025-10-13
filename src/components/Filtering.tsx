@@ -175,7 +175,7 @@ export default function Filtering({
                             }>
                             <TabsList className="grid w-full grid-cols-2">
                                 <TabsTrigger value="open-trades">Open</TabsTrigger>
-                                <TabsTrigger value="close-trades">Close</TabsTrigger>
+                                <TabsTrigger value="close-trades">Closed</TabsTrigger>
                             </TabsList>
                         </Tabs>
                     </div>
